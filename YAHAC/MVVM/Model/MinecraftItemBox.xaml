@@ -5,14 +5,15 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:YAHAC.MVVM.Model"
 			 mc:Ignorable="d" 
-			 d:DesignHeight="32" d:DesignWidth="32"
+			 d:DesignHeight="34" d:DesignWidth="34"
 			 Background="Transparent"
 			 BorderThickness="0" 
 			 Width="34" Height="34" 
 			 HorizontalAlignment="Left" 
 			 VerticalAlignment="Top"
 			 MaxHeight="34" MaxWidth="34"
-			 MinHeight="34" MinWidth="34">
+			 MinHeight="34" MinWidth="34"
+			 Margin="0,2,0,2">
 	<Border BorderThickness="1"
 			Background="Transparent"
 			BorderBrush="DarkOrange"
@@ -31,7 +32,8 @@
 					 Foreground="Wheat"
 					 HorizontalContentAlignment="Center"
 					 VerticalContentAlignment="Center"/>-->
-			<Image Source="/Resources/smth.bmp">
+			<Image Source="/Resources/smth.bmp"
+				   Name="ImageBox">
 			</Image>
 		</Border>
 	</Border>

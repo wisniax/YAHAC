@@ -7,15 +7,15 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="RadioButton">
-						<Grid VerticalAlignment="Stretch"
-							  HorizontalAlignment="Stretch"
+						<Grid HorizontalAlignment="Stretch"
+							  VerticalAlignment="Stretch"
 							  Background="{TemplateBinding Background}">
 
 							<TextBlock Text="{TemplateBinding Property=Content}"
 									   VerticalAlignment="Center"
 									   HorizontalAlignment="Center"
 									   FontFamily="/Resources/Fonts/#Stick No Bills"
-									   FontSize="22"/>
+									   FontSize="25"/>
 
 						</Grid>
 					</ControlTemplate>

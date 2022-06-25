@@ -21,11 +21,7 @@
 								  MinWidth="150"/>
 				<ColumnDefinition/>
 			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition Height="60" 
-							   MinHeight="60"/>
-			</Grid.RowDefinitions>
+
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="60"
@@ -40,9 +36,17 @@
 						   FontSize="36"
 						   FontFamily="/Resources/Fonts/#Rubik Moonrocks"
 						   />
-				<StackPanel Grid.Row="1">
+				<Grid Grid.Row="1">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition Height="40"/>
+						<RowDefinition/>
+						<RowDefinition Height="40"/>
+					</Grid.RowDefinitions>
 					<RadioButton Content="Bazaar"
 								 Height="40"
+								 Grid.Row="0"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 IsChecked="{Binding startingView.Bazaar, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
@@ -50,6 +54,7 @@
 								 />
 					<RadioButton Content="Auction House"
 								 Height="40"
+								 Grid.Row="1"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 IsChecked="{Binding startingView.AuctionHouse}"
@@ -57,13 +62,21 @@
 								 />
 					<RadioButton Content="Item Crafts"
 								 Height="40"
+								 Grid.Row="2"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
-				</StackPanel>
+					<RadioButton Content="Settings"
+								 Height="40"
+								 Grid.Row="99"
+								 Foreground="White"
+								 Style="{StaticResource MenuButtonTheme}"
+								 />
+				</Grid>
 			</Grid>
 			<ContentControl Grid.Column="1"
-							Margin="5"
+							Margin="0"
+							BorderThickness="0"
 							Content="{Binding CurrentView}"/>
 		</Grid>
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YAHAC.Core;
+using YAHAC.Core.ApiInstances;
 using YAHAC.MVVM.View;
 
 namespace YAHAC.MVVM.ViewModel
@@ -26,6 +27,13 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
+			if (Properties.Settings.Default.UpgradeRequired == true)
+			{
+				Properties.Settings.Default.Upgrade();
+				Properties.Settings.Default.UpgradeRequired = false;
+				Properties.Settings.Default.Save();
+			}
+			BazaarCheckup.refresh();
 			BazaarViewCommand = new RelayCommand((o) => { BazaarViewModel BZView = new BazaarViewModel(); CurrentView = BZView.ViewModel; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
 			BazaarViewCommand.Execute(this);
