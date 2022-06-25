@@ -13,6 +13,7 @@ namespace YAHAC.MVVM.ViewModel
 	{
 		public RelayCommand BazaarViewCommand { get; set; }
 		public RelayCommand AuctionHouseViewCommand { get; set; }
+		BazaarViewModel BZView;
 		private object _currentView;
 
 		public object CurrentView
@@ -34,7 +35,8 @@ namespace YAHAC.MVVM.ViewModel
 				Properties.Settings.Default.Save();
 			}
 			BazaarCheckup.refresh();
-			BazaarViewCommand = new RelayCommand((o) => { BazaarViewModel BZView = new BazaarViewModel(); CurrentView = BZView.ViewModel; });
+			BZView = new();
+			BazaarViewCommand = new RelayCommand((o) => {  CurrentView = BZView.ViewModel; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
 			BazaarViewCommand.Execute(this);
 		}
