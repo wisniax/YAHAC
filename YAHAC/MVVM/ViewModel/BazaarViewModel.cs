@@ -23,6 +23,10 @@ namespace YAHAC.MVVM.ViewModel
 				items.Add(new MinecraftItemBox());
 			}
 		}
+		~BazaarViewModel()
+		{
+			ViewModel = null;
+		}
 
 	}
 }

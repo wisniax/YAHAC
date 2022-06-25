@@ -26,7 +26,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
-			BazaarViewCommand = new RelayCommand((o) => { CurrentView = new BazaarViewModel().ViewModel; });
+			BazaarViewCommand = new RelayCommand((o) => { BazaarViewModel BZView = new BazaarViewModel(); CurrentView = BZView.ViewModel; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
 			BazaarViewCommand.Execute(this);
 		}
