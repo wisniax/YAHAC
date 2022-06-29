@@ -11,10 +11,10 @@ namespace YAHAC.UnitTest
 
 
         [TestCaseSource(nameof(ItemPreparator))]
-        public void ImageType_IsPngOrGifTest(AllItemsREPO.Item testItem)
+        public void ImageType_IsPng(AllItemsREPO.Item testItem)
         {
             var test = testItem.Texture.RawFormat.ToString();
-            Assert.That(test, Is.EqualTo("Png") | Is.EqualTo("Gif"), "For item: " + testItem.id);
+            Assert.That(test, Is.EqualTo("Png"), "For item: " + testItem.id);
         }
 
         [TestCaseSource(nameof(ItemPreparator))]
