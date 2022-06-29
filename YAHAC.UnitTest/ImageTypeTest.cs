@@ -11,7 +11,7 @@ namespace YAHAC.UnitTest
 
 
         [TestCaseSource(nameof(ItemPreparator))]
-        public void ImageTypeTest_EqualTest(AllItemsREPO.Item testItem)
+        public void ImageTypeTest_IsPngOrGif(AllItemsREPO.Item testItem)
         {
             var test = testItem.Texture.RawFormat.ToString();
             Assert.That(test, Is.EqualTo("Png") | Is.EqualTo("Gif"), "For item: " + testItem.id);
