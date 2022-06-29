@@ -34,6 +34,8 @@ namespace YAHAC.MVVM.ViewModel
 				bitmapImage.StreamSource = ms;
 				bitmapImage.EndInit();
 				itemBox.ImageBox.Source = bitmapImage;
+				itemBox.UC.Width = Properties.Settings.Default.MinecraftItemBox_Size;
+				itemBox.UC.Height = Properties.Settings.Default.MinecraftItemBox_Size;
 				items.Add(itemBox);
 			}
 		}

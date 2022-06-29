@@ -10,9 +10,8 @@
 			 BorderThickness="0" 
 			 Width="34" Height="34" 
 			 HorizontalAlignment="Left" 
+			 Name="UC"
 			 VerticalAlignment="Top"
-			 MaxHeight="34" MaxWidth="34"
-			 MinHeight="34" MinWidth="34"
 			 Margin="0,2,0,2">
 	<Border BorderThickness="1"
 			Background="Transparent"

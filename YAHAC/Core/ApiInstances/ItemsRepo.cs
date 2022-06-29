@@ -28,8 +28,9 @@ namespace YAHAC.Core.ApiInstances
 		{
 
 			//Some stuff for cute skins:)
-			string PathToCacheFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-			PathToCacheFile = PathToCacheFile.Remove(PathToCacheFile.LastIndexOf('\\'));
+			string PathToCacheFile = Properties.Settings.SettingsPath;
+			//string PathToCacheFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+			//PathToCacheFile = PathToCacheFile.Remove(PathToCacheFile.LastIndexOf('\\'));
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(PathToCacheFile + @"\ITR_Cache.zip");
 			itemTextureResolver.LoadResourcepack(Properties.Resources.FurfSkyRebornFULL);
