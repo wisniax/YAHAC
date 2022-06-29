@@ -85,6 +85,17 @@ namespace YAHAC.Core.ApiInstances
 			foreach (var item in AllItemsREPO.itemRepo.items)
 			{
 				item.Texture = itemTextureResolver.GetItemFromID(item.id).Texture;
+
+				//prepare for trouble
+				ImageProcessor.ImageFactory imageFactory= new();
+				imageFactory.Load(item.Texture);
+
+				//and make it double
+				imageFactory.BackgroundColor(Color.Transparent);
+
+				MemoryStream memoryStream = new();
+				imageFactory.Save(memoryStream);
+				item.Texture = Image.FromStream(memoryStream);
 			}
 		}
 
