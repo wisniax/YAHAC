@@ -28,15 +28,10 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
-			if (Properties.Settings.Default.UpgradeRequired == true)
-			{
-				Properties.Settings.Default.Upgrade();
-				Properties.Settings.Default.UpgradeRequired = false;
-				Properties.Settings.Default.Save();
-			}
+			Properties.Settings.Default.Save();
 			BazaarCheckup.refresh();
 			BZView = new();
-			BazaarViewCommand = new RelayCommand((o) => {  CurrentView = BZView.ViewModel; });
+			BazaarViewCommand = new RelayCommand((o) => { CurrentView = BZView.ViewModel; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
 			BazaarViewCommand.Execute(this);
 		}
