@@ -31,7 +31,7 @@ namespace YAHAC.Core.ApiInstances
 			string PathToCacheFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
 			PathToCacheFile = PathToCacheFile.Remove(PathToCacheFile.LastIndexOf('\\'));
 			itemTextureResolver = new();
-			itemTextureResolver.FastInit(PathToCacheFile + @"\ITR_Cache.zip");
+			itemTextureResolver.FastInit(PathToCacheFile + @"\ITR_Cache.zip",true);
 			itemTextureResolver.LoadResourcepack(Properties.Resources.FurfSkyRebornFULL);
 
 			itemRepo = new();

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -38,10 +38,14 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>AppKey.snk</AssemblyOriginatorKeyFile>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702</NoWarn>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{23F89986-9E21-45F8-97EC-0F0A225A779B}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\pytacz.png" />
