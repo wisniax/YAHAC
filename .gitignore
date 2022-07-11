@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /YAHAC/upgrade-assistant.clef
 /YAHAC/AppKey.snk
+/sgKey.snk

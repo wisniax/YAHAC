@@ -11,7 +11,7 @@
 				<ResourceDictionary Source="Theme/MenuButtonsTheme.xaml"/>
 				<ResourceDictionary Source="Theme/SearchBoxTheme.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-
+			
 			<DataTemplate DataType="{x:Type viewModel:AuctionHouseViewModel}">
 				<view:AuctionHouseView/>
 			</DataTemplate>
