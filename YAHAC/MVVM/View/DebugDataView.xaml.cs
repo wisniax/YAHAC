@@ -12,24 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YAHAC.MVVM.ViewModel;
 
-namespace YAHAC
+namespace YAHAC.MVVM.View
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for DebugData.xaml
 	/// </summary>
-	public  partial class MainWindow : Window
+	public partial class DebugDataView : UserControl
 	{
-		public enum StartingView
+		public DebugDataView()
 		{
-			Bazaar,
-			AuctionHouse
-		}
-		public StartingView startingView;
-		public MainWindow()
-		{
-			startingView = StartingView.Bazaar;
 			InitializeComponent();
+			//DataContext = new DebugDataViewModel();
 		}
 	}
 }

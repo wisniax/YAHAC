@@ -1,12 +1,12 @@
-﻿<Window x:Class="YAHAC.MainWindow"
+﻿<Window x:Class="YAHAC.MVVM.View.MainView"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:YAHAC"
+		xmlns:local="clr-namespace:YAHAC.MVVM.View"
 		xmlns:viewModel="clr-namespace:YAHAC.MVVM.ViewModel"
 		mc:Ignorable="d"
-		Title="YAHAC" Height="450" Width="800"
+		Title="MainView" Height="450" Width="800"
 		Background="#181818"
 		ResizeMode="CanResize"
 		MinHeight="450"
@@ -42,36 +42,46 @@
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="40"/>
 						<RowDefinition/>
+						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="40"/>
 					</Grid.RowDefinitions>
 					<RadioButton Content="Bazaar"
+								Name="BtnBZ"
 								 Height="40"
-								 Grid.Row="0"
+									Grid.Row="0"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
-								 IsChecked="{Binding startingView.Bazaar, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
 								 Command="{Binding BazaarViewCommand}"
 								 />
 					<RadioButton Content="Auction House"
+								 Name="BtnAH"
 								 Height="40"
 								 Grid.Row="1"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
-								 IsChecked="{Binding startingView.AuctionHouse}"
 								 Command="{Binding AuctionHouseViewCommand}"
 								 />
 					<RadioButton Content="Item Crafts"
+								 Name="BtnIC"
 								 Height="40"
 								 Grid.Row="2"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
 					<RadioButton Content="Settings"
+								Name="BtnSett"
 								 Height="40"
 								 Grid.Row="99"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
+					<local:DebugDataView Grid.Row="4"/>
+					<!--here-->
+					<Button Content="Button" 
+							Grid.Row="3" 
+							Width="Auto" 
+							Height="20"
+							Click="Button_Click"/>
 				</Grid>
 			</Grid>
 			<ContentControl Grid.Column="1"

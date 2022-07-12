@@ -8,14 +8,21 @@ namespace YAHAC.MVVM.ViewModel
 {
 	internal class AuctionHouseViewModel
 	{
-		public List<string> strings { get; set; }
 		public AuctionHouseViewModel()
 		{
-			strings = new List<string>();
-			for (int i = 0; i < 3000000; i++)
+			List<Task> tasks = new List<Task>();
+			for (int j = 0; j < 5; j++)
 			{
-				strings.Add("JD2137"+i.ToString());
+				var stringsT = new List<string>();
+				tasks.Add(Task.Factory.StartNew(() =>
+				{
+					for (int i = 0; i < 600000; i++)
+					{
+						stringsT.Add("JD2137" + i.ToString());
+					}
+				}));
 			}
+			Task.WaitAll(tasks.ToArray());
 		}
 	}
 }

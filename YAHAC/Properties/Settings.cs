@@ -9,12 +9,12 @@ using YAHAC.Core;
 
 namespace YAHAC.Properties
 {
-	public static class Settings
+	public class Settings
 	{
 		static string _settingsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\YAHAC";
-		private static DataPatterns.Settings _Default;
+		private DataPatterns.Settings _Default;
 
-		public static DataPatterns.Settings Default
+		public DataPatterns.Settings Default
 		{
 			get { return _Default; }
 			set { _Default = value; }
@@ -25,12 +25,12 @@ namespace YAHAC.Properties
 			get { return _settingsPath; }
 		}
 
-		static Settings()
+		public Settings()
 		{
 			if (!Load()) createNew();
 		}
 
-		static bool Load()
+		bool Load()
 		{
 			if (!Directory.Exists(SettingsPath))
 			{
@@ -43,7 +43,7 @@ namespace YAHAC.Properties
 			return true;
 
 		}
-		public static bool Save()
+		public bool Save()
 		{
 			if (!Directory.Exists(SettingsPath))
 			{
@@ -56,7 +56,7 @@ namespace YAHAC.Properties
 			sw.Close();
 			return true;
 		}
-		static bool createNew()
+		bool createNew()
 		{
 			if (!Directory.Exists(SettingsPath))
 			{

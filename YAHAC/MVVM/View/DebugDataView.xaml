@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="YAHAC.MVVM.View.DebugDataView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:YAHAC.MVVM.View"
+			 xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
+			 mc:Ignorable="d">
+	<UserControl.DataContext>
+		<ViewModel:DebugDataViewModel/>
+	</UserControl.DataContext>
+	<UserControl.Resources>
+		<Style TargetType="Label">
+			<Setter Property="FontSize" Value="10"/>
+			<Setter Property="Foreground" Value="DarkGray"/>
+			<Setter Property="Padding" Value="1,0,1,0"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="FontFamily" Value="Cambria Math"/>
+		</Style>
+		<Style TargetType="Separator">
+			<Setter Property="BorderBrush" Value="DarkGray"/>
+			<Setter Property="BorderThickness" Value="3"/>
+		</Style>
+	</UserControl.Resources>
+	<!--The binding in following control is just something else lmao-->
+	<!--But heyy it works ... i think...-->
+	<WrapPanel Grid.Row="4"
+			   HorizontalAlignment="Center"
+			   Opacity="0.5"
+			   Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainView}}, Path=DataContext.settings.Default.DebugVisibility}"
+			   Name="Panelek">
+
+		<Label Content="{Binding BazaarAge}"
+			   ToolTip="Bazaar age"/>
+		<Separator/>
+		<Label Content="{Binding AuctionHouseAge}"
+			   ToolTip="Auction House age"/>
+		<Separator/>
+		<Label Content="{Binding HeaderRequestsInLastMinute}"
+			   ToolTip="Header requests in last minute"/>
+		<Separator/>
+		<Label Content="{Binding ApiRequestsInLastMinute}"
+			   ToolTip="Api requests in last minute"/>
+		<Separator/>
+		<Label Content="{Binding UsedDataInMB}"
+			   ToolTip="MB of data used in last minute"/>
+
+
+
+	</WrapPanel>
+</UserControl>

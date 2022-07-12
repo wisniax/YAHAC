@@ -11,6 +11,7 @@ namespace YAHAC.Core
 		public class Settings
 		{
 			public UserInterfaces Starting_Ui { get; set; } = UserInterfaces.Settings;
+			public System.Windows.Visibility DebugVisibility { get; set; } = System.Windows.Visibility.Hidden;
 			public int MinecraftItemBox_Size { get; set; } = 34;
 			public string ItemCrafts_Recipes { get; set; } = String.Empty;
 			public string BetterAH_Query { get; set; } = String.Empty;

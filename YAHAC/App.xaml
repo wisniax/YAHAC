@@ -4,8 +4,8 @@
              xmlns:local="clr-namespace:YAHAC"
 			 xmlns:viewModel="clr-namespace:YAHAC.MVVM.ViewModel"
 			 xmlns:view="clr-namespace:YAHAC.MVVM.View"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
+             StartupUri="MVVM/View/MainView.xaml">
+	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Theme/MenuButtonsTheme.xaml"/>
