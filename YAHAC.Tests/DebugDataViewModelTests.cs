@@ -16,11 +16,10 @@ namespace YAHAC.Tests
 		[InlineData("999.9","NaN")]
 		[InlineData("998.9", "998.9")]
 		[InlineData(null, "NaN")]
-		public async void DataFormatting_BazaarAge_Test(string age, string expectedResponse)
+		public void DataFormatting_BazaarAge_Test(string age, string expectedResponse)
 		{
 			//Arrange
-			var sut = new DebugDataViewModel();
-			await sut.StopAsyncTimer();
+			var sut = new DebugDataViewModel(false);
 			sut.BazaarAge = age;
 			//Act
 			var result = sut.BazaarAge;
@@ -33,11 +32,10 @@ namespace YAHAC.Tests
 		[InlineData("999.9", "NaN")]
 		[InlineData("998.9", "998.9")]
 		[InlineData(null, "NaN")]
-		public async void DataFormatting_AuctionHouse_Test(string age, string expectedResponse)
+		public void DataFormatting_AuctionHouse_Test(string age, string expectedResponse)
 		{
 			//Arrange
-			var sut = new DebugDataViewModel();
-			await sut.StopAsyncTimer();
+			var sut = new DebugDataViewModel(false);
 			sut.AuctionHouseAge = age;
 			//Act
 			var result = sut.AuctionHouseAge;

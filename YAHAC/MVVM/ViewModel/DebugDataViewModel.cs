@@ -13,53 +13,40 @@ namespace YAHAC.MVVM.ViewModel
 {
 	public class DebugDataViewModel : ObservableObject
 	{
-		private Task TimerTask;
-		private readonly PeriodicTimer timer = new(TimeSpan.FromMilliseconds(100));
-		private readonly CancellationTokenSource _cts = new();
+		private BackgroundTask backgroundTask;
 
 		long TimeStamp_BZ;
 		long TimeStamp_AH;
-		public DebugDataViewModel()
+		public DebugDataViewModel() : this(true)
+		{
+		}
+		public DebugDataViewModel(bool KeepUpdated)
 		{
 			TimeStamp_BZ = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 			TimeStamp_AH = DateTimeOffset.Now.ToUnixTimeMilliseconds() - 2300;
-			StartTimer();
+			backgroundTask = new(TimeSpan.FromMilliseconds(100));
+			if (KeepUpdated) StartBackgroundTask();
 		}
 
-		//No idea how tf it works...
-		public void StartTimer()
+		public void StartBackgroundTask()
 		{
-			TimerTask = CalculateAgeAsync();
+			backgroundTask.Start(CalculateProperties);
 		}
 
-		public async Task StopAsyncTimer()
+		public async Task StopBackgroundTask()
 		{
-			if (TimerTask is null) { return; }
-			_cts.Cancel();
-			await TimerTask;
-			_cts.Dispose();
+			await backgroundTask.StopAsync();
 		}
 
-		private async Task CalculateAgeAsync()
+		private void CalculateProperties()
 		{
-			try
-			{
-				while (await timer.WaitForNextTickAsync(_cts.Token))
-				{
-					CalculateAge();
-				}
-			}
-			catch (OperationCanceledException)
-			{
-
-			}
-		}
-
-		private void CalculateAge()
-		{
-			BazaarAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - TimeStamp_BZ) / 1000).ToString("N1");
+			BazaarAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.bazaar.lastUpdated) / 1000).ToString("N1");
 			AuctionHouseAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - TimeStamp_AH) / 1000).ToString("N1");
+			HeaderRequestsInLastMinute = HypixelApiRequester.HeaderRequestsInLastMinute.ToString();
+			ApiRequestsInLastMinute = HypixelApiRequester.ApiRequestsInLastMinute.ToString();
 		}
+
+
 		//Properties
 		private string _BazaarAge;
 		public string BazaarAge

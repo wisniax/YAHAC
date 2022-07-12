@@ -79,9 +79,9 @@
 					<!--here-->
 					<Button Content="Button" 
 							Grid.Row="3" 
-							Width="Auto" 
+							Width="150" 
 							Height="20"
-							Click="Button_Click"/>
+							Click="Button_Click" HorizontalAlignment="Right" Margin="0,91,0,91"/>
 				</Grid>
 			</Grid>
 			<ContentControl Grid.Column="1"

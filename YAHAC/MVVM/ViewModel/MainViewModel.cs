@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YAHAC.Core;
 using YAHAC.Properties;
 using YAHAC.MVVM.View;
+using YAHAC.MVVM.Model;
 using System.Windows;
 using System.ComponentModel;
 
@@ -44,10 +45,13 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
+		//Models
+		public static Bazaar bazaar;
+
 		public MainViewModel()
 		{
+			bazaar = new();
 			settings = new Settings();
-			//BazaarCheckup.refresh();
 			BZView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = BZView.ViewModel; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
