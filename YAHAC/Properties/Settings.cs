@@ -5,14 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using YAHAC.Core;
 
 namespace YAHAC.Properties
 {
 	public static class Settings
 	{
 		static string _settingsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\YAHAC";
+		private static DataPatterns.Settings _Default;
 
-		public static SettingsStruct Default { get; set; }
+		public static DataPatterns.Settings Default
+		{
+			get { return _Default; }
+			set { _Default = value; }
+		}
 
 		public static string SettingsPath
 		{
@@ -33,7 +39,7 @@ namespace YAHAC.Properties
 			StreamReader sr = new(SettingsPath + @"\user.config");
 			string str = sr.ReadToEnd();
 			sr.Close();
-			Default = JsonSerializer.Deserialize<SettingsStruct>(str);
+			Default = JsonSerializer.Deserialize<DataPatterns.Settings>(str);
 			return true;
 
 		}
@@ -44,7 +50,7 @@ namespace YAHAC.Properties
 				return false;
 			}
 			StreamWriter sw = new(SettingsPath + @"\user.config");
-			string str = JsonSerializer.Serialize<SettingsStruct>(Default);
+			string str = JsonSerializer.Serialize<DataPatterns.Settings>(Default);
 			sw.Write(str);
 			sw.Flush();
 			sw.Close();
@@ -58,32 +64,10 @@ namespace YAHAC.Properties
 			}
 			if (!File.Exists(SettingsPath + @"\user.config"))
 			{
-				Default = new SettingsStruct();
+				Default = new DataPatterns.Settings();
 				Save();
 			}
 			return false;
-		}
-
-		public class SettingsStruct
-		{
-			public UserInterfaces Starting_Ui { get; set; } = UserInterfaces.Settings;
-			public int MinecraftItemBox_Size { get; set; } = 34;
-			public string ItemCrafts_Recipes { get; set; } = String.Empty;
-			public string BetterAH_Query { get; set; } = String.Empty;
-			public bool PlaySound { get; set; } = false;
-			public string BetaTests { get; set; } = String.Empty;
-
-			public bool Save()
-			{
-				return Settings.Save();
-			}
-		}
-		public enum UserInterfaces
-		{
-			Bazaar,
-			AuctionHouse,
-			Settings,
-			BetterAH
 		}
 	}
 }

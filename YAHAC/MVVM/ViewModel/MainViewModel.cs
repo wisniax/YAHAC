@@ -28,8 +28,8 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
-			Properties.Settings.Default.Save();
-			BazaarCheckup.refresh();
+			Properties.Settings.Save();
+			//BazaarCheckup.refresh();
 			BZView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = BZView.ViewModel; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
