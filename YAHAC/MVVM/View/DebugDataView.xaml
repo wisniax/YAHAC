@@ -13,39 +13,57 @@
 		<Style TargetType="Label">
 			<Setter Property="FontSize" Value="10"/>
 			<Setter Property="Foreground" Value="DarkGray"/>
-			<Setter Property="Padding" Value="1,0,1,0"/>
+			<Setter Property="Padding" Value="0"/>
 			<Setter Property="HorizontalAlignment" Value="Center"/>
 			<Setter Property="FontFamily" Value="Cambria Math"/>
 		</Style>
 		<Style TargetType="Separator">
 			<Setter Property="BorderBrush" Value="DarkGray"/>
-			<Setter Property="BorderThickness" Value="3"/>
+			<Setter Property="BorderThickness" Value="2"/>
+			<Setter Property="Margin" Value="1,0,1,0"/>
 		</Style>
 	</UserControl.Resources>
 	<!--The binding in following control is just something else lmao-->
 	<!--But heyy it works ... i think...-->
-	<WrapPanel Grid.Row="4"
-			   HorizontalAlignment="Center"
+	<Grid
+			   HorizontalAlignment="Stretch"
 			   Opacity="0.5"
 			   Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainView}}, Path=DataContext.settings.Default.DebugVisibility}"
-			   Name="Panelek">
+			   Name="Panelek" 
+		Margin="8,0,8,0">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="3*"/>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="3*"/>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="3*"/>
+		</Grid.ColumnDefinitions>
 
 		<Label Content="{Binding BazaarAge}"
-			   ToolTip="Bazaar age"/>
-		<Separator/>
+			   ToolTip="Bazaar age"
+			   Grid.Column="0"/>
+		<Separator Grid.Column="1"/>
 		<Label Content="{Binding AuctionHouseAge}"
-			   ToolTip="Auction House age"/>
-		<Separator/>
+			   ToolTip="Auction House age"
+			   Grid.Column="2"/>
+		<Separator Grid.Column="3"/>
 		<Label Content="{Binding HeaderRequestsInLastMinute}"
-			   ToolTip="Header requests in last minute"/>
-		<Separator/>
+			   ToolTip="Header requests in last minute"
+			   Grid.Column="4"/>
+		<Separator Grid.Column="5"/>
 		<Label Content="{Binding ApiRequestsInLastMinute}"
-			   ToolTip="Api requests in last minute"/>
-		<Separator/>
+			   ToolTip="Api requests in last minute"
+			   Grid.Column="6"/>
+		<Separator Grid.Column="7"/>
 		<Label Content="{Binding UsedDataInMB}"
-			   ToolTip="MB of data used in last minute"/>
+			   ToolTip="MB of data used in last minute"
+			   Grid.Column="8"/>
 
 
 
-	</WrapPanel>
+	</Grid>
 </UserControl>
