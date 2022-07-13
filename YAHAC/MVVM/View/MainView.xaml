@@ -47,8 +47,8 @@
 					</Grid.RowDefinitions>
 					<RadioButton Content="Bazaar"
 								Name="BtnBZ"
-								 Height="40"
-									Grid.Row="0"
+								Height="40"
+								Grid.Row="0"
 								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 Command="{Binding BazaarViewCommand}"
@@ -81,7 +81,7 @@
 							Grid.Row="3" 
 							Width="150" 
 							Height="20"
-							Click="Button_Click" HorizontalAlignment="Right" Margin="0,91,0,91"/>
+							Click="Button_Click"/>
 				</Grid>
 			</Grid>
 			<ContentControl Grid.Column="1"

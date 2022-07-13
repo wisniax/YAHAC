@@ -15,14 +15,12 @@ namespace YAHAC.MVVM.ViewModel
 	{
 		private BackgroundTask backgroundTask;
 
-		long TimeStamp_BZ;
 		long TimeStamp_AH;
 		public DebugDataViewModel() : this(true)
 		{
 		}
 		public DebugDataViewModel(bool KeepUpdated)
 		{
-			TimeStamp_BZ = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 			TimeStamp_AH = DateTimeOffset.Now.ToUnixTimeMilliseconds() - 2300;
 			backgroundTask = new(TimeSpan.FromMilliseconds(100));
 			if (KeepUpdated) StartBackgroundTask();
