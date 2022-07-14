@@ -45,9 +45,13 @@ namespace YAHAC.MVVM.Model
 			if (!ShouldPerform_Refresh()) { return; }
 			var BZResult = hypixelApiRequester.GetBodyAsync().Result;
 			var serializedBazaar = BZResult.Content.ReadAsStringAsync().Result;
-			var last_lastUpdated = lastUpdated;
+			long last_lastUpdated = lastUpdated;
 			deserialize(serializedBazaar);
-			if (!success || last_lastUpdated >= lastUpdated) return;
+
+			if (!success || (last_lastUpdated + 1000 >= lastUpdated))
+			{
+				return;
+			}
 
 			latestHeaders = new(BZResult.Headers, BZResult.Content.Headers);
 			Header_TimeOffset = DateTimeOffset.Now - latestHeaders.Key.Date;
@@ -58,13 +62,20 @@ namespace YAHAC.MVVM.Model
 
 		private bool ShouldPerform_Refresh()
 		{
+			TimeSpan timeSpanRefresh = new TimeSpan(0, 0, 0, 9, 700);
+			return ShouldPerform_Refresh(timeSpanRefresh);
+		}
+		private bool ShouldPerform_Refresh(TimeSpan timeSpanRefresh)
+		{
 			if (ShouldRefresh == true || latestHeaders.Value == null || latestHeaders.Key == null) return true;
-
-			//if ()
+			var timePassed = DateTimeOffset.Now - Header_TimeOffset - (latestHeaders.Key.Date - latestHeaders.Key.Age);
+			if (timeSpanRefresh >= timePassed) return false;
 
 			var head = hypixelApiRequester.GetHeadAsync().Result;
 			latestHeaders = new(head.Headers, head.Content.Headers);
 			Header_TimeOffset = DateTimeOffset.Now - latestHeaders.Key.Date;
+			var ch = DateTimeOffset.Now - Header_TimeOffset;
+			var rozn = latestHeaders.Key.Date - ch;
 			var val = (latestHeaders.Key.Date - Header_LastModified);
 
 			if (latestHeaders.Value.LastModified != Header_LastModified)
@@ -76,12 +87,6 @@ namespace YAHAC.MVVM.Model
 			//if (latestHeaders.Key.Age+1<)
 			return false;
 		}
-
-		void updateTelemetry()
-		{
-
-		}
-
 
 		/// <summary>
 		/// Uses deprecated method to wait for api refresh.
