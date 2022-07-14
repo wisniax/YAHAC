@@ -91,12 +91,6 @@ namespace YAHAC.Core
 			public string tier { get; set; }
 			public string material { get; set; }
 			public bool glowing { get; set; }
-
-
-			//public MemoryStream getTexture()
-			//{
-			//
-			//}
 		}
 	}
 }
