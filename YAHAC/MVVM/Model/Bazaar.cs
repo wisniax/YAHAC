@@ -103,6 +103,7 @@ namespace YAHAC.MVVM.Model
 		void deserialize(string serialized)
 		{
 			var deserialized = JsonSerializer.Deserialize<DataPatterns.BazaarObj>(serialized);
+			//if (deserialized.products.ContainsKey("BAZAAR_COOKIE")) deserialized.products.Remove("BAZAAR_COOKIE");
 			success = deserialized.success;
 			lastUpdated = deserialized.lastUpdated;
 			products = deserialized.products;

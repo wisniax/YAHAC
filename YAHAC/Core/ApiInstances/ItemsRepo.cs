@@ -12,9 +12,6 @@ using System.Threading.Tasks;
 
 namespace YAHAC.Core.ApiInstances
 {
-	internal class ItemsRepo
-	{
-	}
 
 	[Obsolete]
 	public static class AllItemsREPO
@@ -150,6 +147,7 @@ namespace YAHAC.Core.ApiInstances
 		{
 			public string id { get; set; }
 			public string name { get; set; }
+			public string category { get; set; }
 			public int durability { get; set; }
 			public string tier { get; set; }
 			public string material { get; set; }

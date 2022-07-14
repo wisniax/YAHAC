@@ -45,11 +45,14 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
+		public ItemsRepository itemsRepo { get; set; }
+
 		//Models
 		public static Bazaar bazaar;
 
 		public MainViewModel()
 		{
+			itemsRepo = new();
 			bazaar = new();
 			settings = new Settings();
 			BZView = new();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace YAHAC.Core
 {
 	public class DataPatterns
 	{
+		//Settings
 		public class Settings
 		{
 			public UserInterfaces Starting_Ui { get; set; } = UserInterfaces.Settings;
@@ -25,15 +27,25 @@ namespace YAHAC.Core
 			BetterAH,
 			Settings
 		}
-		public class BazaarObj
+		//Bazaar
+		public class BazaarObj : ObservableObject
 		{
 			public bool success { get; set; }
-			public long lastUpdated { get; set; }
+			private long _lastUpdated;
+
+			public long lastUpdated
+			{
+				get { return _lastUpdated; }
+				set 
+				{
+					_lastUpdated = value;
+					OnPropertyChanged();
+				}
+			}
 			public Dictionary<string, BazaarItemDef> products { get; set; }
 		}
 		public class BazaarItemDef
 		{
-			public string product_name { get; set; } //Translation from prod_id to item name requ
 			public string product_id { get; set; }
 			public List<BzOrders> sell_summary { get; set; }
 			public List<BzOrders> buy_summary { get; set; }
@@ -57,6 +69,34 @@ namespace YAHAC.Core
 			public UInt32 buyVolume { get; set; }
 			public UInt32 buyMovingWeek { get; set; }
 			public UInt16 buyOrders { get; set; }
+		}
+
+		//ItemRepository
+		public class ItemRepo
+		{
+			public bool success { get; set; }
+			public long lastUpdated { get; set; }
+			public List<Item> items { get; set; }
+		}
+
+		/// <summary>
+		/// Specific item in list.<br/>
+		/// </summary>
+		public class Item
+		{
+			public string id { get; set; }
+			public string name { get; set; }
+			public string category { get; set; }
+			public int durability { get; set; }
+			public string tier { get; set; }
+			public string material { get; set; }
+			public bool glowing { get; set; }
+
+
+			//public MemoryStream getTexture()
+			//{
+			//
+			//}
 		}
 	}
 }
