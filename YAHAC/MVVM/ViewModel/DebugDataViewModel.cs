@@ -42,7 +42,7 @@ namespace YAHAC.MVVM.ViewModel
 			AuctionHouseAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - TimeStamp_AH) / 1000).ToString("N1");
 			HeaderRequestsInLastMinute = HypixelApiRequester.HeaderRequestsInLastMinute.ToString();
 			ApiRequestsInLastMinute = HypixelApiRequester.ApiRequestsInLastMinute.ToString();
-			UsedDataInMB = (HypixelApiRequester.chc.PeroidDataTransfered / 1000000).ToString();
+			UsedDataInMB = Math.Round((HypixelApiRequester.chc.PeroidDataTransfered / 1000000m),1).ToString();
 		}
 
 
