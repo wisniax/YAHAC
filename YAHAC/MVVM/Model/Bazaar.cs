@@ -43,7 +43,7 @@ namespace YAHAC.MVVM.Model
 		public void Refresh()
 		{
 			if (!ShouldPerform_Refresh()) { return; }
-			var BZResult = hypixelApiRequester.GetBodyAsync().Result;
+			var BZResult = Task.Run(async () => await hypixelApiRequester.GetBodyAsync()).Result;
 			var serializedBazaar = BZResult.Content.ReadAsStringAsync().Result;
 			long last_lastUpdated = lastUpdated;
 			deserialize(serializedBazaar);
@@ -71,7 +71,8 @@ namespace YAHAC.MVVM.Model
 			var timePassed = DateTimeOffset.Now - Header_TimeOffset - (latestHeaders.Key.Date - latestHeaders.Key.Age);
 			if (timeSpanRefresh >= timePassed) return false;
 
-			var head = hypixelApiRequester.GetHeadAsync().Result;
+			//var head = hypixelApiRequester.GetHeadAsync().Result;
+			var head = Task.Run(async () => await hypixelApiRequester.GetHeadAsync()).Result;
 			latestHeaders = new(head.Headers, head.Content.Headers);
 			Header_TimeOffset = DateTimeOffset.Now - latestHeaders.Key.Date;
 			var ch = DateTimeOffset.Now - Header_TimeOffset;

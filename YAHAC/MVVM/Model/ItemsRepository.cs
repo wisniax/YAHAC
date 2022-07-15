@@ -12,11 +12,13 @@ namespace YAHAC.MVVM.Model
 	{
 		public ItemsRepository()
 		{
+			//the duck is dis; btw thats the reason why HypixelApiRequester must still inherit HttpClient
 			using (HypixelApiRequester hypixelApiRequester = new(HypixelApiRequester.DataSources.Items))
 			{
 				while (!success)
 				{
-					deserialize(hypixelApiRequester.GetBodyAsync().Result.Content.ReadAsStringAsync().Result);
+					//deserialize(hypixelApiRequester.GetBodyAsync().Result.Content.ReadAsStringAsync().Result);
+					deserialize(Task.Run(async () => await hypixelApiRequester.GetBodyAsync()).Result.Content.ReadAsStringAsync().Result);
 				}
 			}
 		}
