@@ -16,10 +16,14 @@ namespace YAHAC.Core
 		static List<long> HeaderRequests_HandledRequests = new List<long>();
 		static List<long> ApiRequests_HandledRequests = new List<long>();
 
+		//idk how to so static and yolo THIS IS BAD i think
+		public static CountingHttpClient chc;
+
 		DataSources source;
 
 		public HypixelApiRequester(DataSources source)
 		{
+			chc = new();
 			this.source = source;
 		}
 
@@ -27,14 +31,14 @@ namespace YAHAC.Core
 		{
 			HeaderRequests_HandledRequests.Add(DateTimeOffset.Now.ToUnixTimeMilliseconds());
 			UpdateStatistics();
-			return SendAsync(new HttpRequestMessage(HttpMethod.Head, GetUrlFromDataSource(source, page)));
+			return chc.SendHttpRequest(HttpMethod.Head, GetUrlFromDataSource(source, page));
 		}
 
 		public Task<HttpResponseMessage> GetBodyAsync(int page = 0)
 		{
 			ApiRequests_HandledRequests.Add(DateTimeOffset.Now.ToUnixTimeMilliseconds());
 			UpdateStatistics();
-			return base.GetAsync(GetUrlFromDataSource(source, page));
+			return chc.SendHttpRequest(HttpMethod.Get, GetUrlFromDataSource(source, page));
 		}
 		void UpdateStatistics()
 		{
