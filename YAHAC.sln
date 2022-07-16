@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32611.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAHAC", "YAHAC\YAHAC.csproj", "{EEB0A4D6-8B57-4104-8976-957D3410D989}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5271F01E-439F-4427-93E7-3D9AD02B40E1} = {5271F01E-439F-4427-93E7-3D9AD02B40E1}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAHAC.Tests", "YAHAC.Tests\YAHAC.Tests.csproj", "{CB45A199-C7FB-45E5-88BD-DBB259151F79}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5271F01E-439F-4427-93E7-3D9AD02B40E1} = {5271F01E-439F-4427-93E7-3D9AD02B40E1}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITR", "ITR\ITR.csproj", "{5271F01E-439F-4427-93E7-3D9AD02B40E1}"
 EndProject

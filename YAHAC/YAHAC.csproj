@@ -26,11 +26,16 @@
   <ItemGroup>
     <None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
     <None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
+    <None Remove="sgKey.snk" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SharpNBT" Version="1.2.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ITR\ITR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

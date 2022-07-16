@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using YAHAC.MVVM.Model;
+using ITR;
 
 namespace YAHAC.Tests
 {
@@ -15,7 +16,7 @@ namespace YAHAC.Tests
 		public void PopulateItemsRepo_Test()
 		{
 			//Arrange
-			var sut = new ITR.ItemTextureResolver();
+			var sut = new ItemTextureResolver();
 			sut.FastInit(noFileCache: true);
 			//Act
 			var result = sut.Initialized;
@@ -31,7 +32,7 @@ namespace YAHAC.Tests
 		public void ID_to_ITEM_Test(string id, string expected)
 		{
 			//Arrange
-			var sut = new ITR.ItemTextureResolver();
+			var sut = new ItemTextureResolver();
 			sut.FastInit(noFileCache: true);
 			//Act
 			var result = sut.GetItemFromID(id)?.Name;
@@ -47,7 +48,7 @@ namespace YAHAC.Tests
 		public void ID_to_TEXTURE_Test(string id, bool shouldBeNull)
 		{
 			//Arrange
-			var sut = new ITR.ItemTextureResolver();
+			var sut = new ItemTextureResolver();
 			sut.FastInit(noFileCache: true);
 			//Act
 			var result = sut.GetItemFromID(id)?.Texture;

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ITR\ITR.csproj" />
     <ProjectReference Include="..\YAHAC\YAHAC.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
     <Authors>Marcin Walczyk</Authors>
     <Copyright>Marcin Walczyk</Copyright>
     <Description>ItemTextureResolver - used to resolve HyPixel ID to item Texture optionally Bukkit material Texture</Description>
@@ -16,6 +16,7 @@
     <RepositoryType>git</RepositoryType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>ITRKey.snk</AssemblyOriginatorKeyFile>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -48,6 +49,7 @@
     <None Remove=".gitattributes" />
     <None Remove=".gitignore" />
     <None Remove="ITR.xml" />
+    <None Remove="ITRKey.snk" />
     <None Remove="LICENSE" />
     <None Remove="sgKey.snk" />
   </ItemGroup>
