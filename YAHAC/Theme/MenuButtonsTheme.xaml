@@ -15,7 +15,8 @@
 									   VerticalAlignment="Center"
 									   HorizontalAlignment="Center"
 									   FontFamily="/Resources/Fonts/#Stick No Bills"
-									   FontSize="25"/>
+									   FontSize="25"
+									   Foreground="LightGray"/>
 
 						</Grid>
 					</ControlTemplate>

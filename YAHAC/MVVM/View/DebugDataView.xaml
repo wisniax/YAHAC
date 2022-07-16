@@ -27,7 +27,7 @@
 	<!--But heyy it works ... i think...-->
 	<Grid
 			   HorizontalAlignment="Stretch"
-			   Opacity="0.5"
+			   Opacity="0.75"
 			   Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainView}}, Path=DataContext.settings.Default.DebugVisibility}"
 			   Name="Panelek" 
 		Margin="8,0,8,0">

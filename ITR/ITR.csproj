@@ -17,6 +17,7 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>ITRKey.snk</AssemblyOriginatorKeyFile>
     <NeutralLanguage>en</NeutralLanguage>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

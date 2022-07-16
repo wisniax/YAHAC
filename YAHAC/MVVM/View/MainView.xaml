@@ -6,7 +6,7 @@
 		xmlns:local="clr-namespace:YAHAC.MVVM.View"
 		xmlns:viewModel="clr-namespace:YAHAC.MVVM.ViewModel"
 		mc:Ignorable="d"
-		Title="MainView" Height="450" Width="800"
+		Title="YAHAC" Height="450" Width="800"
 		Background="#181818"
 		ResizeMode="CanResize"
 		MinHeight="450"
@@ -49,7 +49,6 @@
 								Name="BtnBZ"
 								Height="40"
 								Grid.Row="0"
-								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 Command="{Binding BazaarViewCommand}"
 								 />
@@ -57,7 +56,6 @@
 								 Name="BtnAH"
 								 Height="40"
 								 Grid.Row="1"
-								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 Command="{Binding AuctionHouseViewCommand}"
 								 />
@@ -65,14 +63,12 @@
 								 Name="BtnIC"
 								 Height="40"
 								 Grid.Row="2"
-								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
 					<RadioButton Content="Settings"
 								Name="BtnSett"
 								 Height="40"
 								 Grid.Row="99"
-								 Foreground="White"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
 					<local:DebugDataView Grid.Row="4"/>
