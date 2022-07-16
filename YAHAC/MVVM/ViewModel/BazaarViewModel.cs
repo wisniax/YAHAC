@@ -22,7 +22,7 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			ViewModel = new BazaarView();
 			items = new();
-			ViewModel.ItemsList.ItemsSource = items;
+			//ViewModel.ItemsList.ItemsSource = items;
 			//foreach (var item in BazaarCheckup.bazaarObj.products.Keys)
 			//{
 			//	MinecraftItemBox itemBox = new();

@@ -22,7 +22,7 @@ namespace YAHAC.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace YAHAC.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("YAHAC.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace YAHAC.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace YAHAC.Properties {
         /// <summary>
         ///   Looks up a localized string similar to [{&quot;type&quot;:0,&quot;meta&quot;:0,&quot;name&quot;:&quot;Air&quot;,&quot;text_type&quot;:&quot;air&quot;},{&quot;type&quot;:1,&quot;meta&quot;:0,&quot;name&quot;:&quot;Stone&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:1,&quot;meta&quot;:1,&quot;name&quot;:&quot;Granite&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:1,&quot;meta&quot;:2,&quot;name&quot;:&quot;Polished Granite&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:1,&quot;meta&quot;:3,&quot;name&quot;:&quot;Diorite&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:1,&quot;meta&quot;:4,&quot;name&quot;:&quot;Polished Diorite&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:1,&quot;meta&quot;:5,&quot;name&quot;:&quot;Andesite&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:1,&quot;meta&quot;:6,&quot;name&quot;:&quot;Polished Andesite&quot;,&quot;text_type&quot;:&quot;stone&quot;},{&quot;type&quot;:2,&quot;meta&quot;:0,&quot;name&quot;:&quot;G....
         /// </summary>
-        internal static string DetailedVanillaItemsInfo {
+        public static string DetailedVanillaItemsInfo {
             get {
                 return ResourceManager.GetString("DetailedVanillaItemsInfo", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace YAHAC.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap enchanted_item_glint {
+        public static System.Drawing.Bitmap enchanted_item_glint {
             get {
                 object obj = ResourceManager.GetObject("enchanted_item_glint", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -82,7 +82,7 @@ namespace YAHAC.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] FurfSkyRebornFULL {
+        public static byte[] FurfSkyRebornFULL {
             get {
                 object obj = ResourceManager.GetObject("FurfSkyRebornFULL", resourceCulture);
                 return ((byte[])(obj));
@@ -90,9 +90,19 @@ namespace YAHAC.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap NoTextureMark {
+            get {
+                object obj = ResourceManager.GetObject("NoTextureMark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream notify_sound {
+        public static System.IO.UnmanagedMemoryStream notify_sound {
             get {
                 return ResourceManager.GetStream("notify_sound", resourceCulture);
             }

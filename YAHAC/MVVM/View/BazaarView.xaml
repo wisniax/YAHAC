@@ -24,6 +24,7 @@
 						   />
 			</ItemsPanelTemplate>
 		</ListBox.ItemsPanel>
+		<local:ItemView />
 	</ListBox>
 	<!--<WrapPanel Name="ItemsPanel"
 			   >

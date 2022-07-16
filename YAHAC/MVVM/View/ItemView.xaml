@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="YAHAC.MVVM.View.ItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YAHAC.MVVM.View"
+			 xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
+             mc:Ignorable="d"
+			 Background="Transparent"
+			 BorderThickness="0">
+	<UserControl.DataContext>
+		<ViewModel:ItemViewModel/>
+	</UserControl.DataContext>
+	<Border Width="{Binding RelativeSource=
+		{RelativeSource FindAncestor, 
+		AncestorType={x:Type local:MainView}}, 
+		Path=DataContext.settings.Default.MinecraftItemBox_Size}"
+			Height="{Binding RelativeSource=
+		{RelativeSource FindAncestor, 
+		AncestorType={x:Type local:MainView}}, 
+		Path=DataContext.settings.Default.MinecraftItemBox_Size}"
+			d:Width="66" d:Height="66"
+			BorderBrush="DarkOrange"
+			BorderThickness="1"
+			CornerRadius="5"
+			ClipToBounds="True"
+			>
+		<!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
+		<Border.Background>
+			<ImageBrush Stretch="Fill" 
+						ImageSource="{Binding Cosie}"/>
+		</Border.Background>
+	</Border>
+</UserControl>

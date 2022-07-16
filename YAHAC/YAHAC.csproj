@@ -26,6 +26,7 @@
   <ItemGroup>
     <None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
     <None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
+    <None Remove="Resources\NoTextureMark.png" />
     <None Remove="sgKey.snk" />
   </ItemGroup>
 
@@ -45,6 +46,7 @@
     <Resource Include="Resources\Fonts\StickNoBills-Regular.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\NoTextureMark.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,7 +59,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
