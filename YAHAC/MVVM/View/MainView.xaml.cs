@@ -34,7 +34,7 @@ namespace YAHAC.MVVM.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-			MainViewModel.settings.Default.DebugVisibility = Visibility.Visible;
+			MainViewModel.settings.Default.DebugVisibility = Visibility.Hidden;
 			MainViewModel.settings_Changed();
 			//Naah
 			//Process.Start(Process.GetCurrentProcess().MainModule.FileName);
