@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /YAHAC/AppKey.snk
 /sgKey.snk
 /YAHAC/sgKey.snk
+*.snk

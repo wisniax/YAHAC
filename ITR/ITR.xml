@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ITR</name>
+    </assembly>
+    <members>
+        <member name="T:ITR.ItemRenderer">
+            <summary>
+            Class for storage of original image<br/>
+            and generating events when output image is rendered.<br/><br/>
+            Management is done by <seealso cref="T:ITR.ItemRenderer.RenderController"/>
+            </summary>
+        </member>
+        <member name="T:ITR.ItemRenderer.EventHandler_TextureUpdated">
+            <summary>
+            Delegate for TextureUpdated events
+            </summary>
+            <param name="texture">newly generated texture</param>
+        </member>
+        <member name="E:ITR.ItemRenderer.TextureUpdated">
+            <summary>
+            Event generated when new texture is rendered and ready for use
+            </summary>
+        </member>
+        <member name="F:ITR.ItemRenderer.texture_Original">
+            <summary>
+            Image used for rendering output texture
+            </summary>
+        </member>
+        <member name="F:ITR.ItemRenderer.texture_Output">
+            <summary>
+            Last rendered texture
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.Controller">
+            <summary>
+            Owner of this ItemRenderer
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.Rendered">
+            <summary>
+            Is item enabled for rendering
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.Glow">
+            <summary>
+            Is item glowing(enchanted)
+            </summary>
+        </member>
+        <member name="M:ITR.ItemRenderer.Update(System.Drawing.Image)">
+            <summary>
+            Change the image that is used for rendering
+            </summary>
+            <param name="img">Image to render</param>
+        </member>
+        <member name="M:ITR.ItemRenderer.Update(ITR.Item)">
+            <summary>
+            Change the image that is used for rendering from <see cref="T:ITR.Item"/><br/>
+            also Glow is updated from <see cref="T:ITR.Item"/>
+            </summary>
+            <param name="item">Item to render</param>
+        </member>
+        <member name="T:ITR.ItemRenderer.RenderController">
+            <summary>
+            Class responsible for:<br/>
+            Controlling FPS used to render <see cref="T:ITR.ItemRenderer"/><br/>
+            Rendering <see cref="T:ITR.ItemRenderer"/>s<br/>
+            Creating and removing <see cref="T:ITR.ItemRenderer"/>s to render<br/>
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_Tint">
+            <summary>
+            Color of Glow Tint<br/>
+            IMPORTANT: when changed use <see cref="M:ITR.ItemRenderer.RenderController.RerenderGlowTexture"/> to see result!
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_TextureRotation">
+            <summary>
+            Rotation used to create Glow TextureBrush<br/>
+            IMPORTANT: when changed use <see cref="M:ITR.ItemRenderer.RenderController.RerenderGlowTexture"/> to see result!
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_TextureScale">
+            <summary>
+            Scale used to create Glow TextureBrush <br/>
+            IMPORTANT: when changed use <see cref="M:ITR.ItemRenderer.RenderController.RerenderGlowTexture"/> to see result!
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.OutputImage_Resolution">
+            <summary>
+            Resolution used to render <see cref="T:ITR.ItemRenderer"/> Textures<br/>
+            Note that base Image used for rendering is just scaled to requested resolution, Glow Texture also
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_Resolution">
+            <summary>
+            Resolution used to render Glow Texture
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_TranslationPerSecond">
+            <summary>
+            Value controlling move per second of Glow TextureBrush
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_TargetFPS">
+            <summary>
+            Glow rerender rate. Best same as <see cref="P:ITR.ItemRenderer.RenderController.Render_TargetFPS"/>
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Gif_TargetFPS">
+            <summary>
+            Gif frames per second
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Render_TargetFPS">
+            <summary>
+            <see cref="T:ITR.Item"/> rerendering rate. Best same as <see cref="P:ITR.ItemRenderer.RenderController.Glow_TargetFPS"/>
+            </summary>
+        </member>
+        <member name="P:ITR.ItemRenderer.RenderController.Glow_Texture">
+            <summary>
+            Glow Texture.<br/>
+            If u want Glow Texture, here have one
+            </summary>
+        </member>
+        <member name="M:ITR.ItemRenderer.RenderController.#ctor">
+            <summary>
+            Creates new instance and sets up default values
+            </summary>
+        </member>
+        <member name="M:ITR.ItemRenderer.RenderController.RerenderGlowTexture">
+            <summary>
+            Creates new TextureBrush for Glow using
+            <see cref="P:ITR.ItemRenderer.RenderController.Glow_Tint"/>, 
+            <see cref="P:ITR.ItemRenderer.RenderController.Glow_TextureRotation"/> and 
+            <see cref="P:ITR.ItemRenderer.RenderController.Glow_TextureScale"/>
+            </summary>
+        </member>
+        <member name="M:ITR.ItemRenderer.RenderController.NewRenderer">
+            <summary>
+            Creates new <see cref= "T:ITR.ItemRenderer"/> with blank texture and starts rendering it
+            </summary>
+            <returns><see cref= "T:ITR.ItemRenderer"/> that was created</returns>
+        </member>
+        <member name="M:ITR.ItemRenderer.RenderController.NewRenderer(System.Drawing.Image)">
+            <summary>
+            Creates new <see cref= "T:ITR.ItemRenderer"/> with specified texture and starts rendering it
+            </summary>
+            <param name="source">source Image</param>
+            <returns><see cref= "T:ITR.ItemRenderer"/> that was created</returns>
+        </member>
+        <member name="M:ITR.ItemRenderer.RenderController.NewRenderer(ITR.Item)">
+            <summary>
+            Creates new <see cref= "T:ITR.ItemRenderer"/> from <see cref= "T:ITR.Item"/> and starts rendering it<br/>
+            </summary>
+            <param name="item">source Item</param>
+            <returns><see cref= "T:ITR.ItemRenderer"/> that was created</returns>
+        </member>
+        <member name="M:ITR.ItemRenderer.RenderController.DeleteRenderer(ITR.ItemRenderer)">
+            <summary>
+            Deletes specified <see cref="T:ITR.ItemRenderer"/>
+            </summary>
+            <param name="itemRenderer"><see cref="T:ITR.ItemRenderer"/> to remove</param>
+            <returns>true if was succesfully removed, false otherwise</returns>
+        </member>
+        <member name="T:ITR.ITRNotInitializedException">
+            <summary>
+            Exception thrown when ItemTextureResolver is being used without initialization
+            </summary>
+        </member>
+        <member name="M:ITR.ITRNotInitializedException.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="T:ITR.Material">
+            <summary>
+            All <a href="https://github.com/Bukkit/Bukkit/blob/master/src/main/java/org/bukkit/Material.java">Bukkit Materials</a>
+            </summary>
+        </member>
+        <member name="F:ITR.Material.MAP">
+            @see org.bukkit.map.MapView
+        </member>
+        <member name="T:ITR.Item">
+            <summary>
+            This class contains most needed info about Item
+            </summary>
+        </member>
+        <member name="P:ITR.Item.Name">
+            <summary>
+            Item in-game name
+            </summary>
+        </member>
+        <member name="P:ITR.Item.HyPixel_ID">
+            <summary>
+            item ID used by HyPixel SkyBlock
+            </summary>
+        </member>
+        <member name="P:ITR.Item.Material">
+            <summary>
+            Bukkit Material of Item
+            </summary>
+        </member>
+        <member name="P:ITR.Item.Meta_ID">
+            <summary>
+            Meta ID of Item
+            </summary>
+        </member>
+        <member name="P:ITR.Item.Texture">
+            <summary>
+            GIF or PNG Image
+            </summary>
+        </member>
+        <member name="P:ITR.Item.IsOriginalTexture">
+            <summary>
+            Is this texture of item original from HyPixel_ID? (or material texture)
+            </summary>
+        </member>
+        <member name="P:ITR.Item.Glow">
+            <summary>
+            Has enchanted effect?
+            </summary>
+        </member>
+        <member name="M:ITR.Item.#ctor(System.String,System.String,ITR.Material,System.Boolean,System.Drawing.Image,System.Boolean,System.Int32)">
+            <param name="name">Item in-game name</param>
+            <param name="hyPixel_ID">item ID used by HyPixel SkyBlock</param>
+            <param name="material">Bukkit Material of Item</param>
+            <param name="originalTexture">Is this texture of item original from HyPixel_ID? (or material texture)</param>
+            <param name="texture">GIF or PNG Image</param>
+            <param name="glow">Has enchanted effect?</param>
+            <param name="meta_ID">Meta ID</param>
+        </member>
+        <member name="T:ITR.ItemTextureResolver">
+            <summary>
+            ItemTextureResolver is class used to match Item to HyPixel_ID<br/>
+            and show it's texture from vanilla or loaded Resourcepacks.<br/>
+            Also capable to return Bukkit material texture<br/>if HyPixel_ID texture
+            is not found.<br/><br/>
+            Initialize with  <c>.Init()</c>  before using!!!
+            </summary>
+        </member>
+        <member name="P:ITR.ItemTextureResolver.Initialized">
+            <summary>
+            Indicates that this instance is ready to use
+            </summary>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.#ctor">
+            <summary>
+            New ItemTextureResolver with own resources<br/>
+            Remember to initialize before use!
+            </summary>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.Init(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Initialization before use of <c>ItemTextureResolver</c><br/>
+            Items data is loaded from "ITR_Cache.zip", or if not found form HyPixel API<br/>
+            also if "ITR_Cache.zip" is not found, ALL skullitems will be downloaded using mc-heads API<br/>
+            </summary>
+            <param name="pathToCacheFile">Relative path to ITR cache, where downoaded data is stored</param>
+            <param name="forceRefresh">if true, Items data is always downloaded from HyPixel Api</param>
+            <param name="noFileCache">if true, cache file is not created. Not recomended, API is slow</param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.IO.IOException"></exception>
+            <exception cref="T:System.UnauthorizedAccessException"></exception>
+            <exception cref="T:System.Net.Http.HttpRequestException"></exception>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.RefreshHyItems">
+            <summary>
+            Use this to redownload(refresh) HyPixel Items
+            </summary>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.FastInit(System.String,System.Boolean)">
+            <summary>
+            Fast Initialization before use of <c>ItemTextureResolver</c><br/>
+            Items data is loaded form HyPixel API<br/>
+            FastInit compared to Init do not download all skull items,<br/>
+            instead they are downloaded on deamand and stored to cache. 
+            </summary>
+            <param name="pathToCacheFile">Relative path to ITR cache, where downoaded data is stored</param>
+            <param name="noFileCache">if true, cache file is not created. Not recomended, API is slow</param>
+            <exception cref="T:System.IO.InvalidDataException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.IO.IOException"></exception>
+            <exception cref="T:System.UnauthorizedAccessException"></exception>
+            <exception cref="T:System.Net.Http.HttpRequestException"></exception>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.LoadResourcepack(System.String)">
+            <summary>
+            Loads Resourcepack from .zip and catalogs it
+            </summary>
+            <param name="file">path to Resourcepack .zip file</param>
+            <returns>number of loaded and cataloged textures</returns>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.IO.PathTooLongException"></exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
+            <exception cref="T:System.UnauthorizedAccessException"></exception>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.IO.IOException"></exception>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.LoadResourcepack(System.Byte[])">
+            <summary>
+            Loads Resourcepack from .zip and catalogs it
+            </summary>
+            <param name="bytes">Resourcepack file bytes</param>
+            <returns>number of loaded and cataloged textures</returns>
+            <exception cref="!:Nie Ma Wyjątków Od Jebania Disa"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.IO.PathTooLongException"></exception>
+            <exception cref="T:System.IO.DirectoryNotFoundException"></exception>
+            <exception cref="T:System.UnauthorizedAccessException"></exception>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+            <exception cref="T:System.NotSupportedException"></exception>
+            <exception cref="T:System.IO.IOException"></exception>
+        </member>
+        <member name="M:ITR.ItemTextureResolver.GetItemFromID(System.String)">
+            <summary>
+            Look for item by HyPixel_ID<br/>
+            Note: this is threadsafe (at least is in theory :D)
+            </summary>
+            <param name="hyPixel_ID"></param>
+            <returns>Item with mathing HyPixel_ID; if item is not found returns <c>null</c></returns>
+            <exception cref="T:ITR.ITRNotInitializedException"></exception>
+        </member>
+        <member name="T:ITR.Properties.Resources">
+            <summary>
+              Klasa zasobu wymagająca zdefiniowania typu do wyszukiwania zlokalizowanych ciągów itd.
+            </summary>
+        </member>
+        <member name="P:ITR.Properties.Resources.ResourceManager">
+            <summary>
+            Zwraca buforowane wystąpienie ResourceManager używane przez tę klasę.
+            </summary>
+        </member>
+        <member name="P:ITR.Properties.Resources.Culture">
+            <summary>
+              Przesłania właściwość CurrentUICulture bieżącego wątku dla wszystkich
+              przypadków przeszukiwania zasobów za pomocą tej klasy zasobów wymagającej zdefiniowania typu.
+            </summary>
+        </member>
+        <member name="P:ITR.Properties.Resources.enchanted_item_glint">
+            <summary>
+              Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:ITR.Properties.Resources.ItemsJSON">
+            <summary>
+              Wyszukuje zlokalizowany zasób typu System.Byte[].
+            </summary>
+        </member>
+        <member name="P:ITR.Properties.Resources.itemsZIP">
+            <summary>
+              Wyszukuje zlokalizowany zasób typu System.Byte[].
+            </summary>
+        </member>
+    </members>
+</doc>
