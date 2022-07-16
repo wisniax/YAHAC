@@ -33,7 +33,7 @@
 		<!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
 		<Border.Background>
 			<ImageBrush Stretch="Fill" 
-						ImageSource="{Binding Cos,
+						ImageSource="{Binding Texture,
 				Converter={StaticResource BitmapToImageSource}}"/>
 		</Border.Background>
 	</Border>

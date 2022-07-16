@@ -15,12 +15,10 @@ namespace YAHAC.MVVM.ViewModel
 {
 	internal class BazaarViewModel
 	{
-		public BazaarView ViewModel { get; set; }
 		ObservableCollection<object> items;
 
 		public BazaarViewModel()
 		{
-			ViewModel = new BazaarView();
 			items = new();
 			//ViewModel.ItemsList.ItemsSource = items;
 			//foreach (var item in BazaarCheckup.bazaarObj.products.Keys)
@@ -38,11 +36,6 @@ namespace YAHAC.MVVM.ViewModel
 			//	itemBox.UC.Height = Properties.Settings.Default.MinecraftItemBox_Size;
 			//	items.Add(itemBox);
 			//}
-		}
-		~BazaarViewModel()
-		{
-			ViewModel = null;
-			items = null;
 		}
 
 	}

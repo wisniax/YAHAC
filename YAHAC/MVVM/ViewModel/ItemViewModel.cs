@@ -15,21 +15,21 @@ namespace YAHAC.MVVM.ViewModel
 {
 	public class ItemViewModel : ObservableObject
 	{
-		private Bitmap _Cos;
+		private Bitmap _Texture;
 
-		public Bitmap Cos
+		public Bitmap Texture
 		{
-			get { return _Cos; }
+			get { return _Texture; }
 			set
 			{
-				_Cos = value;
+				_Texture = value;
 				OnPropertyChanged();
 			}
 		}
 
 		public ItemViewModel()
 		{
-			Cos = new Bitmap(Properties.Resources.NoTextureMark);
+			Texture = new Bitmap(Properties.Resources.NoTextureMark);
 		}
 	}
 }
