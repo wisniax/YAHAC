@@ -65,6 +65,16 @@ namespace ITR
 			Texture = texture;
 			Glow = glow;
 		}
+		public Item(Item item)
+		{
+			Name = item.Name;
+			HyPixel_ID = item.HyPixel_ID;
+			Material=item.Material;
+			Meta_ID=item.Meta_ID;
+			IsOriginalTexture = item.IsOriginalTexture;
+			Texture = item.Texture;
+			Glow = item.Glow;
+		}
 	}
 
 }
