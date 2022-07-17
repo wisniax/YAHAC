@@ -4,16 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAHAC.MVVM.View"
-			 xmlns:converter="clr-namespace:YAHAC.Converters" 
-			 xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel" 
+			 xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel"
 			 Name="itemControl"
 			 mc:Ignorable="d"
 			 Background="Transparent"
 			 BorderThickness="0"
-			 Margin="1,3,1,3">
-	<UserControl.Resources>
-		<converter:BitmapToWPFSource x:Key="BitmapToImageSource"/>
-	</UserControl.Resources>
+			 Margin="1,3,1,3"
+			 DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+			 >
 	<Border Width="{Binding RelativeSource=
 		{RelativeSource FindAncestor, 
 		AncestorType={x:Type local:MainView}}, 
@@ -22,7 +20,8 @@
 		{RelativeSource FindAncestor, 
 		AncestorType={x:Type local:MainView}}, 
 		Path=DataContext.settings.Default.MinecraftItemBox_Size}"
-			d:Width="66" d:Height="66"
+			Name="border"
+			d:Width="68" d:Height="68"
 			BorderBrush="DarkOrange"
 			BorderThickness="1"
 			CornerRadius="5"
@@ -33,8 +32,7 @@
 			<ImageBrush Stretch="Fill" 
 						ImageSource="{
 				Binding item.Texture,
-				ElementName=itemControl,
-				Converter={StaticResource BitmapToImageSource}}"/>
+				Converter={StaticResource BitmapToWPFSource}}"/>
 		</Border.Background>
 	</Border>
 </UserControl>

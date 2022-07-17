@@ -51,6 +51,10 @@ namespace YAHAC.MVVM.ViewModel
 		//Models
 		public static Bazaar bazaar;
 
+		//Views
+		BazaarView bazaarView;
+		AuctionHouseView auctionHouseView;
+
 		public MainViewModel()
 		{
 			itemsRepo = new();
@@ -58,9 +62,11 @@ namespace YAHAC.MVVM.ViewModel
 			settings = new();
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
-			itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
-			BazaarViewCommand = new RelayCommand((o) => { CurrentView = new BazaarView(); });
-			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
+			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
+			bazaarView = new();
+			auctionHouseView = new();
+			BazaarViewCommand = new RelayCommand((o) => { CurrentView = bazaarView; });
+			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = auctionHouseView; });
 		}
 	}
 }

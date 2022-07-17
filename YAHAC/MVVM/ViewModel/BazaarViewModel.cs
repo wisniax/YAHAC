@@ -11,15 +11,14 @@ using YAHAC.Core.ApiInstances;
 using YAHAC.Core;
 using YAHAC.MVVM.View;
 using ITR;
+using YAHAC.MVVM.UserControls;
+using System.Windows;
 
 namespace YAHAC.MVVM.ViewModel
 {
 	internal class BazaarViewModel : ObservableObject
 	{
-		ObservableCollection<object> items;
 		private ObservableCollection<object> _Items;
-
-		public Item item { get; set; }
 		public ObservableCollection<object> Items
 		{
 			get { return _Items; }
@@ -30,27 +29,60 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
+		private bool _AdditonalInfo_Visible;
+		public bool AdditionalInfo_Visible
+		{
+			get { return _AdditonalInfo_Visible; }
+			set
+			{
+				_AdditonalInfo_Visible = value;
+				OnPropertyChanged();
+			}
+		}
+
+		private Item _SelectedItem;
+		public Item SelectedItem
+		{
+			get { return _SelectedItem; }
+			set
+			{
+				if (value == null) { AdditionalInfo_Visible = false; return; }
+				_SelectedItem = value;
+				OnPropertyChanged();
+				AdditionalInfo_Visible = true;
+			}
+		}
+
+		private Point _CanvasPoint;
+
+		public Point CanvasPoint
+		{
+			get { return _CanvasPoint; }
+			set
+			{
+				_CanvasPoint = value;
+				OnPropertyChanged();
+			}
+		}
+
+
 
 		public BazaarViewModel()
 		{
-			items = new();
-			item = MainViewModel.itemTextureResolver.GetItemFromID("HYPERION");
-			//foreach (var item in BazaarCheckup.bazaarObj.products.Keys)
-			//{
-			//	MinecraftItemBox itemBox = new();
-			//	var bitmapImage = new BitmapImage();
-			//	bitmapImage.BeginInit();
-			//	MemoryStream ms = new MemoryStream();
-			//	AllItemsREPO.IDtoITEM(item).Texture.Save(ms, ImageFormat.Bmp);
-			//	ms.Seek(0,SeekOrigin.Begin);
-			//	bitmapImage.StreamSource = ms;
-			//	bitmapImage.EndInit();
-			//	itemBox.ImageBox.Source = bitmapImage;
-			//	itemBox.UC.Width = Properties.Settings.Default.MinecraftItemBox_Size;
-			//	itemBox.UC.Height = Properties.Settings.Default.MinecraftItemBox_Size;
-			//	items.Add(itemBox);
-			//}
+			Items = new();
+			_ = LoadBazaar();
 		}
 
+		async Task LoadBazaar()
+		{
+			await Task.Run(() => (MainViewModel.bazaar.success == true));
+			foreach (var key in MainViewModel.bazaar.products.Keys)
+			{
+				var item = MainViewModel.itemTextureResolver.GetItemFromID(key);
+				if (item == null) continue;
+				ItemView itemBox = new(item);
+				Items?.Add(itemBox);
+			}
+		}
 	}
 }

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YAHAC.MVVM.UserControls;
+using YAHAC.MVVM.ViewModel;
 
 namespace YAHAC.MVVM.View
 {
@@ -24,5 +26,15 @@ namespace YAHAC.MVVM.View
 		{
 			InitializeComponent();
 		}
-	}
+
+		private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			((BazaarViewModel)DataContext).SelectedItem = ((ItemView)((ListBox)sender).SelectedItem)?.item;
+		}
+
+        private void UserControl_MouseMove(object sender, MouseEventArgs e)
+        {
+			((BazaarViewModel)DataContext).CanvasPoint = Mouse.GetPosition(this);
+		}
+    }
 }

@@ -8,29 +8,58 @@
 			 xmlns:UserControls="clr-namespace:YAHAC.MVVM.UserControls"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="450" d:DesignWidth="800"
-			 BorderThickness="0">
+			 BorderThickness="0"
+			 MouseMove="UserControl_MouseMove">
 	<UserControl.DataContext>
 		<ViewModel:BazaarViewModel/>
 	</UserControl.DataContext>
-	<ListBox  x:Name="ItemsList"
+	<Grid>
+		<ListBox  x:Name="ItemsList"
 			  HorizontalContentAlignment="Center"
 			  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 			  ScrollViewer.VerticalScrollBarVisibility="Auto" 
 			  Background="#202020"
-			  BorderThickness="0">
-		<!--<ListBox.ItemContainerStyle>
+			  BorderThickness="0"
+			  ItemsSource="{Binding Items}"
+				  SelectionChanged="ItemsList_SelectionChanged">
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
+					<Style.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="IsSelected" Value="True"/>
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ListBox.ItemContainerStyle>
+			<!--<ListBox.ItemContainerStyle>
 			<Style TargetType="ListBoxItem">
 				<Setter Property="Margin" Value="2"/>
 			</Style>
 		</ListBox.ItemContainerStyle>-->
-		<ListBox.ItemsPanel>
-			<ItemsPanelTemplate>
-				<WrapPanel HorizontalAlignment="Center"
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel HorizontalAlignment="Center"
 						   />
-			</ItemsPanelTemplate>
-		</ListBox.ItemsPanel>
-		<UserControls:ItemView item="{Binding item}"/>
-	</ListBox>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
+		<Canvas Panel.ZIndex="10"
+				Visibility="{Binding AdditionalInfo_Visible,
+			Converter={StaticResource BoolToVisibility}}">
+			<UserControls:BazaarItemPeek
+				Canvas.Left="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarView}}, 
+				Path=DataContext.CanvasPoint.X}"
+				Canvas.Top="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarView}}, 
+				Path=DataContext.CanvasPoint.Y}"/>
+		</Canvas>
+	</Grid>
 	<!--<WrapPanel Name="ItemsPanel"
 			   >
 		<TextBlock Text="Cos do testu"

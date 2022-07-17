@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="YAHAC.MVVM.UserControls.BazaarItemPeek"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YAHAC.MVVM.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="400"
+			 DataContext="{Binding Mode=OneWay, 
+	RelativeSource={RelativeSource Self}}">
+	<UserControl.Resources>
+		<Style TargetType="TextBlock">
+			<Setter Property="FontSize" Value="16"/>
+			<Setter Property="Foreground" Value="LightGray"/>
+		</Style>
+	</UserControl.Resources>
+    <Border BorderBrush="#FF24015B"
+			BorderThickness="8"
+			CornerRadius="5"
+			Padding="0"
+			Margin="0"
+			Background="#FF100110">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			
+			<TextBlock FontSize="24"
+					   Text="{Binding SelectedItemID}"
+					   d:Text="Suspicious Hyperion"
+					   Padding="5,0,5,6"
+					   Foreground="LightGray"
+					   Margin="0"
+					   Grid.ColumnSpan="2"/>
+			<ItemsControl Grid.Row="1" 
+						  Margin="5">
+				<TextBlock d:Text="smth"
+						   Text="{
+					Binding BazaarItemData.buy_summary[0].amount}"/>
+				<TextBlock d:Text="smth"
+						   Text="{
+					Binding BazaarItemData.buy_summary[1].amount}"/>
+			</ItemsControl>
+			<ItemsControl Grid.Row="1" 
+						  Grid.Column="2"
+						  Margin="5">
+				<TextBlock d:Text="smth"
+						   Text="{
+					Binding BazaarItemData.buy_summary[0].pricePerUnit}"/>
+				<TextBlock d:Text="smth"
+						   Text="{
+					Binding BazaarItemData.buy_summary[1].pricePerUnit}"/>
+			</ItemsControl>
+			
+		</Grid>
+    </Border>
+</UserControl>

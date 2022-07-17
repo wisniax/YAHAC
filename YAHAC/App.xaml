@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:YAHAC"
 			 xmlns:viewModel="clr-namespace:YAHAC.MVVM.ViewModel"
 			 xmlns:view="clr-namespace:YAHAC.MVVM.View"
+			 xmlns:converters="clr-namespace:YAHAC.Converters"
              StartupUri="MVVM/View/MainView.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
@@ -11,7 +12,8 @@
 				<ResourceDictionary Source="Theme/MenuButtonsTheme.xaml"/>
 				<ResourceDictionary Source="Theme/SearchBoxTheme.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-			
+			<converters:BitmapToWPFSource x:Key="BitmapToWPFSource"/>
+			<converters:BoolToVisibility x:Key="BoolToVisibility"/>
 			<DataTemplate DataType="{x:Type viewModel:AuctionHouseViewModel}">
 				<view:AuctionHouseView/>
 			</DataTemplate>

@@ -34,6 +34,18 @@ namespace YAHAC.MVVM.Model
 		}
 
 		/// <summary>
+		/// Returns bazaar item data for specified item ID;
+		/// </summary>
+		/// <param name="key">Hypixel Item ID for an item.</param>
+		/// <returns>BazaarItemDef if id was matched, otherwise null</returns>
+		public DataPatterns.BazaarItemDef GetBazaarItemDataFromID(string key)
+		{
+			if (key == null) return null;
+			if (products.TryGetValue(key, out DataPatterns.BazaarItemDef item)) return item;
+			return null;
+		}
+
+		/// <summary>
 		/// Uses page head property to determine whether body has updated <br/>
 		/// When implemented properly should be:<br/>
 		/// - even 10s faster than old refresh method!!!<br/>

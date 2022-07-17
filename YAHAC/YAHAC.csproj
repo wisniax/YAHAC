@@ -1,74 +1,74 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
-    <Nullable>disable</Nullable>
-    <UseWPF>true</UseWPF>
-    <SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
-    <StartupObject>YAHAC.App</StartupObject>
-    <NoWin32Manifest>true</NoWin32Manifest>
-    <PlatformTarget>x64</PlatformTarget>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+	<Nullable>disable</Nullable>
+	<UseWPF>true</UseWPF>
+	<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
+	<StartupObject>YAHAC.App</StartupObject>
+	<NoWin32Manifest>true</NoWin32Manifest>
+	<PlatformTarget>x64</PlatformTarget>
+	<SignAssembly>True</SignAssembly>
+	<AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	<DebugType>full</DebugType>
+	<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	<DebugType>full</DebugType>
+	<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\enchanted_item_glint.png" />
-    <None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
-    <None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
-    <None Remove="Resources\FurfSkyRebornFULL.zip" />
-    <None Remove="Resources\NoTextureMark.png" />
-    <None Remove="sgKey.snk" />
+	<None Remove="Resources\enchanted_item_glint.png" />
+	<None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
+	<None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
+	<None Remove="Resources\FurfSkyRebornFULL.zip" />
+	<None Remove="Resources\NoTextureMark.png" />
+	<None Remove="sgKey.snk" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\enchanted_item_glint.png" />
+	<Resource Include="Resources\enchanted_item_glint.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SharpNBT" Version="1.2.0" />
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+	<PackageReference Include="SharpNBT" Version="1.2.0" />
+	<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ITR\ITR.csproj" />
+	<ProjectReference Include="..\ITR\ITR.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Fonts\RubikMoonrocks-Regular.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Fonts\StickNoBills-Regular.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\FurfSkyRebornFULL.zip" />
-    <Resource Include="Resources\NoTextureMark.png" />
+	<Resource Include="Resources\Fonts\RubikMoonrocks-Regular.ttf">
+	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\Fonts\StickNoBills-Regular.ttf">
+	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\FurfSkyRebornFULL.zip" />
+	<Resource Include="Resources\NoTextureMark.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+	<Compile Update="Properties\Resources.Designer.cs">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Resources.resx</DependentUpon>
+	</Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+	<EmbeddedResource Update="Properties\Resources.resx">
+	  <Generator>PublicResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	</EmbeddedResource>
   </ItemGroup>
 
 </Project>
