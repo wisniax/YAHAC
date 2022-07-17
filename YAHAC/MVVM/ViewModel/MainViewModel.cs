@@ -58,7 +58,7 @@ namespace YAHAC.MVVM.ViewModel
 			settings = new();
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
-			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
+			itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = new BazaarView(); });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
 		}

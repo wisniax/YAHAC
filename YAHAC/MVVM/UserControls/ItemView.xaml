@@ -1,18 +1,16 @@
-﻿<UserControl x:Class="YAHAC.MVVM.View.ItemView"
+﻿<UserControl x:Class="YAHAC.MVVM.UserControls.ItemView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAHAC.MVVM.View"
-			 xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
-			 xmlns:converter="clr-namespace:YAHAC.Converters"
-             mc:Ignorable="d"
+			 xmlns:converter="clr-namespace:YAHAC.Converters" 
+			 xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel" 
+			 Name="itemControl"
+			 mc:Ignorable="d"
 			 Background="Transparent"
 			 BorderThickness="0"
 			 Margin="1,3,1,3">
-	<UserControl.DataContext>
-		<ViewModel:ItemViewModel/>
-	</UserControl.DataContext>
 	<UserControl.Resources>
 		<converter:BitmapToWPFSource x:Key="BitmapToImageSource"/>
 	</UserControl.Resources>
@@ -33,7 +31,9 @@
 		<!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
 		<Border.Background>
 			<ImageBrush Stretch="Fill" 
-						ImageSource="{Binding Texture,
+						ImageSource="{
+				Binding item.Texture,
+				ElementName=itemControl,
 				Converter={StaticResource BitmapToImageSource}}"/>
 		</Border.Background>
 	</Border>

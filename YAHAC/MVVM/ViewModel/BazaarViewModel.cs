@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using YAHAC.Core.ApiInstances;
 using YAHAC.Core;
 using YAHAC.MVVM.View;
+using ITR;
 
 namespace YAHAC.MVVM.ViewModel
 {
@@ -18,6 +19,7 @@ namespace YAHAC.MVVM.ViewModel
 		ObservableCollection<object> items;
 		private ObservableCollection<object> _Items;
 
+		public Item item { get; set; }
 		public ObservableCollection<object> Items
 		{
 			get { return _Items; }
@@ -32,6 +34,7 @@ namespace YAHAC.MVVM.ViewModel
 		public BazaarViewModel()
 		{
 			items = new();
+			item = MainViewModel.itemTextureResolver.GetItemFromID("HYPERION");
 			//foreach (var item in BazaarCheckup.bazaarObj.products.Keys)
 			//{
 			//	MinecraftItemBox itemBox = new();
