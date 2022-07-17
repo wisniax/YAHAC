@@ -25,7 +25,9 @@ namespace YAHAC.Benchmarks
 		[Benchmark(Baseline = true)]
 		public void GetSourceFromBasicConv()
 		{
+#pragma warning disable CS0612 // Type or member is obsolete
 			converter.Basic_NoAlpha(DefBitmap);
+#pragma warning restore CS0612 // Type or member is obsolete
 		}
 
 		[Benchmark]
