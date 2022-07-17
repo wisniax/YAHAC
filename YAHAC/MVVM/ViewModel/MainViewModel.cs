@@ -9,6 +9,7 @@ using YAHAC.MVVM.View;
 using YAHAC.MVVM.Model;
 using System.Windows;
 using System.ComponentModel;
+using ITR;
 
 namespace YAHAC.MVVM.ViewModel
 {
@@ -30,6 +31,7 @@ namespace YAHAC.MVVM.ViewModel
 		}
 		private static readonly PropertyChangedEventArgs FilterStringPropertyEventArgs = new PropertyChangedEventArgs(nameof(settings));
 		public static event PropertyChangedEventHandler StaticPropertyChanged;
+		public static ItemTextureResolver itemTextureResolver { get;private set; }
 		//Commands
 		public RelayCommand BazaarViewCommand { get; set; }
 		public RelayCommand AuctionHouseViewCommand { get; set; }
@@ -53,7 +55,10 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			itemsRepo = new();
 			bazaar = new();
-			settings = new Settings();
+			settings = new();
+			itemTextureResolver = new();
+			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
+			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = new BazaarView(); });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = new AuctionHouseViewModel(); });
 		}

@@ -8,19 +8,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using YAHAC.Core.ApiInstances;
-
+using YAHAC.Core;
 using YAHAC.MVVM.View;
 
 namespace YAHAC.MVVM.ViewModel
 {
-	internal class BazaarViewModel
+	internal class BazaarViewModel : ObservableObject
 	{
 		ObservableCollection<object> items;
+		private ObservableCollection<object> _Items;
+
+		public ObservableCollection<object> Items
+		{
+			get { return _Items; }
+			set
+			{
+				_Items = value;
+				OnPropertyChanged();
+			}
+		}
+
 
 		public BazaarViewModel()
 		{
 			items = new();
-			//ViewModel.ItemsList.ItemsSource = items;
 			//foreach (var item in BazaarCheckup.bazaarObj.products.Keys)
 			//{
 			//	MinecraftItemBox itemBox = new();

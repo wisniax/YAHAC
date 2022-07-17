@@ -24,10 +24,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\enchanted_item_glint.png" />
     <None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
     <None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
+    <None Remove="Resources\FurfSkyRebornFULL.zip" />
     <None Remove="Resources\NoTextureMark.png" />
     <None Remove="sgKey.snk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\enchanted_item_glint.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +52,7 @@
     <Resource Include="Resources\Fonts\StickNoBills-Regular.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\FurfSkyRebornFULL.zip" />
     <Resource Include="Resources\NoTextureMark.png" />
   </ItemGroup>
 
