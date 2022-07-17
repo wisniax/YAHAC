@@ -36,49 +36,50 @@
 						   FontSize="36"
 						   FontFamily="/Resources/Fonts/#Rubik Moonrocks"
 						   />
-				<Grid Grid.Row="1">
-					<Grid.RowDefinitions>
+				<DockPanel Grid.Row="1">
+					<!--<Grid.RowDefinitions>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="40"/>
 						<RowDefinition Height="40"/>
 						<RowDefinition/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="40"/>
-					</Grid.RowDefinitions>
+					</Grid.RowDefinitions>-->
 					<RadioButton Content="Bazaar"
-								Name="BtnBZ"
-								Height="40"
-								Grid.Row="0"
+								 Name="BtnBZ"
+								 Height="40"
+								 DockPanel.Dock="Top"
 								 Style="{StaticResource MenuButtonTheme}"
 								 Command="{Binding BazaarViewCommand}"
 								 />
 					<RadioButton Content="Auction House"
 								 Name="BtnAH"
+								 DockPanel.Dock="Top"
 								 Height="40"
-								 Grid.Row="1"
 								 Style="{StaticResource MenuButtonTheme}"
 								 Command="{Binding AuctionHouseViewCommand}"
 								 />
 					<RadioButton Content="Item Crafts"
 								 Name="BtnIC"
 								 Height="40"
-								 Grid.Row="2"
+								 DockPanel.Dock="Top"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
 					<RadioButton Content="Settings"
 								Name="BtnSett"
+								 DockPanel.Dock="Bottom"
 								 Height="40"
-								 Grid.Row="99"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
-					<local:DebugDataView Grid.Row="4"/>
+					<local:DebugDataView Grid.Row="4"
+										 DockPanel.Dock="Bottom"/>
 					<!--here-->
 					<Button Content="Button" 
 							Grid.Row="3" 
 							Width="150" 
 							Height="20"
 							Click="Button_Click"/>
-				</Grid>
+				</DockPanel>
 			</Grid>
 			<ContentControl Grid.Column="1"
 							Margin="0"
