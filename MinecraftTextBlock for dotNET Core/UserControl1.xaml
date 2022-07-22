@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="MinecraftTextBlock_for_dotNET_Core.UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MinecraftTextBlock_for_dotNET_Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+		<local:MinecraftTextBlock
+			Text="§k123§r §o§4Th§ce C§6ra§eft§aen§2 Se§3rv§1er §r§k123"
+			FontSize="42"
+			FontFamily="Lucida Console"
+			VerticalAlignment="Center"
+			Foreground="Blue"
+			x:Name="test"
+			TextAlignment="Center" />
+    </Grid>
+</UserControl>

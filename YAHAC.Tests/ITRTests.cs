@@ -63,5 +63,20 @@ namespace YAHAC.Tests
 					break;
 			}
 		}
+
+		[Theory]
+		[InlineData("", Rarity.Common)]
+		[InlineData(null, Rarity.Common)]
+		[InlineData("UNCOMMON", Rarity.Uncommon)]
+		[InlineData("sdfhjv", Rarity.Custom)]
+		[InlineData("VERY_SPECIAL", Rarity.Very_Special)]
+		public void String_to_RarityEnum_Test(string str, Rarity expected)
+		{
+			//Arrange
+			//Act
+			var result = Item.GetRarityFromString(str);
+			//Assert
+			result.Should().Be(expected);
+		}
 	}
 }

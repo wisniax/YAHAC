@@ -43,6 +43,7 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\ITR\ITR.csproj" />
+	<ProjectReference Include="..\MinecraftTextBlock for dotNET Core\MinecraftTextBlock_for_dotNET_Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

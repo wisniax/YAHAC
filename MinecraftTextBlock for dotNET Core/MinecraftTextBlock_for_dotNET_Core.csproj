@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+    <RootNamespace>MinecraftTextBlock_for_dotNET_Core</RootNamespace>
+    <Nullable>disable</Nullable>
+    <UseWPF>true</UseWPF>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>sgKey.snk</AssemblyOriginatorKeyFile>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="sgKey.snk" />
+  </ItemGroup>
+
+</Project>

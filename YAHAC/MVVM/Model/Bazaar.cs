@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -19,6 +20,9 @@ namespace YAHAC.MVVM.Model
 		TimeSpan? Header_TimeOffset;
 		bool ShouldRefresh;
 
+		public delegate void BazaarUpdatedHandler(Bazaar source);
+		public event BazaarUpdatedHandler BazaarUpdatedEvent;
+
 		public Bazaar() : this(true) { }
 		public Bazaar(bool KeepUpdated)
 		{
@@ -31,6 +35,14 @@ namespace YAHAC.MVVM.Model
 			backgroundTask = new(TimeSpan.FromMilliseconds(100));
 			if (KeepUpdated) backgroundTask.Start(Refresh);
 			else Refresh();
+		}
+
+		/// <summary>
+		/// Executed everytime refresh succeded
+		/// </summary>
+		private void OnDownloadedItem()
+		{
+			BazaarUpdatedEvent?.Invoke(this);
 		}
 
 		/// <summary>
@@ -68,7 +80,7 @@ namespace YAHAC.MVVM.Model
 			latestHeaders = new(BZResult.Headers, BZResult.Content.Headers);
 			Header_TimeOffset = DateTimeOffset.Now - latestHeaders.Key.Date;
 			Header_LastModified = latestHeaders.Value.LastModified > Header_LastModified ? latestHeaders.Value.LastModified : Header_LastModified;
-
+			OnDownloadedItem();
 			ShouldRefresh = false;
 		}
 

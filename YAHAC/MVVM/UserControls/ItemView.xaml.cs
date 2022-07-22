@@ -52,8 +52,6 @@ namespace YAHAC.MVVM.UserControls
 			{
 				Dispatcher.Invoke(() =>
 				{
-					//string he = itemUpdated.HyPixel_ID;
-					//string ha = item.HyPixel_ID;
 					if (item == null || itemUpdated == null) return;
 					if (itemUpdated.HyPixel_ID != item.HyPixel_ID) return;
 					item = new(itemUpdated);

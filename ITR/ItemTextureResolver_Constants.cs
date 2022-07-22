@@ -11,7 +11,6 @@ namespace ITR
 	{
 		private struct HyItems
 		{
-
 			public bool success { get; set; }
 			public UInt64 lastUpdated { get; set; }
 			public List<HyItems_Item> items { get; set; }
@@ -24,9 +23,12 @@ namespace ITR
 			public int durability { get; set; }
 			public bool glowing { get; set; }
 			public string name { get; set; }
+			public string category { get; set; }
+			public double npc_sell_price { get; set; }
 			public string tier { get; set; }
 			public string color { get; set; }
 			public string skin { get; set; }
+			public bool? unstackable { get; set; }
 		}
 
 		private struct Cit_Item

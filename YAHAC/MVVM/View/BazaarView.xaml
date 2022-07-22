@@ -57,7 +57,11 @@
 				Binding RelativeSource={
 				RelativeSource FindAncestor, AncestorType={
 				x:Type local:BazaarView}}, 
-				Path=DataContext.CanvasPoint.Y}"/>
+				Path=DataContext.CanvasPoint.Y}"
+				SelectedItemID="{Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarView}}, 
+				Path=DataContext.SelectedItem.HyPixel_ID}"/>
 		</Canvas>
 	</Grid>
 	<!--<WrapPanel Name="ItemsPanel"

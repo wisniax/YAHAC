@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using ITR;
 using YAHAC.Core;
 using YAHAC.MVVM.ViewModel;
@@ -23,48 +24,90 @@ namespace YAHAC.MVVM.UserControls
 	/// </summary>
 	public partial class BazaarItemPeek : UserControl
 	{
-		private string _SelectedItemID;
-
 		public string SelectedItemID
 		{
-			get { return _SelectedItemID == null ? "null" : _SelectedItemID; }
+			get { return (string)GetValue(SelectedItemIDProperty); }
 			set
 			{
-				_SelectedItemID = value;
-				OnDependencyChanged();
+				if (value == null) return;
+				SetValue(SelectedItemIDProperty, value);
 			}
 		}
 
+		// Using a DependencyProperty as the backing store for SelectedItemID.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty SelectedItemIDProperty =
+			DependencyProperty.Register("SelectedItemID", typeof(string), typeof(BazaarItemPeek),
+				new PropertyMetadata(BazaarItemPeekViewModel.OnDependencyChanged));
 
-
-		public DataPatterns.BazaarItemDef BazaarItemData
-		{
-			get { return (DataPatterns.BazaarItemDef)GetValue(BazaarItemDataProperty); }
-			set { SetValue(BazaarItemDataProperty, value); }
-		}
-
-		// Using a DependencyProperty as the backing store for BazaarItemData.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty BazaarItemDataProperty =
-			DependencyProperty.Register("BazaarItemData", typeof(DataPatterns.BazaarItemDef), typeof(BazaarItemPeek));
-
-
-
-
-
-
-
-		async Task OnDependencyChanged()
-		{
-			await Task.Run(() => (MainViewModel.bazaar.success == true));
-			BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(SelectedItemID);
-		}
 
 
 		public BazaarItemPeek()
 		{
-			SelectedItemID = "CORRUPTED_BAIT";
-			OnDependencyChanged();
 			InitializeComponent();
+		}
+	}
+	public class BazaarItemPeekViewModel : ObservableObject
+	{
+		private Item _SelectedItem;
+		public Item SelectedItem
+		{
+			get { return _SelectedItem; }
+			set
+			{
+				_SelectedItem = value;
+				OnPropertyChanged();
+			}
+		}
+
+		private DataPatterns.BazaarItemDef _BazaarItemData;
+		public DataPatterns.BazaarItemDef BazaarItemData
+		{
+			get { return _BazaarItemData; }
+			set
+			{
+				_BazaarItemData = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public BazaarItemPeekViewModel()
+		{
+			MainViewModel.bazaar.BazaarUpdatedEvent += Bazaar_BazaarUpdatedEvent;
+		}
+
+
+		public static void OnDependencyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+		{
+			if (!MainViewModel.bazaar.success) return;
+			if (!MainViewModel.itemTextureResolver.Initialized) return;
+			var BIP = (o as BazaarItemPeek);
+			var BIPVM = BIP.DataContext as BazaarItemPeekViewModel;
+			BIPVM.SelectedItem = MainViewModel.itemTextureResolver.GetItemFromID(BIP.SelectedItemID);
+			BIPVM.BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(BIP.SelectedItemID);
+		}
+
+
+		private void Bazaar_BazaarUpdatedEvent(Model.Bazaar source)
+		{
+			if (!Application.Current.Dispatcher.CheckAccess())
+			{
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					if (source == null) return;
+					if (!source.success) return;
+					if (SelectedItem == null) return;
+					BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(SelectedItem.HyPixel_ID);
+					return;
+				});
+			}
+			else
+			{
+				if (source == null) return;
+				if (!source.success) return;
+				if (SelectedItem == null) return;
+				BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(SelectedItem.HyPixel_ID);
+				return;
+			}
 		}
 	}
 }

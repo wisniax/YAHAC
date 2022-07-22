@@ -4,50 +4,51 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAHAC.MVVM.UserControls"
+			 xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
              mc:Ignorable="d" 
              d:DesignHeight="400"
-			 DataContext="{Binding Mode=OneWay, 
-	RelativeSource={RelativeSource Self}}">
+			 >
+	<UserControl.DataContext>
+		<local:BazaarItemPeekViewModel/>
+	</UserControl.DataContext>
 	<UserControl.Resources>
 		<Style TargetType="TextBlock">
 			<Setter Property="FontSize" Value="16"/>
 			<Setter Property="Foreground" Value="LightGray"/>
+			<Setter Property="DockPanel.Dock" Value="Top"/>
 		</Style>
 	</UserControl.Resources>
-    <Border BorderBrush="#FF24015B"
+	<Border BorderBrush="#FF24015B"
 			BorderThickness="8"
 			CornerRadius="5"
 			Padding="0"
 			Margin="0"
 			Background="#FF100110">
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="auto"/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
-			
+		<StackPanel Orientation="Vertical">
+			<MTB:MinecraftTextBlock
+        Text="§k123§r §o§4Th§ce C§6ra§eft§aen§2 Se§3rv§1er §r§k123"
+        FontSize="24"
+        FontFamily="Lucida Console"
+        VerticalAlignment="Center"
+				Foreground="Wheat"
+        x:Name="test"
+        TextAlignment="Center"/>
+
+
+
 			<TextBlock FontSize="24"
-					   Text="{Binding SelectedItemID}"
+					   Text="{Binding SelectedItem.Name}"
 					   d:Text="Suspicious Hyperion"
 					   Padding="5,0,5,6"
-					   Foreground="LightGray"
-					   Margin="0"
-					   Grid.ColumnSpan="2"/>
-			<ItemsControl Grid.Row="1" 
-						  Margin="5">
+					   Margin="0"/>
+			<DockPanel  Margin="5">
 				<TextBlock d:Text="smth"
 						   Text="{
 					Binding BazaarItemData.buy_summary[0].amount}"/>
 				<TextBlock d:Text="smth"
 						   Text="{
 					Binding BazaarItemData.buy_summary[1].amount}"/>
-			</ItemsControl>
+			</DockPanel>
 			<ItemsControl Grid.Row="1" 
 						  Grid.Column="2"
 						  Margin="5">
@@ -58,7 +59,7 @@
 						   Text="{
 					Binding BazaarItemData.buy_summary[1].pricePerUnit}"/>
 			</ItemsControl>
-			
-		</Grid>
-    </Border>
+
+		</StackPanel>
+	</Border>
 </UserControl>
