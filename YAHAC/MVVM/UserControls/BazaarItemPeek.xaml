@@ -19,47 +19,28 @@
 		</Style>
 	</UserControl.Resources>
 	<Border BorderBrush="#FF24015B"
-			BorderThickness="8"
+			BorderThickness="5"
 			CornerRadius="5"
 			Padding="0"
 			Margin="0"
-			Background="#FF100110">
-		<StackPanel Orientation="Vertical">
+			Background="#FF100110"
+			RenderOptions.EdgeMode="Aliased">
+		<DockPanel>
 			<MTB:MinecraftTextBlock
-        Text="§k123§r §o§4Th§ce C§6ra§eft§aen§2 Se§3rv§1er §r§k123"
-        FontSize="24"
-        FontFamily="Lucida Console"
-        VerticalAlignment="Center"
-				Foreground="Wheat"
-        x:Name="test"
-        TextAlignment="Center"/>
-
-
-
-			<TextBlock FontSize="24"
-					   Text="{Binding SelectedItem.Name}"
-					   d:Text="Suspicious Hyperion"
-					   Padding="5,0,5,6"
-					   Margin="0"/>
-			<DockPanel  Margin="5">
-				<TextBlock d:Text="smth"
-						   Text="{
-					Binding BazaarItemData.buy_summary[0].amount}"/>
-				<TextBlock d:Text="smth"
-						   Text="{
-					Binding BazaarItemData.buy_summary[1].amount}"/>
+				Margin="2"
+				Text="{Binding SelectedItem, 
+				Converter={StaticResource ItemToItemName}}"
+				d:Text="§k123§r §4T§2E§6S§eT §r§k123"
+				FontSize="20"
+				FontFamily="Lucida Console"
+				VerticalAlignment="Center"
+				Foreground="White"
+				x:Name="test"
+				DockPanel.Dock="Top"
+				TextAlignment="Left"/>
+			<DockPanel x:Name="OffersPanel">
 			</DockPanel>
-			<ItemsControl Grid.Row="1" 
-						  Grid.Column="2"
-						  Margin="5">
-				<TextBlock d:Text="smth"
-						   Text="{
-					Binding BazaarItemData.buy_summary[0].pricePerUnit}"/>
-				<TextBlock d:Text="smth"
-						   Text="{
-					Binding BazaarItemData.buy_summary[1].pricePerUnit}"/>
-			</ItemsControl>
 
-		</StackPanel>
+		</DockPanel>
 	</Border>
 </UserControl>

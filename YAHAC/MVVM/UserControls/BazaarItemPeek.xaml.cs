@@ -33,7 +33,6 @@ namespace YAHAC.MVVM.UserControls
 				SetValue(SelectedItemIDProperty, value);
 			}
 		}
-
 		// Using a DependencyProperty as the backing store for SelectedItemID.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty SelectedItemIDProperty =
 			DependencyProperty.Register("SelectedItemID", typeof(string), typeof(BazaarItemPeek),

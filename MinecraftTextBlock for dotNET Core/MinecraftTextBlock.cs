@@ -22,7 +22,6 @@ namespace MinecraftTextBlock_for_dotNET_Core
 
 		private FormattedText _formattedText;
 		private bool _isAnimated;
-
 		private bool IsAnimated
 		{
 			get { return _isAnimated; }
@@ -103,8 +102,11 @@ namespace MinecraftTextBlock_for_dotNET_Core
 		protected override void OnRender(DrawingContext drawingContext)
 		{
 			EnsureFormattedText();
-
-			drawingContext.DrawText(_formattedText, new Point(0, 0));
+			_formattedText.SetFontSize(FontSize);
+			Width = _formattedText.Width + 2;
+			Height = _formattedText.Height * 1.1;
+			if (VerticalAlignment == VerticalAlignment.Center) drawingContext.DrawText(_formattedText, new Point(0, (Height - _formattedText.Height) / 2));
+			else drawingContext.DrawText(_formattedText, new Point(0, 0));
 			base.OnRender(drawingContext);
 		}
 
@@ -116,8 +118,8 @@ namespace MinecraftTextBlock_for_dotNET_Core
 			// the Math.Min call is important - without this constraint (which seems arbitrary, but is the maximum allowable text width),
 			// things blow up when availableSize is infinite in both directions
 			// the Math.Max call is to ensure we don't hit zero, which will cause MaxTextHeight to throw
-			_formattedText.MaxTextWidth = Math.Min(3579139, availableSize.Width);
-			_formattedText.MaxTextHeight = Math.Max(0.0001d, availableSize.Height);
+			//_formattedText.MaxTextWidth = Math.Min(3579139, availableSize.Width);
+			//_formattedText.MaxTextHeight = Math.Max(0.0001d, availableSize.Height);
 
 			// return the desired size
 			return new Size(_formattedText.Width, _formattedText.Height);
@@ -137,11 +139,11 @@ namespace MinecraftTextBlock_for_dotNET_Core
 				FontWeights.Normal,
 				FontStretches.Normal),
 				FontSize,
-				new SolidColorBrush(Foreground))
+				new SolidColorBrush(Foreground),
+				VisualTreeHelper.GetDpi(this).PixelsPerDip)
 			{
 				TextAlignment = TextAlignment
 			};
-
 			var currentColor = Foreground;
 			var currentStyle = FontStyles.Normal;
 			var currentWeight = FontWeights.Normal;

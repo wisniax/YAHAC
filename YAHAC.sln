@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAHAC.Benchmarks", "YAHAC.B
 		{EEB0A4D6-8B57-4104-8976-957D3410D989} = {EEB0A4D6-8B57-4104-8976-957D3410D989}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecraftTextBlock_for_dotNET_Core", "MinecraftTextBlock for dotNET Core\MinecraftTextBlock_for_dotNET_Core.csproj", "{765D91B8-3C86-4371-B949-777625DC8DD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinecraftTextBlock_for_dotNET_Core", "MinecraftTextBlock for dotNET Core\MinecraftTextBlock_for_dotNET_Core.csproj", "{765D91B8-3C86-4371-B949-777625DC8DD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
