@@ -7,10 +7,9 @@
 			 xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
              mc:Ignorable="d" 
              d:DesignHeight="400"
+			 DataContext="{Binding Mode=OneWay, 
+	RelativeSource={RelativeSource Self}}"
 			 >
-	<UserControl.DataContext>
-		<local:BazaarItemPeekViewModel/>
-	</UserControl.DataContext>
 	<UserControl.Resources>
 		<Style TargetType="TextBlock">
 			<Setter Property="FontSize" Value="16"/>
@@ -37,9 +36,103 @@
 				Foreground="White"
 				x:Name="test"
 				DockPanel.Dock="Top"
-				TextAlignment="Left"/>
-			<DockPanel x:Name="OffersPanel">
-			</DockPanel>
+				TextAlignment="Left"
+				HorizontalAlignment="Left"/>
+			<Grid DockPanel.Dock="Top">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="2*" MinWidth="10"/>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<WrapPanel Orientation="Vertical"
+					   Grid.IsSharedSizeScope="True"
+						   Margin="5"
+						   Grid.Column="1">
+					<TextBlock Text="Buy orders" 
+							   Margin="0" 
+							   HorizontalAlignment="Center"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.buy_summary[0]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.buy_summary[1]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.buy_summary[2]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.buy_summary[3]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.buy_summary[4]}"/>
+				</WrapPanel>
+				<WrapPanel Orientation="Vertical"
+						   Grid.IsSharedSizeScope="True"
+						   Margin="0"
+						   Grid.Column="3">
+					<TextBlock Text="Sell offers" 
+							   Margin="3" 
+							   HorizontalAlignment="Center"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.sell_summary[0]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.sell_summary[1]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.sell_summary[2]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.sell_summary[3]}"/>
+					<local:BazaarOfferDsiplay 
+					DockPanel.Dock="Left"
+					BzOffer="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BazaarItemPeek}}, 
+				Path=BazaarItemData.sell_summary[4]}"/>
+				</WrapPanel>
+			</Grid>
 
 		</DockPanel>
 	</Border>

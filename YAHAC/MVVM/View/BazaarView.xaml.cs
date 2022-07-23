@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using YAHAC.MVVM.UserControls;
 using YAHAC.MVVM.ViewModel;
+using YAHAC.Converters;
 
 namespace YAHAC.MVVM.View
 {
@@ -32,9 +33,10 @@ namespace YAHAC.MVVM.View
 			((BazaarViewModel)DataContext).SelectedItem = ((ItemView)((ListBox)sender).SelectedItem)?.item;
 		}
 
-        private void UserControl_MouseMove(object sender, MouseEventArgs e)
-        {
-			((BazaarViewModel)DataContext).CanvasPoint = Mouse.GetPosition(this);
+		private void UserControl_MouseMove(object sender, MouseEventArgs e)
+		{
+			MouseToCanvasOffset offs = new();
+			((BazaarViewModel)DataContext).CanvasPoint = (Point)offs.Convert(sender, typeof(BazaarView), e, null);
 		}
-    }
+	}
 }

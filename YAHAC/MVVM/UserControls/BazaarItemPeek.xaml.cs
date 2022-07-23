@@ -36,55 +36,41 @@ namespace YAHAC.MVVM.UserControls
 		// Using a DependencyProperty as the backing store for SelectedItemID.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty SelectedItemIDProperty =
 			DependencyProperty.Register("SelectedItemID", typeof(string), typeof(BazaarItemPeek),
-				new PropertyMetadata(BazaarItemPeekViewModel.OnDependencyChanged));
+				new PropertyMetadata(OnDependencyChanged));
 
+		public Item SelectedItem
+		{
+			get { return (Item)GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
+		}
+		// Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty SelectedItemProperty =
+			DependencyProperty.Register("SelectedItem", typeof(Item), typeof(BazaarItemPeek));
+
+		public DataPatterns.BazaarItemDef BazaarItemData
+		{
+			get { return (DataPatterns.BazaarItemDef)GetValue(BazaarItemDataProperty); }
+			set { SetValue(BazaarItemDataProperty, value); }
+		}
+		// Using a DependencyProperty as the backing store for BazaarItemData.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty BazaarItemDataProperty =
+			DependencyProperty.Register("BazaarItemData", typeof(DataPatterns.BazaarItemDef), typeof(BazaarItemPeek));
 
 
 		public BazaarItemPeek()
 		{
 			InitializeComponent();
-		}
-	}
-	public class BazaarItemPeekViewModel : ObservableObject
-	{
-		private Item _SelectedItem;
-		public Item SelectedItem
-		{
-			get { return _SelectedItem; }
-			set
-			{
-				_SelectedItem = value;
-				OnPropertyChanged();
-			}
-		}
-
-		private DataPatterns.BazaarItemDef _BazaarItemData;
-		public DataPatterns.BazaarItemDef BazaarItemData
-		{
-			get { return _BazaarItemData; }
-			set
-			{
-				_BazaarItemData = value;
-				OnPropertyChanged();
-			}
-		}
-
-		public BazaarItemPeekViewModel()
-		{
 			MainViewModel.bazaar.BazaarUpdatedEvent += Bazaar_BazaarUpdatedEvent;
 		}
-
 
 		public static void OnDependencyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
 		{
 			if (!MainViewModel.bazaar.success) return;
 			if (!MainViewModel.itemTextureResolver.Initialized) return;
 			var BIP = (o as BazaarItemPeek);
-			var BIPVM = BIP.DataContext as BazaarItemPeekViewModel;
-			BIPVM.SelectedItem = MainViewModel.itemTextureResolver.GetItemFromID(BIP.SelectedItemID);
-			BIPVM.BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(BIP.SelectedItemID);
+			BIP.SelectedItem = MainViewModel.itemTextureResolver.GetItemFromID(BIP.SelectedItemID);
+			BIP.BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(BIP.SelectedItemID);
 		}
-
 
 		private void Bazaar_BazaarUpdatedEvent(Model.Bazaar source)
 		{
@@ -107,6 +93,13 @@ namespace YAHAC.MVVM.UserControls
 				BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(SelectedItem.HyPixel_ID);
 				return;
 			}
+		}
+
+		private void RenderOffers()
+		{
+			//var cont = new BazaarOfferDsiplay();
+			//cont.Offers = BazaarItemData.buy_summary;
+			//OffersPanel.Children.Add(cont);
 		}
 	}
 }
