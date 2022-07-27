@@ -9,18 +9,37 @@
 			 mc:Ignorable="d" 
 			 d:DesignHeight="450" d:DesignWidth="800"
 			 BorderThickness="0"
+			 Background="#202020"
 			 MouseMove="UserControl_MouseMove">
 	<UserControl.DataContext>
 		<ViewModel:BazaarViewModel/>
 	</UserControl.DataContext>
-	<Grid>
+	<UserControl.Resources>
+		<Style TargetType="ScrollBar">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderBrush" Value="Black"/>
+			<Setter Property="Opacity" Value="0.22"/>
+			<Setter Property="Margin" Value="2,6,2,2"/>
+		</Style>
+	</UserControl.Resources>
+	<Grid Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<TextBox Grid.Row="0"
+				 Style="{StaticResource SearchBoxTheme}"
+				 Text="{Binding Path=SearchQuery,
+				Mode=TwoWay, 
+				UpdateSourceTrigger=PropertyChanged}"/>
 		<ListBox  x:Name="ItemsList"
-			  HorizontalContentAlignment="Center"
-			  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-			  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-			  Background="#202020"
-			  BorderThickness="0"
-			  ItemsSource="{Binding Items}"
+				  Grid.Row="1"
+				  HorizontalContentAlignment="Center"
+				  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+				  BorderThickness="0"
+				  Background="Transparent"
+				  ItemsSource="{Binding Items}"
 				  SelectionChanged="ItemsList_SelectionChanged">
 			<ListBox.ItemContainerStyle>
 				<Style TargetType="{x:Type ListBoxItem}">
@@ -61,7 +80,8 @@
 				SelectedItemID="{Binding RelativeSource={
 				RelativeSource FindAncestor, AncestorType={
 				x:Type local:BazaarView}}, 
-				Path=DataContext.SelectedItem.HyPixel_ID}"/>
+				Path=DataContext.SelectedItem.HyPixel_ID}">
+			</UserControls:BazaarItemPeek>
 		</Canvas>
 	</Grid>
 	<!--<WrapPanel Name="ItemsPanel"

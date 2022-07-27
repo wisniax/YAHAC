@@ -38,5 +38,5 @@ namespace YAHAC.MVVM.View
 			MouseToCanvasOffset offs = new();
 			((BazaarViewModel)DataContext).CanvasPoint = (Point)offs.Convert(sender, typeof(BazaarView), e, null);
 		}
-	}
+    }
 }
