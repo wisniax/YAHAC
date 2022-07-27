@@ -18,27 +18,25 @@ using System.Diagnostics;
 
 namespace YAHAC.MVVM.View
 {
-	/// <summary>
-	/// Interaction logic for MainView.xaml
-	/// </summary>
-	public partial class MainView : Window
-	{
-		public MainView()
-		{
-			InitializeComponent();
-			var dataCont = ((MainViewModel)this.DataContext);
-			var Starting_Ui = MainViewModel.settings.Default.Starting_Ui;
-			if (Starting_Ui.Equals(DataPatterns.UserInterfaces.Bazaar)) { BtnBZ.IsChecked = true; dataCont.BazaarViewCommand.Execute(dataCont); }
-			if (Starting_Ui.Equals(DataPatterns.UserInterfaces.AuctionHouse)) { BtnAH.IsChecked = true; dataCont.AuctionHouseViewCommand.Execute(dataCont); }
-		}
+    /// <summary>
+    /// Interaction logic for MainView.xaml
+    /// </summary>
+    public partial class MainView : Window
+    {
+        public MainView()
+        {
+            InitializeComponent();
+            var dataCont = ((MainViewModel)this.DataContext);
+            var Starting_Ui = MainViewModel.settings.Default.Starting_Ui;
+            if (Starting_Ui.Equals(DataPatterns.UserInterfaces.Bazaar)) { BtnBZ.IsChecked = true; dataCont.BazaarViewCommand.Execute(dataCont); }
+            if (Starting_Ui.Equals(DataPatterns.UserInterfaces.AuctionHouse)) { BtnAH.IsChecked = true; dataCont.AuctionHouseViewCommand.Execute(dataCont); }
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-			MainViewModel.settings.Default.DebugVisibility = Visibility.Hidden;
-			MainViewModel.settings_Changed();
-			//Naah
-			//Process.Start(Process.GetCurrentProcess().MainModule.FileName);
-			//Application.Current.Shutdown();
-		}
+            //MainViewModel.settings.Default.MinecraftItemBox_Size = 34;
+            MainViewModel.settings.Default.DebugVisibility = Visibility.Hidden;
+            MainViewModel.settings_Changed();
+        }
     }
 }
