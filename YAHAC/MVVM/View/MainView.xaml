@@ -10,7 +10,7 @@
 		Background="#181818"
 		ResizeMode="CanResize"
 		MinHeight="450"
-		MinWidth="800">
+		MinWidth="800" WindowStyle="SingleBorderWindow">
 	<Window.DataContext>
 		<viewModel:MainViewModel/>
 	</Window.DataContext>
@@ -36,16 +36,8 @@
 						   FontSize="36"
 						   FontFamily="/Resources/Fonts/#Rubik Moonrocks"
 						   />
-				<DockPanel Grid.Row="1">
-					<!--<Grid.RowDefinitions>
-						<RowDefinition Height="40"/>
-						<RowDefinition Height="40"/>
-						<RowDefinition Height="40"/>
-						<RowDefinition/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="40"/>
-					</Grid.RowDefinitions>-->
-					<RadioButton Content="Bazaar"
+                <DockPanel Grid.Row="1">
+                    <RadioButton Content="Bazaar"
 								 Name="BtnBZ"
 								 Height="40"
 								 DockPanel.Dock="Top"
@@ -73,7 +65,6 @@
 								 />
 					<local:DebugDataView Grid.Row="4"
 										 DockPanel.Dock="Bottom"/>
-					<!--here-->
 					<Button Content="Button" 
 							Grid.Row="3" 
 							Width="150" 
