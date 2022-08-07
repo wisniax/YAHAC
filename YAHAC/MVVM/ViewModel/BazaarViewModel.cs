@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using YAHAC.Core.ApiInstances;
 using YAHAC.Core;
 using YAHAC.MVVM.View;
 using ITR;

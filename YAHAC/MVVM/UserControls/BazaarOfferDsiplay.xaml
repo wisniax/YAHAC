@@ -8,7 +8,8 @@
              d:DesignHeight="30" d:DesignWidth="200"
 			 DataContext="{Binding Mode=OneWay, 
 	RelativeSource={RelativeSource Self}}"
-			 Margin="3,0,3,0">
+			 Margin="3,0,3,0"
+             >
 	<UserControl.Resources>
 		<Style TargetType="TextBlock">
 			<Setter Property="FontSize" Value="14"/>
@@ -21,7 +22,7 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="auto" SharedSizeGroup="FirstColumn"/>
 			<ColumnDefinition Width="4*" SharedSizeGroup="SecondColumn"/>
-			<ColumnDefinition Width="*" SharedSizeGroup="ThirdColumn"/>
+			<ColumnDefinition Width="auto" SharedSizeGroup="ThirdColumn"/>
 			<ColumnDefinition Width="4*" SharedSizeGroup="FourthColumn"/>
 		</Grid.ColumnDefinitions>
 		<Separator BorderBrush="DarkGray"
@@ -31,17 +32,20 @@
 		<TextBlock d:Text="565 500" 
 				   Grid.Column="1" 
 				   Foreground="#FF55FF55"
-				   Text="{Binding BzOffer.amount}"/>
-		<TextBlock Text="X" 
-				   Grid.Column="2"
-				   FontSize="11"
-				   Margin="2" 
-				   Foreground="DarkGray"
-				   Opacity="0.8"/>
-		<TextBlock d:Text="1 950.8"
+				   Text="{Binding BzOffer.amount,
+            Converter={StaticResource NumberToString}}"/>
+        <Path Data="M0,0L8,8M8,0L0,8" 
+              Stroke="Gray" 
+              Grid.Column="2" 
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Center"
+              Margin="5"
+              SnapsToDevicePixels="True"/>
+        <TextBlock d:Text="1 950.8"
 				   Grid.Column="3" 
 				   Foreground="#FFFFAA00"
-				   Text="{Binding BzOffer.pricePerUnit}"
+				   Text="{Binding BzOffer.pricePerUnit, 
+            Converter={StaticResource NumberToString}}"
 				   />
 
 	</Grid>

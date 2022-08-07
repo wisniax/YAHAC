@@ -12,7 +12,12 @@
 							Width="auto">
 						<Grid>
 							<Rectangle StrokeThickness="1"/>
-							<TextBox Margin="1"
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Margin="1"
 									 Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 									 BorderThickness="0"
 									 Background="Transparent"
@@ -21,34 +26,37 @@
 									 Foreground="#CFCFCF"
 									 CaretBrush="#CFCFCF"
 									 x:Name="SearchBox">
-								<TextBox.ContextMenu>
-									<ContextMenu Visibility="Collapsed" IsEnabled="False"/>
-								</TextBox.ContextMenu>
-							</TextBox>
-							<TextBlock IsHitTestVisible="False"
+                                    <TextBox.ContextMenu>
+                                        <ContextMenu Visibility="Collapsed" IsEnabled="False"/>
+                                    </TextBox.ContextMenu>
+                                </TextBox>
+                                <TextBlock IsHitTestVisible="False"
 									   Text="Search"
 									   VerticalAlignment="Center"
 									   HorizontalAlignment="Left"
 									   Background="Transparent"
 									   Margin="10,0,0,0"
 									   FontSize="12"
-									   Foreground="DarkGray"
-									   Grid.Column="1">
-								<TextBlock.Style>
-									<Style TargetType="{x:Type TextBlock}">
-										<Style.Triggers>
-											<DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
-												<Setter Property="Visibility" Value="Visible"/>
-											</DataTrigger>
-										</Style.Triggers>
-										<Setter Property="Visibility" Value="Hidden"/>
-									</Style>
-								</TextBlock.Style>
-								
-							</TextBlock>
-
-
-						</Grid>
+									   Foreground="DarkGray">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <Path Data="M0,0L12,12M12,0L0,12" 
+                                      Stroke="Gray" 
+                                      Grid.Column="1" 
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,10,0"/>
+                            </Grid>
+                        </Grid>
 						
 					</Border>
 				</ControlTemplate>

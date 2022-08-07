@@ -15,6 +15,7 @@
 			<converters:BitmapToWPFSource x:Key="BitmapToWPFSource"/>
 			<converters:BoolToVisibility x:Key="BoolToVisibility"/>
 			<converters:ItemToItemName x:Key="ItemToItemName"/>
+            <converters:NumberToString x:Key="NumberToString"/>
 			<DataTemplate DataType="{x:Type viewModel:AuctionHouseViewModel}">
 				<view:AuctionHouseView/>
 			</DataTemplate>

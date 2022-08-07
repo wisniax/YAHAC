@@ -11,7 +11,50 @@ using YAHAC.Core;
 
 namespace YAHAC.MVVM.Model
 {
-	public class Bazaar : DataPatterns.BazaarObj
+	public class BazaarObj : ObservableObject
+	{
+		public bool success { get; set; }
+		private long _lastUpdated;
+
+		public long lastUpdated
+		{
+			get { return _lastUpdated; }
+			set
+			{
+				_lastUpdated = value;
+				OnPropertyChanged();
+			}
+		}
+		public Dictionary<string, BazaarItemDef> products { get; set; }
+	}
+	public class BazaarItemDef
+	{
+		public string product_id { get; set; }
+		public List<BzOrders> sell_summary { get; set; }
+		public List<BzOrders> buy_summary { get; set; }
+		public Quick_status quick_status { get; set; }
+	}
+	public class BzOrders
+	{
+		public UInt32 amount { get; set; }
+		public double pricePerUnit { get; set; }
+		public UInt16 orders { get; set; }
+
+	}
+	public class Quick_status
+	{
+		public string productId { get; set; }
+		public double sellPrice { get; set; }
+		public UInt32 sellVolume { get; set; }
+		public UInt32 sellMovingWeek { get; set; }
+		public UInt16 sellOrders { get; set; }
+		public double buyPrice { get; set; }
+		public UInt32 buyVolume { get; set; }
+		public UInt32 buyMovingWeek { get; set; }
+		public UInt16 buyOrders { get; set; }
+	}
+
+	public class Bazaar : BazaarObj
 	{
 		BackgroundTask backgroundTask;
 		HypixelApiRequester hypixelApiRequester;
@@ -31,7 +74,7 @@ namespace YAHAC.MVVM.Model
 			ShouldRefresh = true;
 			success = false;
 			lastUpdated = 0;
-			products = new Dictionary<string, DataPatterns.BazaarItemDef>();
+			products = new Dictionary<string, BazaarItemDef>();
 			backgroundTask = new(TimeSpan.FromMilliseconds(100));
 			if (KeepUpdated) backgroundTask.Start(Refresh);
 			else Refresh();
@@ -50,10 +93,10 @@ namespace YAHAC.MVVM.Model
 		/// </summary>
 		/// <param name="key">Hypixel Item ID for an item.</param>
 		/// <returns>BazaarItemDef if id was matched, otherwise null</returns>
-		public DataPatterns.BazaarItemDef GetBazaarItemDataFromID(string key)
+		public BazaarItemDef GetBazaarItemDataFromID(string key)
 		{
 			if (key == null) return null;
-			if (products.TryGetValue(key, out DataPatterns.BazaarItemDef item)) return item;
+			if (products.TryGetValue(key, out BazaarItemDef item)) return item;
 			return null;
 		}
 
@@ -127,7 +170,7 @@ namespace YAHAC.MVVM.Model
 
 		void deserialize(string serialized)
 		{
-			var deserialized = JsonSerializer.Deserialize<DataPatterns.BazaarObj>(serialized);
+			var deserialized = JsonSerializer.Deserialize<BazaarObj>(serialized);
 			//if (deserialized.products.ContainsKey("BAZAAR_COOKIE")) deserialized.products.Remove("BAZAAR_COOKIE");
 			success = deserialized.success;
 			lastUpdated = deserialized.lastUpdated;

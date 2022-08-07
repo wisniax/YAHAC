@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using ITR;
 using YAHAC.Core;
+using YAHAC.MVVM.Model;
 using YAHAC.MVVM.ViewModel;
 
 namespace YAHAC.MVVM.UserControls
@@ -47,14 +48,14 @@ namespace YAHAC.MVVM.UserControls
 		public static readonly DependencyProperty SelectedItemProperty =
 			DependencyProperty.Register("SelectedItem", typeof(Item), typeof(BazaarItemPeek));
 
-		public DataPatterns.BazaarItemDef BazaarItemData
+		public BazaarItemDef BazaarItemData
 		{
-			get { return (DataPatterns.BazaarItemDef)GetValue(BazaarItemDataProperty); }
+			get { return (BazaarItemDef)GetValue(BazaarItemDataProperty); }
 			set { SetValue(BazaarItemDataProperty, value); }
 		}
 		// Using a DependencyProperty as the backing store for BazaarItemData.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty BazaarItemDataProperty =
-			DependencyProperty.Register("BazaarItemData", typeof(DataPatterns.BazaarItemDef), typeof(BazaarItemPeek));
+			DependencyProperty.Register("BazaarItemData", typeof(BazaarItemDef), typeof(BazaarItemPeek));
 
 
 		public BazaarItemPeek()

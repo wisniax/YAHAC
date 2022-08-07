@@ -46,7 +46,6 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
-		public ItemsRepository itemsRepo { get; set; }
 
 		//Models
 		public static Bazaar bazaar;
@@ -57,7 +56,6 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
-			itemsRepo = new();
 			bazaar = new();
 			settings = new();
 			itemTextureResolver = new();

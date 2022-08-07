@@ -28,8 +28,8 @@ namespace YAHAC.MVVM.View
             InitializeComponent();
             var dataCont = ((MainViewModel)this.DataContext);
             var Starting_Ui = MainViewModel.settings.Default.Starting_Ui;
-            if (Starting_Ui.Equals(DataPatterns.UserInterfaces.Bazaar)) { BtnBZ.IsChecked = true; dataCont.BazaarViewCommand.Execute(dataCont); }
-            if (Starting_Ui.Equals(DataPatterns.UserInterfaces.AuctionHouse)) { BtnAH.IsChecked = true; dataCont.AuctionHouseViewCommand.Execute(dataCont); }
+            if (Starting_Ui.Equals(UserInterfaces.Bazaar)) { BtnBZ.IsChecked = true; dataCont.BazaarViewCommand.Execute(dataCont); }
+            if (Starting_Ui.Equals(UserInterfaces.AuctionHouse)) { BtnAH.IsChecked = true; dataCont.AuctionHouseViewCommand.Execute(dataCont); }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
