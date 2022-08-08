@@ -36,6 +36,7 @@ namespace ITR
 			public string HyPixel_ID { get; set; }
 			public string Name_pattern { get; set; }
 			public System.IO.MemoryStream Texture { get; set; }
+			public string ResourcepackName { get; set; }
 		}
 
 		private struct VanillaID

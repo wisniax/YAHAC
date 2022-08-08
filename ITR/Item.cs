@@ -68,46 +68,49 @@ namespace ITR
 		/// </summary>
 		public bool Unstackable { get; }
 
-		/// <param name="name">Item in-game name</param>
-		/// <param name="hyPixel_ID">item ID used by HyPixel SkyBlock</param>
-		/// <param name="material">Bukkit Material of Item</param>
-		/// <param name="originalTexture">Is this texture of item original from HyPixel_ID? (or material texture)</param>
-		/// <param name="texture">GIF or PNG Image</param>
-		/// <param name="glow">Has enchanted effect?</param>
-		/// <param name="meta_ID">Meta ID</param>
-		/// <param name="Category">States item type eg. Helm, Boots, Axe</param>
-		/// <param name="Tier">Item rarity eg: Common</param>
-		/// <param name="NpcSellPrice">Item sell price to NPC</param>
-		/// <param name="Unstackable">Additional flag suggesting unstackability</param>
-		public Item(string name, string hyPixel_ID, Material material, bool originalTexture, System.IO.MemoryStream texture, bool glow, int meta_ID = 0,
-			string Category = null, Rarity Tier = 0, double NpcSellPrice = 0, bool Unstackable = false)
-		{
-			Name = name;
-			HyPixel_ID = hyPixel_ID;
-			Material = material;
-			Meta_ID = meta_ID;
-			IsOriginalTexture = originalTexture;
-			Texture = texture;
-			Glow = glow;
-			this.Category = Category;
-			this.Tier = Tier;
-			this.NpcSellPrice = NpcSellPrice;
-			this.Unstackable = Unstackable;
-		}
+		public string ResourcePackName { get; }
 
 		/// <param name="name">Item in-game name</param>
-		/// <param name="hyPixel_ID">item ID used by HyPixel SkyBlock</param>
-		/// <param name="material">Bukkit Material of Item</param>
-		/// <param name="originalTexture">Is this texture of item original from HyPixel_ID? (or material texture)</param>
-		/// <param name="texture">GIF or PNG Image</param>
-		/// <param name="glow">Has enchanted effect?</param>
-		/// <param name="meta_ID">Meta ID</param>
-		/// <param name="Category">States item type eg. Helm, Boots, Axe</param>
-		/// <param name="Tier">Item rarity eg: Common</param>
-		/// <param name="NpcSellPrice">Item sell price to NPC</param>
-		/// <param name="Unstackable">Additional flag suggesting unstackability</param>
-		public Item(string name, string hyPixel_ID, Material material, bool originalTexture, System.Drawing.Image texture, bool glow, int meta_ID = 0,
-			string Category = null, Rarity Tier = 0, double NpcSellPrice = 0, bool Unstackable = false)
+        /// <param name="hyPixel_ID">item ID used by HyPixel SkyBlock</param>
+        /// <param name="material">Bukkit Material of Item</param>
+        /// <param name="originalTexture">Is this texture of item original from HyPixel_ID? (or material texture)</param>
+        /// <param name="texture">GIF or PNG Image</param>
+        /// <param name="glow">Has enchanted effect?</param>
+        /// <param name="meta_ID">Meta ID</param>
+        /// <param name="Category">States item type eg. Helm, Boots, Axe</param>
+        /// <param name="Tier">Item rarity eg: Common</param>
+        /// <param name="NpcSellPrice">Item sell price to NPC</param>
+        /// <param name="Unstackable">Additional flag suggesting unstackability</param>
+        public Item(string name, string hyPixel_ID, Material material, bool originalTexture, System.IO.MemoryStream texture, bool glow, int meta_ID = 0,
+            string Category = null, Rarity Tier = 0, double NpcSellPrice = 0, bool Unstackable = false, string resourcePackName = null)
+        {
+            Name = name;
+            HyPixel_ID = hyPixel_ID;
+            Material = material;
+            Meta_ID = meta_ID;
+            IsOriginalTexture = originalTexture;
+            Texture = texture;
+            Glow = glow;
+            this.Category = Category;
+            this.Tier = Tier;
+            this.NpcSellPrice = NpcSellPrice;
+            this.Unstackable = Unstackable;
+            ResourcePackName = resourcePackName;
+        }
+
+        /// <param name="name">Item in-game name</param>
+        /// <param name="hyPixel_ID">item ID used by HyPixel SkyBlock</param>
+        /// <param name="material">Bukkit Material of Item</param>
+        /// <param name="originalTexture">Is this texture of item original from HyPixel_ID? (or material texture)</param>
+        /// <param name="texture">GIF or PNG Image</param>
+        /// <param name="glow">Has enchanted effect?</param>
+        /// <param name="meta_ID">Meta ID</param>
+        /// <param name="Category">States item type eg. Helm, Boots, Axe</param>
+        /// <param name="Tier">Item rarity eg: Common</param>
+        /// <param name="NpcSellPrice">Item sell price to NPC</param>
+        /// <param name="Unstackable">Additional flag suggesting unstackability</param>
+        public Item(string name, string hyPixel_ID, Material material, bool originalTexture, System.Drawing.Image texture, bool glow, int meta_ID = 0,
+			string Category = null, Rarity Tier = 0, double NpcSellPrice = 0, bool Unstackable = false,string resourcePackName = null)
 		{
 			Name = name;
 			HyPixel_ID = hyPixel_ID;
@@ -119,6 +122,7 @@ namespace ITR
 			this.Tier = Tier;
 			this.NpcSellPrice = NpcSellPrice;
 			this.Unstackable = Unstackable;
+			ResourcePackName = resourcePackName;
 
 			ImageProcessor.ImageFactory imageFactory = new();
 			imageFactory.Load(texture);
@@ -141,6 +145,7 @@ namespace ITR
 			Tier = item.Tier;
 			NpcSellPrice = item.NpcSellPrice;
 			Unstackable = item.Unstackable;
+			ResourcePackName = item.ResourcePackName;
 		}
 
 		/// <summary>
