@@ -25,8 +25,7 @@
 		<Border.Background>
 			<ImageBrush Stretch="Fill" 
 						ImageSource="{
-				Binding item.Texture,
-				Converter={StaticResource BitmapToWPFSource}}"/>
+				Binding item.Texture}"/>
 		</Border.Background>
 	</Border>
 </UserControl>

@@ -56,10 +56,10 @@ namespace YAHAC.Tests
 			switch (shouldBeNull)
 			{
 				case true:
-					result.Should().Be(null);
+					result.Should().BeNull();
 					break;
 				case false:
-					result.Should().NotBe(null);
+					result.Should().NotBeNull();
 					break;
 			}
 		}
