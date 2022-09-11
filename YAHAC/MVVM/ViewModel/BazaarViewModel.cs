@@ -92,8 +92,10 @@ namespace YAHAC.MVVM.ViewModel
             Items = new();
             foreach (var key in MainViewModel.bazaar.products.Keys)
             {
+                if (key == null) continue;
                 var item = MainViewModel.itemTextureResolver.GetItemFromID(key);
                 if (item == null) continue;
+                //if (item == null) item = new Item(key, key, Material.AIR, true, Properties.Resources.NoTextureMark, false);
                 ItemView itemBox = new(item);
                 Items?.Add(itemBox);
             }

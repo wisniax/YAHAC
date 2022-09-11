@@ -1,0 +1,7 @@
+﻿	1. Fix bazaar not showing items
+	2. AH
+	3. Item Glow support
+	4. Animated textures
+	4.5 Some kind of settings
+	5. Item Crafts
+	6. Better AH support
