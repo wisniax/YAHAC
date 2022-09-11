@@ -89,7 +89,7 @@ namespace ITR
             Material = material;
             Meta_ID = meta_ID;
             IsOriginalTexture = originalTexture;
-            Texture = texture;
+			texture.CopyTo(Texture);
             Glow = glow;
             this.Category = Category;
             this.Tier = Tier;
@@ -123,6 +123,8 @@ namespace ITR
 			this.NpcSellPrice = NpcSellPrice;
 			this.Unstackable = Unstackable;
 			ResourcePackName = resourcePackName;
+
+			Texture = new();
 
 			ImageProcessor.ImageFactory imageFactory = new();
 			imageFactory.Load(texture);
