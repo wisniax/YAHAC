@@ -30,10 +30,17 @@ namespace YAHAC.MVVM.UserControls
             set { if (value != null) SetValue(itemProperty, value); }
         }
 
+        private static System.IO.MemoryStream ImageToStream(System.Drawing.Bitmap bitmap)
+        {
+            var stream = new System.IO.MemoryStream();
+            bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+            return stream;
+        }
+
         // Using a DependencyProperty as the backing store for item.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty itemProperty =
             DependencyProperty.Register("item", typeof(Item), typeof(ItemView), new PropertyMetadata(
-                new Item(null, null, Material.AIR, true, Properties.Resources.NoTextureMark, false)));
+                new Item(null, null, Material.AIR, true, ImageToStream(Properties.Resources.NoTextureMark), false)));
 
 
 
