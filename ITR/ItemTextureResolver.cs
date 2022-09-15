@@ -1,13 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using System.Text.Json;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Text;
-using System.Drawing;
+using System.Text.Json;
 
 namespace ITR
 {
@@ -18,7 +16,6 @@ namespace ITR
     /// is not found.<br/><br/>
     /// Initialize with  <c>.Init()</c>  before using!!!
     /// </summary>
-    [System.Runtime.Versioning.SupportedOSPlatform(platformName: "windows")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Style nazewnictwa", Justification = "Deserialization From JSON requires names to exact match")]
     public partial class ItemTextureResolver
     {
@@ -42,7 +39,7 @@ namespace ITR
         /// </summary>
         public bool Initialized { get => _initialized; }
 
-        private List<string> _resourcepackPriority;
+        private readonly List<string> _resourcepackPriority;
 
         public string ResourcepackPriority
         {
@@ -84,8 +81,10 @@ namespace ITR
         /// </summary>
         public ItemTextureResolver()
         {
-            downloader = new(SkullDownloader);
-            downloader.IsBackground = true;
+            downloader = new(SkullDownloader)
+            {
+                IsBackground = true
+            };
             citDict_Lock = new();
             skullDownloadQueue = new();
             http = new();
@@ -98,10 +97,11 @@ namespace ITR
                 if (!citDict.ContainsKey(material))
                     citDict.Add(material, new List<Cit_Item>());
             }
-            _resourcepackPriority = new();
-
-            _resourcepackPriority.Add("HyPixelSkull".ToLower());
-            _resourcepackPriority.Add("Vanilla".ToLower());
+            _resourcepackPriority = new()
+            {
+                "HyPixelSkull".ToLower(),
+                "Vanilla".ToLower()
+            };
 
         }
 
@@ -110,9 +110,10 @@ namespace ITR
             while (!skullDownloadQueue.IsEmpty)
             {
                 skullDownloadQueue.TryDequeue(out var item);
-                Cit_Item cit = new();
-
-                cit.HyPixel_ID = item.id;
+                Cit_Item cit = new()
+                {
+                    HyPixel_ID = item.id
+                };
 
                 var JSON = JsonDocument.Parse(
                     Convert.FromBase64String(
@@ -175,19 +176,6 @@ namespace ITR
             zipEntry.Write(data);
         }
 
-        private Span<byte> CacheRead(string entry)
-        {
-            using var cacheFileStream = new FileStream(pathToCacheFile, FileMode.Open);
-            using ZipArchive cacheArchive = new(cacheFileStream, ZipArchiveMode.Read);
-
-            var getEntry = cacheArchive.GetEntry(entry);
-            if (getEntry == null) { return null; }
-            var zipEntry = getEntry.Open();
-            var ret = new Span<byte>(new byte[zipEntry.Length]);
-            zipEntry.Seek(0, SeekOrigin.Begin);
-            zipEntry.Read(ret);
-            return ret;
-        }
         /// <summary>
         /// Use this to redownload(refresh) HyPixel Items
         /// </summary>
@@ -232,10 +220,12 @@ namespace ITR
             this.pathToCacheFile = pathToCacheFile;
             bool useLocalCache = File.Exists(pathToCacheFile);
 
-            HyItems_Item barrier = new();
-            barrier.id = "BARRIER";
-            barrier.material = "BARRIER";
-            barrier.name = "Barrier Block";
+            HyItems_Item barrier = new()
+            {
+                id = "BARRIER",
+                material = "BARRIER",
+                name = "Barrier Block"
+            };
             hyItemsDict.Add(barrier.id, barrier);
 
             RefreshHyItems();
@@ -273,9 +263,11 @@ namespace ITR
             ZipArchive vanillaTex = new(new MemoryStream(Properties.Resources.itemsZIP));
             foreach (var item in itemsIDTable)
             {
-                Cit_Item cit = new();
-                cit.Texture = new();
-                cit.HyPixel_ID = ((Material)item.type).ToString();
+                Cit_Item cit = new()
+                {
+                    Texture = new(),
+                    HyPixel_ID = ((Material)item.type).ToString()
+                };
                 if (item.meta != 0)
                     cit.HyPixel_ID += ":" + item.meta;
 
@@ -495,9 +487,11 @@ namespace ITR
                             verticalGif ? startingPoint : 0,
                             frameResolution,
                             frameResolution));
-                        var frame = new ImageProcessor.Imaging.Formats.GifFrame();
-                        frame.Delay = new TimeSpan(0, 0, 0, 0, frametime);
-                        frame.Image = workingImage.Image;
+                        var frame = new ImageProcessor.Imaging.Formats.GifFrame
+                        {
+                            Delay = new TimeSpan(0, 0, 0, 0, frametime),
+                            Image = workingImage.Image
+                        };
                         gifMakeItHappener.AddFrame(frame);
                         startingPoint += frameResolution;
                         workingImage.Reset();
@@ -542,7 +536,7 @@ namespace ITR
                     HyItems_Item citTestTestant = value;
                     Predicate<Cit_Item> citTest = new(x => x.HyPixel_ID == citTestTestant.id || (x.Name_pattern != null && citTestTestant.name.Contains(x.Name_pattern, StringComparison.InvariantCultureIgnoreCase)));
 
-                    int citIdx = -1;
+
                     Cit_Item citBack = new();
 
                     var allMatches = citDict[material].FindAll(citTest);
@@ -554,13 +548,21 @@ namespace ITR
                             if (citBack.HyPixel_ID != null) break;
                         }
 
+                    //if not found
                     if (citBack.HyPixel_ID == null)
                     {
+                        citTestTestant.id = value.material + (value.durability != 0 ? ":" + value.durability.ToString() : "");
+                        int citIdx = citDict[material].FindIndex(citTest);
+
+                        if (allMatches.Count != 0)
+                            foreach (var resourcepack in _resourcepackPriority)
+                            {
+                                citBack = allMatches.Find(x => x.ResourcepackName.ToLower() == resourcepack);
+                                if (citBack.HyPixel_ID != null) break;
+                            }
+
                         if (material == Material.SKULL_ITEM && value.durability == 3)
                         {
-                            citTestTestant.id = value.material + (value.durability != 0 ? ":" + value.durability.ToString() : "");
-                            citIdx = citDict[material].FindIndex(citTest);
-
                             var isAlready = false;
                             foreach (var item in skullDownloadQueue.ToArray())
                             {
@@ -570,29 +572,21 @@ namespace ITR
                             if (!isAlready) skullDownloadQueue.Enqueue(hyItemsDict[hyPixel_ID]);
                             if (!downloader.IsAlive)
                             {
-                                downloader = new(SkullDownloader);
-                                downloader.IsBackground = true;
+                                downloader = new(SkullDownloader)
+                                {
+                                    IsBackground = true
+                                };
                                 downloader.Start();
                             }
 
                         }
-                        else
-                        {
-                            citTestTestant.id = value.material + (value.durability != 0 ? ":" + value.durability.ToString() : "");
-                            citIdx = citDict[material].FindIndex(citTest);
-                            if (citIdx == -1) citIdx = 0;
-                        }
+
                         isOriginalTexture = false;
+                        citBack = citDict[material][Math.Max(0, citIdx)];
                     }
 
-                    //var toRet = citDict[material][citIdx];
                     MemoryStream textureRet = new();
-
-                    if (citBack.HyPixel_ID == null)
-                    {
-                        citBack = citDict[material][citIdx];
-                    }
-
+                    citBack.Texture.Seek(0, SeekOrigin.Begin);
                     citBack.Texture.CopyTo(textureRet);
 
                     if (value.color != null && !isOriginalTexture)
@@ -606,18 +600,8 @@ namespace ITR
                         imageFactory.ReplaceColor(Color.FromArgb(198, 92, 53), color, 64);
                         imageFactory.Brightness(-13);
                         imageFactory.Save(textureRet);
-
-                        //Bitmap bitmap = new(retItem.Texture);
-                        //var color = value.color.Split(',');
-                        //Color color1 = Color.FromArgb(196, Convert.ToInt32(color[0]), Convert.ToInt32(color[1]), Convert.ToInt32(color[2]));
-
-                        //using (Graphics graphics = Graphics.FromImage(bitmap))
-                        //{
-                        //    graphics.FillRectangle(new SolidBrush(color1), new Rectangle(0, 0, bitmap.Size.Width, bitmap.Size.Height));
-                        //}
-                        //bitmap.MakeTransparent(bitmap.GetPixel(0,0));
-                        //retItem = new(value.name, value.id, material, isOriginalTexture, bitmap, hyItemsDict[hyPixel_ID].glowing, value.durability);
                     }
+
                     retItem = new(value.name, value.id, material, isOriginalTexture, textureRet, hyItemsDict[hyPixel_ID].glowing, value.durability, value.category,
                         Item.GetRarityFromString(value.tier), value.npc_sell_price, (value.unstackable != null && value.unstackable == true), citBack.ResourcepackName);
                     return retItem;
