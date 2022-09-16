@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAHAC.MVVM.View"
 			 xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel"
-			 xmlns:Converters="clr-namespace:YAHAC.Converters" x:Class="YAHAC.MVVM.UserControls.ItemView"
+			 xmlns:Converters="clr-namespace:YAHAC.Converters" xmlns:local1="clr-namespace:YAHAC.MVVM.UserControls" x:Class="YAHAC.MVVM.UserControls.ItemView"
 			 x:Name="itemControl"
 			 mc:Ignorable="d"
 			 Background="Transparent"
@@ -14,9 +14,13 @@
 			 DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
 			 >
     <UserControl.Resources>
-        <Converters:MemoryStreamToImageSource x:Key="MemoryStreamToImageSource"/>
+
+        <Converters:MemoryStreamToUri x:Key="MemoryStreamToUri"/>
+
     </UserControl.Resources>
-    <Border Width="{Binding ItemBoxSize}"
+    <Grid Width="{Binding Width, ElementName=border}" Height="{Binding Height, ElementName=border}">
+        <MediaElement x:Name="ImageProjector" LoadedBehavior="Play" Source="{Binding item.Texture, Converter={StaticResource MemoryStreamToUri}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local1:ItemView}}}" />
+        <Border Width="{Binding ItemBoxSize}"
 			Height="{Binding ItemBoxSize}"
 			x:Name="border"
 			d:Width="68" d:Height="68"
@@ -25,10 +29,10 @@
 			CornerRadius="5"
 			ClipToBounds="True"
 			>
-        <!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
-        <Border.Background>
-            <ImageBrush Stretch="Fill" 
-						ImageSource="{Binding item.Texture, Converter={StaticResource MemoryStreamToImageSource}}"/>
-        </Border.Background>
-    </Border>
+            <!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
+        </Border>
+    </Grid>
+
+
+
 </UserControl>
