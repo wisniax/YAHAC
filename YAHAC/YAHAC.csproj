@@ -29,6 +29,7 @@
 	<None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
 	<None Remove="Resources\FurfSkyRebornFULL.zip" />
 	<None Remove="Resources\NoTextureMark.png" />
+	<None Remove="Resources\wiggle-random.gif" />
 	<None Remove="sgKey.snk" />
   </ItemGroup>
 
@@ -39,6 +40,7 @@
   <ItemGroup>
 	<PackageReference Include="SharpNBT" Version="1.2.0" />
 	<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+	<PackageReference Include="XamlAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +57,7 @@
 	</Resource>
 	<Resource Include="Resources\FurfSkyRebornFULL.zip" />
 	<Resource Include="Resources\NoTextureMark.png" />
+	<Resource Include="Resources\wiggle-random.gif" />
   </ItemGroup>
 
   <ItemGroup>

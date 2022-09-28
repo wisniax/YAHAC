@@ -107,5 +107,15 @@ namespace YAHAC.Properties {
                 return ResourceManager.GetStream("notify_sound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap wiggle_random {
+            get {
+                object obj = ResourceManager.GetObject("wiggle_random", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -12,8 +12,8 @@
 				<ResourceDictionary Source="Theme/MenuButtonsTheme.xaml"/>
 				<ResourceDictionary Source="Theme/SearchBoxTheme.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-			<converters:BitmapToWPFSource x:Key="BitmapToWPFSource"/>
-			<converters:BoolToVisibility x:Key="BoolToVisibility"/>
+            <converters:BitmapToWPFSource x:Key="BitmapToWPFSource"/>
+            <converters:BoolToVisibility x:Key="BoolToVisibility"/>
 			<converters:ItemToItemName x:Key="ItemToItemName"/>
             <converters:NumberToString x:Key="NumberToString"/>
 			<DataTemplate DataType="{x:Type viewModel:AuctionHouseViewModel}">
