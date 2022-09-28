@@ -12,6 +12,7 @@ using YAHAC.MVVM.View;
 using ITR;
 using YAHAC.MVVM.UserControls;
 using System.Windows;
+using System.Globalization;
 
 namespace YAHAC.MVVM.ViewModel
 {
@@ -118,8 +119,15 @@ namespace YAHAC.MVVM.ViewModel
 			{
 				if (key == null) continue;
 				var item = MainViewModel.itemTextureResolver.GetItemFromID(key);
-				if (item == null) continue;
-				//if (item == null) item = new Item(key, key, Material.AIR, true, Properties.Resources.NoTextureMark, false);
+				//if (item == null) continue;
+				Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+				if (item == null)
+					item = new Item(
+						  key,
+						  key,
+						  Material.AIR,
+						  true,
+						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
 				ItemView itemBox = new(item);
 				Items?.Add(itemBox);
 			}

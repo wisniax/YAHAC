@@ -13,7 +13,8 @@ namespace YAHAC.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value == null) return "";
+			if (value == null) 
+				return "lol";
 			string str = "";
 			Item item;
 			item = value as Item;
