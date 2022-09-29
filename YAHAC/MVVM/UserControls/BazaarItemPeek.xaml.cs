@@ -25,28 +25,34 @@ namespace YAHAC.MVVM.UserControls
 	/// </summary>
 	public partial class BazaarItemPeek : UserControl
 	{
-		public string SelectedItemID
-		{
-			get { return (string)GetValue(SelectedItemIDProperty); }
-			set
-			{
-				if (value == null) return;
-				SetValue(SelectedItemIDProperty, value);
-			}
-		}
-		// Using a DependencyProperty as the backing store for SelectedItemID.  This enables animation, styling, binding, etc...
-		public static readonly DependencyProperty SelectedItemIDProperty =
-			DependencyProperty.Register("SelectedItemID", typeof(string), typeof(BazaarItemPeek),
-				new PropertyMetadata(OnDependencyChanged));
+
+		//public string SelectedItemID
+		//{
+		//	get { return (string)GetValue(SelectedItemIDProperty); }
+		//	set
+		//	{
+		//		if (value == null) return;
+		//		SetValue(SelectedItemIDProperty, value);
+		//	}
+		//}
+		//// Using a DependencyProperty as the backing store for SelectedItemID.  This enables animation, styling, binding, etc...
+		//public static readonly DependencyProperty SelectedItemIDProperty =
+		//	DependencyProperty.Register("SelectedItemID", typeof(string), typeof(BazaarItemPeek),
+		//		new PropertyMetadata(OnDependencyChanged));
 
 		public Item SelectedItem
 		{
 			get { return (Item)GetValue(SelectedItemProperty); }
-			set { SetValue(SelectedItemProperty, value); }
+			set
+			{
+				if (value == null) return;
+				SetValue(SelectedItemProperty, value);
+			}
 		}
 		// Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty SelectedItemProperty =
-			DependencyProperty.Register("SelectedItem", typeof(Item), typeof(BazaarItemPeek));
+			DependencyProperty.Register("SelectedItem", typeof(Item), typeof(BazaarItemPeek), 
+				new PropertyMetadata(OnDependencyChanged));
 
 		public BazaarItemDef BazaarItemData
 		{
@@ -69,8 +75,7 @@ namespace YAHAC.MVVM.UserControls
 			if (!MainViewModel.bazaar.success) return;
 			if (!MainViewModel.itemTextureResolver.Initialized) return;
 			var BIP = (o as BazaarItemPeek);
-			BIP.SelectedItem = MainViewModel.itemTextureResolver.GetItemFromID(BIP.SelectedItemID);
-			BIP.BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(BIP.SelectedItemID);
+			BIP.BazaarItemData = MainViewModel.bazaar.GetBazaarItemDataFromID(BIP.SelectedItem.HyPixel_ID);
 		}
 
 		private void Bazaar_BazaarUpdatedEvent(Model.Bazaar source)

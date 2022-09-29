@@ -58,7 +58,9 @@ namespace YAHAC.MVVM.Model
 	{
 		BackgroundTask backgroundTask;
 		HypixelApiRequester hypixelApiRequester;
+
 		KeyValuePair<HttpResponseHeaders, HttpContentHeaders> latestHeaders;
+
 		DateTimeOffset? Header_LastModified;
 		TimeSpan? Header_TimeOffset;
 		bool ShouldRefresh;
@@ -91,7 +93,7 @@ namespace YAHAC.MVVM.Model
 		/// <summary>
 		/// Returns bazaar item data for specified item ID;
 		/// </summary>
-		/// <param name="key">Hypixel Item ID for an item.</param>
+		/// <param name="key">Hypixel Item ID of an item.</param>
 		/// <returns>BazaarItemDef if id was matched, otherwise null</returns>
 		public BazaarItemDef GetBazaarItemDataFromID(string key)
 		{
@@ -112,6 +114,7 @@ namespace YAHAC.MVVM.Model
 			if (!ShouldPerform_Refresh()) { return; }
 			var BZResult = Task.Run(async () => await hypixelApiRequester.GetBodyAsync()).Result;
 			var serializedBazaar = BZResult.Content.ReadAsStringAsync().Result;
+			//Save lastUpdated timestamp for success evaluation
 			long last_lastUpdated = lastUpdated;
 			deserialize(serializedBazaar);
 
@@ -155,6 +158,7 @@ namespace YAHAC.MVVM.Model
 			//if (latestHeaders.Key.Age+1<)
 			return false;
 		}
+
 
 		/// <summary>
 		/// Uses deprecated method to wait for api refresh.
