@@ -35,6 +35,7 @@ namespace YAHAC.MVVM.Model
 		public bool bin { get; set; }
 		//public List<Bid> bids { get; set; }
 		public string item_uuid { get; set; }
+		public string HyPixel_ID { get; set; } //Assigned right after download
 	}
 
 	/// <summary>
@@ -200,10 +201,25 @@ namespace YAHAC.MVVM.Model
 		{
 			if (page == null) return false;
 			if (!page.success) return false;
-
+			NBTReader nbtReader = new();
 			foreach (var item in page.auctions)
 			{
-				var cus = NBTReader.ReadNBTFromB64String(item.item_bytes);
+				item.HyPixel_ID = nbtReader.GetIdFromB64String(item.item_bytes);
+			}
+
+
+			//Move to dictionary
+			List<Auction> existingItems;
+			foreach (var item in page.auctions)
+			{
+				if (auctions.TryGetValue(item.HyPixel_ID, out existingItems) == true)
+				{
+					existingItems.Add(item);
+				}
+				else
+				{
+					auctions.Add(item.HyPixel_ID, new List<Auction> { item });
+				}
 			}
 
 			return true;
