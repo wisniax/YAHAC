@@ -523,8 +523,23 @@ namespace ITR
         /// <exception cref="ITRNotInitializedException"></exception>
         public Item GetItemFromID(string hyPixel_ID)
         {
+
             lock (citDict_Lock)
             {
+                if (hyPixel_ID.Contains("ENCHANTMENT"))
+                {
+                    Cit_Item citBack = new();
+                    citBack = citDict[Material.ENCHANTED_BOOK][0];
+
+                    MemoryStream textureRet = new();
+                    citBack.Texture.Seek(0, SeekOrigin.Begin);
+                    citBack.Texture.CopyTo(textureRet);
+
+                    Item retItem = new(hyPixel_ID, hyPixel_ID, Material.ENCHANTED_BOOK, true, textureRet, true, 0, "ENCHANTMENT",
+                       Rarity.Very_Special, 0, true, citBack.ResourcepackName);
+                    return retItem;
+                }
+                else
                 if (hyItemsDict.TryGetValue(hyPixel_ID, out HyItems_Item value))
                 {
                     bool isOriginalTexture = true;
