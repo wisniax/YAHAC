@@ -66,7 +66,7 @@ namespace YAHAC.MVVM.ViewModel
             ITR.ItemTextureResolver.HyItems_Item hyItem = new();
             hyItem.id = Material.ENCHANTED_BOOK.ToString();
             hyItem.material = hyItem.id;
-            itemTextureResolver.RegisterItem(hyItem, itemTextureResolver.GetItemFromID(Material.DIAMOND_ORE.ToString()).Texture);
+            itemTextureResolver.RegisterItem(hyItem, itemTextureResolver.GetItemFromID(Material.BREAD.ToString()).Texture);
             itemTextureResolver.ResourcepackPrioritySet("Manual", 0);
 
             //itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
