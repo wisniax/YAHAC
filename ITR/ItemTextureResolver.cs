@@ -39,6 +39,12 @@ namespace ITR
         /// </summary>
         public bool Initialized { get => _initialized; }
 
+        /// <summary>
+        /// When RegisterOverride is true RegisterItem will override hyPixel item definition,<br/>
+        /// else only add resource pack item
+        /// </summary>
+        public bool RegisterOverride { get; set; }
+
         private readonly List<string> _resourcepackPriority;
 
         public string ResourcepackPriority
@@ -100,9 +106,10 @@ namespace ITR
             _resourcepackPriority = new()
             {
                 "HyPixelSkull".ToLower(),
+                "Manual".ToLower(),
                 "Vanilla".ToLower()
             };
-
+            RegisterOverride = false;
         }
 
         void SkullDownloader()
@@ -529,7 +536,12 @@ namespace ITR
                 if (hyPixel_ID.Contains("ENCHANTMENT"))
                 {
                     Cit_Item citBack = new();
-                    citBack = citDict[Material.ENCHANTED_BOOK][0];
+
+                    foreach (var resourcepack in _resourcepackPriority)
+                    {
+                        citBack = citDict[Material.ENCHANTED_BOOK].Find(x => x.ResourcepackName.ToLower() == resourcepack);
+                        if (citBack.HyPixel_ID != null) break;
+                    }
 
                     MemoryStream textureRet = new();
                     citBack.Texture.Seek(0, SeekOrigin.Begin);
@@ -627,7 +639,48 @@ namespace ITR
                 }
                 return null;
             }
+
+
         }
 
+        /// <summary>
+        /// Registers new item as resourcepack "Manual".
+        /// </summary>
+        /// <param name="itemData"></param>
+        /// <param name="texture"></param>
+        public void RegisterItem(HyItems_Item itemData, MemoryStream texture = null)
+        {
+
+            Cit_Item cit = new();
+            cit.Texture = new();
+            cit.HyPixel_ID = itemData.id;
+            cit.ResourcepackName = "Manual";
+            if (texture != null)
+            {
+                cit.Texture = new();
+                texture.Seek(0, SeekOrigin.Begin);
+                texture.CopyTo(cit.Texture);
+                cit.Texture.Seek(0, SeekOrigin.Begin);
+            }
+            var material = Enum.Parse<Material>(itemData.material);
+
+            if (!(material == Material.SKULL_ITEM && itemData.durability == 3))
+            {
+                lock (citDict_Lock)
+                {
+                    citDict[material].Add(cit);
+                }
+
+            }
+
+            if (hyItemsDict.ContainsKey(itemData.id))
+            {
+                if (RegisterOverride)
+                {
+                    hyItemsDict.Remove(itemData.id);
+                    hyItemsDict.Add(itemData.id, itemData);
+                }
+            }
+        }
     }
 }

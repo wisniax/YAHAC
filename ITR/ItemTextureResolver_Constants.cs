@@ -16,7 +16,7 @@ namespace ITR
 			public List<HyItems_Item> items { get; set; }
 		}
 
-		private struct HyItems_Item
+		public struct HyItems_Item
 		{
 			public string id { get; set; }
 			public string material { get; set; }
