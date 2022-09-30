@@ -89,6 +89,8 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			//await Task.Run(() => (MainViewModel.bazaar.success == true));
 			Items = new();
+			HiddenItems = new();
+
 			foreach (var key in MainViewModel.auctionHouse.auctions.Keys)
 			{
 				if (key == null) continue;
@@ -108,6 +110,7 @@ namespace YAHAC.MVVM.ViewModel
 				ItemView itemBox = new(item);
 				Items?.Add(itemBox);
 			}
+			OnSearchQueryChanged();
 		}
 
 		private void AuctionHouse_Updated(Model.AuctionHouse source)
