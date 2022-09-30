@@ -62,8 +62,15 @@ namespace YAHAC.MVVM.ViewModel
 			settings = new();
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
-			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
-			bazaarView = new();
+
+            ITR.ItemTextureResolver.HyItems_Item hyItem = new();
+            hyItem.id = Material.ENCHANTED_BOOK.ToString();
+            hyItem.material = hyItem.id;
+            itemTextureResolver.RegisterItem(hyItem, itemTextureResolver.GetItemFromID(Material.DIAMOND_ORE.ToString()).Texture);
+            itemTextureResolver.ResourcepackPrioritySet("Manual", 0);
+
+            //itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
+            bazaarView = new();
 			auctionHouseView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = bazaarView; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = auctionHouseView; });
