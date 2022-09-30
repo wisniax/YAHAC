@@ -148,7 +148,8 @@ namespace YAHAC.MVVM.Model
 			//Deserialization goes hereee JsonSerializer.Deserialize<AuctionHousePage>(serialized)
 			var deserializedPage = JsonSerializer.Deserialize<AuctionHousePage>(serializedPage);
 			if (!AddPageToAuctions(deserializedPage)) return;
-
+			lastUpdated = deserializedPage.lastUpdated;
+			success = deserializedPage.success;
 			//Whole ah download
 			//if (!WholeAHGathered)
 			//{

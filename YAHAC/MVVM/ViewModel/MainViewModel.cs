@@ -49,6 +49,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		//Models
 		public static Bazaar bazaar;
+		public static AuctionHouse auctionHouse;
 
 		//Views
 		BazaarView bazaarView;
@@ -57,6 +58,7 @@ namespace YAHAC.MVVM.ViewModel
 		public MainViewModel()
 		{
 			bazaar = new();
+			auctionHouse = new();
 			settings = new();
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");

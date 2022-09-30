@@ -5,13 +5,94 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YAHAC.MVVM.View"
              xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-			 Background="Azure">
+			 xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
+             xmlns:UserControls="clr-namespace:YAHAC.MVVM.UserControls"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="450" d:DesignWidth="800"
+			 BorderThickness="0"
+			 Background="#202020"
+			 MouseMove="UserControl_MouseMove">
 	<UserControl.DataContext>
 		<ViewModel:AuctionHouseViewModel/>
 	</UserControl.DataContext>
-	<Grid>
-            
-    </Grid>
+	<UserControl.Resources>
+		<Style TargetType="ScrollBar">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderBrush" Value="Black"/>
+			<Setter Property="Opacity" Value="0.22"/>
+			<Setter Property="Margin" Value="2,6,2,2"/>
+		</Style>
+	</UserControl.Resources>
+	<Grid Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<TextBox Grid.Row="0"
+				 Style="{StaticResource SearchBoxTheme}"
+				 Text="{Binding Path=SearchQuery,
+				Mode=TwoWay, 
+				UpdateSourceTrigger=PropertyChanged}"/>
+		<ListBox  x:Name="ItemsList"
+				  Grid.Row="1"
+				  HorizontalContentAlignment="Center"
+				  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+				  BorderThickness="0"
+				  Background="Transparent"
+				  ItemsSource="{Binding Items}"
+				  SelectionChanged="ItemsList_SelectionChanged">
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
+					<Style.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="IsSelected" Value="True"/>
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ListBox.ItemContainerStyle>
+			<!--<ListBox.ItemContainerStyle>
+			<Style TargetType="ListBoxItem">
+				<Setter Property="Margin" Value="2"/>
+			</Style>
+		</ListBox.ItemContainerStyle>-->
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel HorizontalAlignment="Center"
+						   />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
+		<Canvas Panel.ZIndex="10"
+				Visibility="{Binding AdditionalInfo_Visible,
+			Converter={StaticResource BoolToVisibility}}">
+			<MTB:MinecraftTextBlock
+				Canvas.Left="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:AuctionHouseView}}, 
+				Path=DataContext.CanvasPoint.X}"
+				Canvas.Top="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:AuctionHouseView}}, 
+				Path=DataContext.CanvasPoint.Y}"
+				Text="{Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:AuctionHouseView}}, 
+				Path=DataContext.SelectedItem,
+				Converter={StaticResource ItemToItemName}}">
+			</MTB:MinecraftTextBlock>
+		</Canvas>
+	</Grid>
+	<!--<WrapPanel Name="ItemsPanel"
+			   >
+		<TextBlock Text="Cos do testu"
+				   Foreground="White"
+				   FontSize="40"
+				   Margin="10,0,0,0"
+				   />
+
+	</WrapPanel>-->
 </UserControl>
