@@ -521,6 +521,18 @@ namespace ITR
             return loaded;
         }
 
+        public HyItems_Item? GetHyItemDataFromID(string hyPixel_ID)
+        {
+            if (hyItemsDict.TryGetValue(hyPixel_ID, out HyItems_Item value))
+            {
+                return value;
+            }
+            else
+            {
+                return null;
+            }    
+        }
+
         /// <summary>
         /// Look for item by HyPixel_ID<br/>
         /// Note: this is threadsafe (at least is in theory :D)
