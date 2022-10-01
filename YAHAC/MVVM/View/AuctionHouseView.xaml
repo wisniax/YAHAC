@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="YAHAC.MVVM.View.AuctionHouseView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:YAHAC.MVVM.View"
-             xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:YAHAC.MVVM.View"
+			 xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
 			 xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
-             xmlns:UserControls="clr-namespace:YAHAC.MVVM.UserControls"
+			 xmlns:UserControls="clr-namespace:YAHAC.MVVM.UserControls"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="450" d:DesignWidth="800"
 			 BorderThickness="0"
@@ -67,7 +67,14 @@
 		<Canvas Panel.ZIndex="10"
 				Visibility="{Binding AdditionalInfo_Visible,
 			Converter={StaticResource BoolToVisibility}}">
-			<MTB:MinecraftTextBlock
+			<Border 
+				BorderBrush="#FF24015B"
+				BorderThickness="5"
+				CornerRadius="5"
+				Padding="3"
+				Margin="0"
+				Background="#FF100110"
+				RenderOptions.EdgeMode="Aliased"
 				Canvas.Left="{
 				Binding RelativeSource={
 				RelativeSource FindAncestor, AncestorType={
@@ -77,13 +84,20 @@
 				Binding RelativeSource={
 				RelativeSource FindAncestor, AncestorType={
 				x:Type local:AuctionHouseView}}, 
-				Path=DataContext.CanvasPoint.Y}"
+				Path=DataContext.CanvasPoint.Y}">
+				<MTB:MinecraftTextBlock
 				Text="{Binding RelativeSource={
 				RelativeSource FindAncestor, AncestorType={
 				x:Type local:AuctionHouseView}}, 
 				Path=DataContext.SelectedItem,
-				Converter={StaticResource ItemToItemName}}">
-			</MTB:MinecraftTextBlock>
+				Converter={StaticResource ItemToItemName}}"
+				FontSize="18"
+				FontFamily="Lucida Console"
+				Foreground="White"
+				
+				>
+				</MTB:MinecraftTextBlock>
+			</Border>
 		</Canvas>
 	</Grid>
 	<!--<WrapPanel Name="ItemsPanel"
