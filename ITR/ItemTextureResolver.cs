@@ -664,13 +664,17 @@ namespace ITR
             }
             var material = Enum.Parse<Material>(itemData.material);
 
-            if (!(material == Material.SKULL_ITEM && itemData.durability == 3))
+            lock (citDict_Lock)
             {
-                lock (citDict_Lock)
+                if (material == Material.SKULL_ITEM && itemData.durability == 3)
+                {
+                    var oldIdx = citDict[material].FindIndex(x => x.HyPixel_ID == itemData.id);
+                    citDict[material].RemoveAt(oldIdx);
+                }
+                else
                 {
                     citDict[material].Add(cit);
                 }
-
             }
 
             if (hyItemsDict.ContainsKey(itemData.id))
@@ -680,6 +684,10 @@ namespace ITR
                     hyItemsDict.Remove(itemData.id);
                     hyItemsDict.Add(itemData.id, itemData);
                 }
+            }
+            else
+            {
+                hyItemsDict.Add(itemData.id, itemData);
             }
         }
     }
