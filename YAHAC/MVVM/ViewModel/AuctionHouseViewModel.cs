@@ -83,6 +83,7 @@ namespace YAHAC.MVVM.ViewModel
 			HiddenItems = new();
 			SearchQuery = new("");
 			MainViewModel.auctionHouse.AHUpdatedEvent += AuctionHouse_Updated;
+			if (Items.Count == 0 && HiddenItems.Count == 0 && MainViewModel.auctionHouse.success) LoadAuctionHouse();
 		}
 
 		void LoadAuctionHouse()

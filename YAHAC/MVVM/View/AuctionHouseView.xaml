@@ -86,15 +86,14 @@
 				x:Type local:AuctionHouseView}}, 
 				Path=DataContext.CanvasPoint.Y}">
 				<MTB:MinecraftTextBlock
-				Text="{Binding RelativeSource={
-				RelativeSource FindAncestor, AncestorType={
-				x:Type local:AuctionHouseView}}, 
-				Path=DataContext.SelectedItem,
-				Converter={StaticResource ItemToItemName}}"
-				FontSize="18"
-				FontFamily="Lucida Console"
-				Foreground="White"
-				
+					Text="{Binding RelativeSource={
+					RelativeSource FindAncestor, AncestorType={
+					x:Type local:AuctionHouseView}}, 
+					Path=DataContext.SelectedItem,
+					Converter={StaticResource ItemToItemName}}"
+					FontSize="18"
+					FontFamily="Lucida Console"
+					Foreground="White"
 				>
 				</MTB:MinecraftTextBlock>
 			</Border>

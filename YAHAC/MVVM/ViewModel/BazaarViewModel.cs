@@ -85,6 +85,7 @@ namespace YAHAC.MVVM.ViewModel
 			HiddenItems = new();
 			SearchQuery = new("");
 			MainViewModel.bazaar.BazaarUpdatedEvent += Bazaar_Downloaded;
+			if (Items.Count == 0 && HiddenItems.Count == 0 && MainViewModel.bazaar.success) LoadBazaar();
 		}
 
 		private void Bazaar_Downloaded(Model.Bazaar source)

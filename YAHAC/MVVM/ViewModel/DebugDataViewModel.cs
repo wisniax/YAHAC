@@ -15,13 +15,11 @@ namespace YAHAC.MVVM.ViewModel
     {
         private BackgroundTask backgroundTask;
 
-        long TimeStamp_AH;
         public DebugDataViewModel() : this(true)
         {
         }
         public DebugDataViewModel(bool KeepUpdated)
         {
-            TimeStamp_AH = DateTimeOffset.Now.ToUnixTimeMilliseconds() - 2300;
             backgroundTask = new(TimeSpan.FromMilliseconds(100));
             if (KeepUpdated) StartBackgroundTask();
         }
@@ -39,7 +37,7 @@ namespace YAHAC.MVVM.ViewModel
         private void CalculateProperties()
         {
             BazaarAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.bazaar.lastUpdated) / 1000).ToString("N1");
-            AuctionHouseAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - TimeStamp_AH) / 1000).ToString("N1");
+            AuctionHouseAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.auctionHouse.lastUpdated) / 1000).ToString("N1");
             HeaderRequestsInLastMinute = HypixelApiRequester.HeaderRequestsInLastMinute.ToString();
             ApiRequestsInLastMinute = HypixelApiRequester.ApiRequestsInLastMinute.ToString();
             UsedDataInMB = Math.Round((HypixelApiRequester.chc.PeroidDataTransfered / 1000000m), 1).ToString();

@@ -26,11 +26,11 @@ namespace YAHAC.MVVM.Model
 		public string extra { get; set; }
 		public string category { get; set; }
 		public string tier { get; set; }
-		public int starting_bid { get; set; }
+		public Int64 starting_bid { get; set; }
 		public string item_bytes { get; set; }
 		public bool claimed { get; set; }
 		//public List<object> claimed_bidders { get; set; }
-		public int highest_bid_amount { get; set; }
+		public Int64 highest_bid_amount { get; set; }
 		public long last_updated { get; set; }
 		public bool bin { get; set; }
 		//public List<Bid> bids { get; set; }
@@ -147,17 +147,25 @@ namespace YAHAC.MVVM.Model
 
 			//Deserialization goes hereee JsonSerializer.Deserialize<AuctionHousePage>(serialized)
 			var deserializedPage = JsonSerializer.Deserialize<AuctionHousePage>(serializedPage);
-			if (!AddPageToAuctions(deserializedPage)) return;
+
+			if (!WholeAHGathered)
+			{
+				auctions.Clear();
+				for (int i = 1; i < deserializedPage.totalPages; i++)
+				{
+					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(i)).Result;
+					var serialized = result.Content.ReadAsStringAsync().Result;
+					var deserialized = JsonSerializer.Deserialize<AuctionHousePage>(serialized);
+					if (!AddPageToAuctions(deserialized))
+						return;
+				}
+				WholeAHGathered = true;
+			}
+			if (!AddPageToAuctions(deserializedPage, last_lastUpdated)) return;
 			lastUpdated = deserializedPage.lastUpdated;
 			success = deserializedPage.success;
-			//Whole ah download
-			//if (!WholeAHGathered)
-			//{
-			//	for (int i = 0; i < deserializedPage.totalPages; i++)
-			//	{
-			//		throw new NotImplementedException();
-			//	}
-			//}
+			totalAuctions = deserializedPage.totalAuctions;
+			totalPages = deserializedPage.totalPages;
 
 			if (!success || (last_lastUpdated + 1000 >= lastUpdated)) return;
 
@@ -166,6 +174,12 @@ namespace YAHAC.MVVM.Model
 			Header_LastModified = latestHeaders.Value.LastModified > Header_LastModified ? latestHeaders.Value.LastModified : Header_LastModified;
 			OnDownloadedItem();
 			ShouldRefresh = false;
+			int totalItems = 0;
+			foreach (var value in auctions.Values)
+			{
+				totalItems += value.Count;
+			}
+			totalItems += 0;
 		}
 
 		//Some Copy-Paste from Bazaar ... dont mind me lmao
@@ -198,7 +212,7 @@ namespace YAHAC.MVVM.Model
 			return false;
 		}
 
-		bool AddPageToAuctions(AuctionHousePage page)
+		bool AddPageToAuctions(AuctionHousePage page, long lastUpdated = 0)
 		{
 			if (page == null) return false;
 			if (!page.success) return false;
@@ -208,12 +222,13 @@ namespace YAHAC.MVVM.Model
 				item.HyPixel_ID = nbtReader.GetIdFromB64String(item.item_bytes);
 			}
 
+			page.auctions.RemoveAll((a) => a.last_updated < lastUpdated);
 
 			//Move to dictionary
-			List<Auction> existingItems;
+
 			foreach (var item in page.auctions)
 			{
-				if (auctions.TryGetValue(item.HyPixel_ID, out existingItems) == true)
+				if (auctions.TryGetValue(item.HyPixel_ID, out var existingItems) == true)
 				{
 					existingItems.Add(item);
 				}
