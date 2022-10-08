@@ -147,7 +147,7 @@ namespace ITR
                 imageFactory.BackgroundColor(Color.Transparent);
                 imageFactory.Format(new ImageProcessor.Imaging.Formats.PngFormat());
                 imageFactory.Save(cit.Texture);
-
+                cit.Texture.Seek(0, SeekOrigin.Begin);
                 cit.ResourcepackName = "HyPixelSkull";
 
                 lock (citDict_Lock)
