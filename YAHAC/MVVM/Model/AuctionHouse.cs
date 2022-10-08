@@ -216,6 +216,10 @@ namespace YAHAC.MVVM.Model
 		{
 			if (page == null) return false;
 			if (!page.success) return false;
+
+			//
+			page.auctions.RemoveAll((a) => !a.bin);
+
 			NBTReader nbtReader = new();
 			foreach (var item in page.auctions)
 			{

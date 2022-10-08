@@ -26,7 +26,7 @@ namespace YAHAC.Core
 			{
 				while (await timer.WaitForNextTickAsync(_cts.Token))
 				{
-					del();
+					await Task.Run(() => del());
 				}
 			}
 			catch (OperationCanceledException)
