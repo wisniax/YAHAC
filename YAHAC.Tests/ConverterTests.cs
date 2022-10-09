@@ -18,9 +18,9 @@ namespace YAHAC.Tests
 		[InlineData(120.0, "120.0")]
 		[InlineData(1000, "NaN")]
 		[InlineData(998.9, "998.9")]
-		[InlineData(998.9, "998,9", 1000, "ru-RU")]
+		[InlineData(998.9, "998,9", 1000, "pl-PL")]
 		[InlineData(1234.5, "1,234.5", 10000)]
-		[InlineData(1234.5, "1 234,5", 10000, "ru-RU")]
+		[InlineData(1234.5, "1 234,5", 10000, "pl-PL")]
 		public void NumberToString_Tests(double age, string expectedResponse, int maxValue = 1000, string cultureInfo = "en-US")
 		{
 			//Arrange
