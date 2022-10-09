@@ -28,7 +28,10 @@
 	<Grid
 			   HorizontalAlignment="Stretch"
 			   Opacity="0.75"
-			   Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainView}}, Path=DataContext.settings.Default.DebugVisibility}"
+			   Visibility="{Binding RelativeSource=
+		{RelativeSource FindAncestor, 
+		AncestorType={x:Type local:MainView}}, 
+		Path=DataContext.settings.Default.DebugVisibility}"
 			   Name="Panelek" 
 		Margin="8,0,8,0">
 		<Grid.ColumnDefinitions>
@@ -43,23 +46,33 @@
 			<ColumnDefinition Width="3*"/>
 		</Grid.ColumnDefinitions>
 
-		<Label Content="{Binding BazaarAge}"
+		<Label Content="{Binding BazaarAge,
+			Converter={StaticResource NumberToString},
+			ConverterParameter=100}"
 			   ToolTip="Bazaar age"
 			   Grid.Column="0"/>
 		<Separator Grid.Column="1"/>
-		<Label Content="{Binding AuctionHouseAge}"
+		<Label Content="{Binding AuctionHouseAge,
+			Converter={StaticResource NumberToString},
+			ConverterParameter=1000}"
 			   ToolTip="Auction House age"
 			   Grid.Column="2"/>
 		<Separator Grid.Column="3"/>
-		<Label Content="{Binding HeaderRequestsInLastMinute}"
+		<Label Content="{Binding HeaderRequestsInLastMinute,
+			Converter={StaticResource NumberToString},
+			ConverterParameter=1000}"
 			   ToolTip="Header requests in last minute"
 			   Grid.Column="4"/>
 		<Separator Grid.Column="5"/>
-		<Label Content="{Binding ApiRequestsInLastMinute}"
+		<Label Content="{Binding ApiRequestsInLastMinute,
+			Converter={StaticResource NumberToString},
+			ConverterParameter=1000}"
 			   ToolTip="Api requests in last minute"
 			   Grid.Column="6"/>
 		<Separator Grid.Column="7"/>
-		<Label Content="{Binding UsedDataInMB}"
+		<Label Content="{Binding UsedDataInMB,
+			Converter={StaticResource NumberToString},
+			ConverterParameter=1000}"
 			   ToolTip="MB of data used in last minute"
 			   Grid.Column="8"/>
 

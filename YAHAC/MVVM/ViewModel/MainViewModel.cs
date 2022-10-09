@@ -20,7 +20,8 @@ namespace YAHAC.MVVM.ViewModel
 		static public Settings settings
 		{
 			get { return _settings; }
-			set { 
+			set
+			{
 				_settings = value;
 				settings_Changed();
 			}
@@ -31,7 +32,7 @@ namespace YAHAC.MVVM.ViewModel
 		}
 		private static readonly PropertyChangedEventArgs FilterStringPropertyEventArgs = new PropertyChangedEventArgs(nameof(settings));
 		public static event PropertyChangedEventHandler StaticPropertyChanged;
-		public static ItemTextureResolver itemTextureResolver { get;private set; }
+		public static ItemTextureResolver itemTextureResolver { get; private set; }
 		//Commands
 		public RelayCommand BazaarViewCommand { get; set; }
 		public RelayCommand AuctionHouseViewCommand { get; set; }
@@ -63,14 +64,14 @@ namespace YAHAC.MVVM.ViewModel
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
 
-            //ITR.ItemTextureResolver.HyItems_Item hyItem = new();
-            //hyItem.id = Material.ENCHANTED_BOOK.ToString();
-            //hyItem.material = hyItem.id;
-            //itemTextureResolver.RegisterItem(hyItem, itemTextureResolver.GetItemFromID(Material.BREAD.ToString()).Texture);
-            //itemTextureResolver.ResourcepackPrioritySet("Manual", 0);
+			//ITR.ItemTextureResolver.HyItems_Item hyItem = new();
+			//hyItem.id = Material.ENCHANTED_BOOK.ToString();
+			//hyItem.material = hyItem.id;
+			//itemTextureResolver.RegisterItem(hyItem, itemTextureResolver.GetItemFromID(Material.BREAD.ToString()).Texture);
+			//itemTextureResolver.ResourcepackPrioritySet("Manual", 0);
 
-            //itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
-            bazaarView = new();
+			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
+			bazaarView = new();
 			auctionHouseView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = bazaarView; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = auctionHouseView; });

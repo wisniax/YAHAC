@@ -36,72 +36,44 @@ namespace YAHAC.MVVM.ViewModel
 
 		private void CalculateProperties()
 		{
-			BazaarAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.bazaar.lastUpdated) / 1000).ToString("N1");
-			AuctionHouseAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.auctionHouse.lastUpdated) / 1000).ToString("N1");
-			HeaderRequestsInLastMinute = HypixelApiRequester.HeaderRequestsInLastMinute.ToString();
-			ApiRequestsInLastMinute = HypixelApiRequester.ApiRequestsInLastMinute.ToString();
-			UsedDataInMB = Math.Round((HypixelApiRequester.chc.PeroidDataTransfered / 1000000m), 1).ToString();
+			//BazaarAge = (double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.bazaar.lastUpdated) / 1000;
+			//AuctionHouseAge = ((double)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.auctionHouse.lastUpdated) / 1000).ToString("N1");
+			//HeaderRequestsInLastMinute = HypixelApiRequester.HeaderRequestsInLastMinute.ToString();
+			//ApiRequestsInLastMinute = HypixelApiRequester.ApiRequestsInLastMinute.ToString();
+			//UsedDataInMB = Math.Round((HypixelApiRequester.chc.PeroidDataTransfered / 1000000m), 1).ToString();
+			OnPropertyChanged("BazaarAge");
+			OnPropertyChanged("AuctionHouseAge");
+			OnPropertyChanged("HeaderRequestsInLastMinute");
+			OnPropertyChanged("ApiRequestsInLastMinute");
+			OnPropertyChanged("UsedDataInMB");
 		}
-
 
 		//Properties
-		private string _BazaarAge;
-		public string BazaarAge
+		public float BazaarAge //Max Value 100
 		{
-			get { return (_BazaarAge == null || double.Parse(_BazaarAge, CultureInfo.CurrentCulture) > 999) ? "NaN" : _BazaarAge; }
-			set
-			{
-				_BazaarAge = value;
-				OnPropertyChanged();
-			}
+			get { return (float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.bazaar.lastUpdated) / 1000; }
 		}
 
-		private string _AuctionHouseAge;
-		public string AuctionHouseAge
+		public float AuctionHouseAge //Max Value 1000
 		{
-			get
-			{
-				if (_AuctionHouseAge == null) return "NaN";
-				return double.Parse(_AuctionHouseAge, CultureInfo.CurrentCulture) > 999 ? "NaN" : _AuctionHouseAge; ;
-			}
-			set
-			{
-				_AuctionHouseAge = value;
-				OnPropertyChanged();
-			}
+			get { return (float)(DateTimeOffset.Now.ToUnixTimeMilliseconds() - MainViewModel.auctionHouse.lastUpdated) / 1000; }
 		}
 
-		private string _HeaderRequestsInLastMinute;
-		public string HeaderRequestsInLastMinute
+		public int HeaderRequestsInLastMinute //Max Value 1000
 		{
-			get { return _HeaderRequestsInLastMinute == null || Convert.ToInt32(_HeaderRequestsInLastMinute) > 999 ? "NaN" : _HeaderRequestsInLastMinute; }
-			set
-			{
-				_HeaderRequestsInLastMinute = value;
-				OnPropertyChanged();
-			}
+			get { return HypixelApiRequester.HeaderRequestsInLastMinute; }
 		}
 
-		private string _ApiRequestsInLastMinute;
-		public string ApiRequestsInLastMinute
+		public int ApiRequestsInLastMinute //Max Value 1000
 		{
-			get { return _ApiRequestsInLastMinute == null || Convert.ToInt32(_ApiRequestsInLastMinute) > 999 ? "NaN" : _ApiRequestsInLastMinute; }
-			set
-			{
-				_ApiRequestsInLastMinute = value;
-				OnPropertyChanged();
-			}
+			get { return HypixelApiRequester.ApiRequestsInLastMinute; }
 		}
 
-		private string _UsedDataInMB;
-		public string UsedDataInMB
+		public double UsedDataInMB //Max Value 1000
 		{
-			get { return _UsedDataInMB == null || Convert.ToDouble(_UsedDataInMB) > 999 ? "NaN" : _UsedDataInMB; }
-			set
-			{
-				_UsedDataInMB = value;
-				OnPropertyChanged();
-			}
+			//https://www.teamscs.com/2016/09/ditch-decimal-data-type-use-double-c-code/ Deciam is over 100x times slower than double
+			//get { return Math.Round((HypixelApiRequester.chc.PeroidDataTransfered / 1000000m), 1) }
+			get { return (double)HypixelApiRequester.chc.PeroidDataTransfered / 1000000; }
 		}
 
 

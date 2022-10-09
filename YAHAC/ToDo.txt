@@ -1,12 +1,13 @@
 ﻿To Do list --- order does not matter.
 
-	1. Fix bazaar not showing items				Done
-	2. AH
-	3. Animated textures						Waste of time
-	4. Item Glow support						^^^ Thats an animation u know
-	4.5 Some kind of settings					Once everything else is done ...
+	1. Fix bazaar not showing items																							Done
+	2. AH																													Partially Implemented
+	3. Animated textures																									Waste of time
+	4. Item Glow support																									^^^ Thats an animation u know
+	4.5 Some kind of settings																								Once everything else is done ...
 		Including bz&ah refresh timing
 	5. Item Crafts
 	6. Better AH support
 	7. Not Enough Updates github repository support for always up-to-date item data.
 	8. Http Requester optimizations.
+	9. Make DebugDataViewModel actually well-written (FAST)																	Done

@@ -11,7 +11,7 @@ namespace YAHAC.Converters
 {
     public class MemoryStreamToImageSource : IValueConverter
     {
-        static uint shitCounter = 0;
+        static uint shitCounter = 0; //HUH?
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             try

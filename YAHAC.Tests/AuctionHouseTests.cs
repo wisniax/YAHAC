@@ -9,13 +9,13 @@ using YAHAC.MVVM.Model;
 
 namespace YAHAC.Tests
 {
-    public class AuctionHouseTests
-    {
-        [Fact]
-        void PopulateAH_Test()
-        {
-            var sut = new AuctionHouse();
-            sut.success.Should().BeTrue();
-        }
-    }
+	public class AuctionHouseTests
+	{
+		[Fact]
+		void PopulateAH_Test()
+		{
+			var sut = new AuctionHouse(false, false);
+			sut.success.Should().BeTrue();
+		}
+	}
 }

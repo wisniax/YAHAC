@@ -87,11 +87,11 @@ namespace YAHAC.MVVM.Model
 
 		bool WholeAHGathered;
 
-		public AuctionHouse() : this(true) { }
-		public AuctionHouse(bool KeepUpdated)
+		public AuctionHouse() : this(true, true) { }
+		public AuctionHouse(bool KeepUpdated, bool GatherWholeAH)
 		{
 			success = false;
-			WholeAHGathered = false;
+			WholeAHGathered = !GatherWholeAH;
 
 			AHPageRequester = new(HypixelApiRequester.DataSources.AuctionHouse_Auctions);
 			AHEndedRequester = new(HypixelApiRequester.DataSources.AuctionHouse_Ended);
