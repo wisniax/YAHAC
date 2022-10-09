@@ -58,7 +58,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
-			bazaar = new();
+			bazaar = new(false);
 			auctionHouse = new();
 			settings = new();
 			itemTextureResolver = new();

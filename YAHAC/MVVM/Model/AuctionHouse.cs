@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using YAHAC.Core;
 using System.Text.Json;
+using System.Collections.Concurrent;
 
 namespace YAHAC.MVVM.Model
 {
@@ -69,7 +70,7 @@ namespace YAHAC.MVVM.Model
 		public long lastUpdated { get; set; }
 		public int totalPages { get; set; }
 		public int totalAuctions { get; set; }
-		public Dictionary<string, List<Auction>> auctions { get; set; }
+		public ConcurrentDictionary<string, List<Auction>> auctions { get; set; }
 
 
 		BackgroundTask backgroundTask;
@@ -161,7 +162,9 @@ namespace YAHAC.MVVM.Model
 				}
 				WholeAHGathered = true;
 			}
+
 			if (!AddPageToAuctions(deserializedPage, last_lastUpdated)) return;
+
 			lastUpdated = deserializedPage.lastUpdated;
 			success = deserializedPage.success;
 			totalAuctions = deserializedPage.totalAuctions;
@@ -172,8 +175,8 @@ namespace YAHAC.MVVM.Model
 			latestHeaders = new(AHPageResult.Headers, AHPageResult.Content.Headers);
 			Header_TimeOffset = DateTimeOffset.Now - latestHeaders.Key.Date;
 			Header_LastModified = latestHeaders.Value.LastModified > Header_LastModified ? latestHeaders.Value.LastModified : Header_LastModified;
-			OnDownloadedItem();
 			ShouldRefresh = false;
+			OnDownloadedItem();
 			int totalItems = 0;
 			foreach (var value in auctions.Values)
 			{
@@ -212,21 +215,27 @@ namespace YAHAC.MVVM.Model
 			return false;
 		}
 
-		bool AddPageToAuctions(AuctionHousePage page, long lastUpdated = 0)
+		bool AddPageToAuctions(AuctionHousePage page, long? lastUpdated = null)
 		{
 			if (page == null) return false;
 			if (!page.success) return false;
 
-			//
+			//I dont care bout regular auctions for now
 			page.auctions.RemoveAll((a) => !a.bin);
+
+			var remainingAuctions = new List<Auction>();
+
+			if (lastUpdated != null)
+			{
+				remainingAuctions = page.auctions.FindAll((a) => a.last_updated < lastUpdated);
+				page.auctions.RemoveAll((a) => a.last_updated < lastUpdated);
+			}
 
 			NBTReader nbtReader = new();
 			foreach (var item in page.auctions)
 			{
 				item.HyPixel_ID = nbtReader.GetIdFromB64String(item.item_bytes);
 			}
-
-			page.auctions.RemoveAll((a) => a.last_updated < lastUpdated);
 
 			//Move to dictionary
 
@@ -238,10 +247,12 @@ namespace YAHAC.MVVM.Model
 				}
 				else
 				{
-					auctions.Add(item.HyPixel_ID, new List<Auction> { item });
+					var cus = auctions.TryAdd(item.HyPixel_ID, new List<Auction> { item });
+					if (!cus) { throw new Exception(); }
 				}
 			}
 
+			page.auctions = remainingAuctions;
 			return true;
 		}
 
