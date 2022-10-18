@@ -105,7 +105,7 @@ namespace YAHAC.Core
 		public async Task<HttpResponseMessage> SendHttpRequest(HttpMethod httpMethod, string url)
 		{
 			var response = await httpConnector.SendAsync(new HttpRequestMessage(httpMethod, url));
-			if (httpMethod == HttpMethod.Get) LogData((ulong)(response.Content.ReadAsStream().Length));
+			if (httpMethod == HttpMethod.Get) LogData((ulong)(response.Content.Headers.ContentLength));
 			return response;
 		}
 
