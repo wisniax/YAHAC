@@ -36,7 +36,7 @@ namespace YAHAC.Core
 		/// <summary>
 		/// Data peroid in seconds for PeroidDataTransfered
 		/// </summary>
-		public int DataPeroid { get; set; } = 60;
+		public UInt32 DataPeroid { get; set; } = 60;
 
 		readonly private Queue<DataPlusTime> downloadedDataHistory;
 
@@ -75,14 +75,15 @@ namespace YAHAC.Core
 		}
 
 		//historic data that is old must be deleted, it is obvious L O L
+		//it obvious too when u remove one entry then oldest is NULL
+		//that for loop was nuts wrong, wrote by While gang
 		private void PurgeOldData()
 		{
-			if (downloadedDataHistory.Count == 0) return;
-			for (downloadedDataHistory.TryPeek(out DataPlusTime oldest);
-				 ((int)(DateTime.Now - oldest.timestamp).TotalSeconds) > DataPeroid;
-				  downloadedDataHistory.TryPeek(out oldest))
-			{
-				downloadedDataHistory.TryDequeue(out _);
+            while (downloadedDataHistory.TryPeek(out DataPlusTime entry))
+            {
+				if (Convert.ToInt32((DateTime.Now - entry.timestamp).TotalSeconds) <= DataPeroid)
+					break;
+				downloadedDataHistory.Dequeue();
 			}
 		}
 
