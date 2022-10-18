@@ -7,15 +7,44 @@ using System.Net.Http.Headers;
 using YAHAC.Core;
 using System.Text.Json;
 using System.Collections.Concurrent;
+using System.Windows.Controls;
 
 namespace YAHAC.MVVM.Model
 {
+
+	public class EndedAuction
+	{
+		/// <summary>
+		/// Auction's unique ID. <br/>
+		/// Smh it cant be named the uuid bc Hypixel
+		/// </summary>
+		public string auction_id { get; set; }
+		public string seller { get; set; }
+		public string seller_profile { get; set; }
+		public string buyer { get; set; }
+		public object timestamp { get; set; }
+		public int price { get; set; }
+		public bool bin { get; set; }
+		public string item_bytes { get; set; }
+		public string HyPixel_ID { get; set; } //Assigned right after download
+	}
+
+	public class AuctionHouseEndedPage
+	{
+		public bool success { get; set; }
+		public long lastUpdated { get; set; }
+		public List<EndedAuction> auctions { get; set; }
+	}
+
 	/// <summary>
 	/// All possible data in single auction
 	/// The unnecessary lines are commented for memory preservation
 	/// </summary>
 	public class Auction
 	{
+		/// <summary>
+		/// Auction's unique ID
+		/// </summary>
 		public string uuid { get; set; }
 		public string auctioneer { get; set; }
 		public string profile_id { get; set; }
@@ -35,6 +64,9 @@ namespace YAHAC.MVVM.Model
 		public long last_updated { get; set; }
 		public bool bin { get; set; }
 		//public List<Bid> bids { get; set; }
+		/// <summary>
+		/// Item's unique ID ( Rare items have unique ID to check whether they are duped :) )
+		/// </summary>
 		public string item_uuid { get; set; }
 		public string HyPixel_ID { get; set; } //Assigned right after download
 	}
@@ -56,11 +88,26 @@ namespace YAHAC.MVVM.Model
 	/// </summary>
 	public class AuctionHousePage
 	{
+		/// <summary>
+		/// Did page fetch successfully
+		/// </summary>
 		public bool success { get; set; }
+		/// <summary>
+		/// Page number
+		/// </summary>
 		public int page { get; set; }
+		/// <summary>
+		/// Amount of AH pages at fetch time
+		/// </summary>
 		public int totalPages { get; set; }
 		public int totalAuctions { get; set; }
+		/// <summary>
+		/// Unix timestamp
+		/// </summary>
 		public long lastUpdated { get; set; }
+		/// <summary>
+		/// Auctions list
+		/// </summary>
 		public List<Auction> auctions { get; set; }
 	}
 
@@ -70,7 +117,7 @@ namespace YAHAC.MVVM.Model
 		public long lastUpdated { get; set; }
 		public int totalPages { get; set; }
 		public int totalAuctions { get; set; }
-		public ConcurrentDictionary<string, List<Auction>> auctions { get; set; }
+		public Dictionary<string, List<Auction>> auctions { get; set; }
 
 
 		BackgroundTask backgroundTask;
@@ -142,6 +189,7 @@ namespace YAHAC.MVVM.Model
 		public void Refresh()
 		{
 			if (!ShouldPerform_Refresh()) { return; }
+
 			var AHPageResult = Task.Run(async () => await AHPageRequester.GetBodyAsync()).Result;
 			var serializedPage = AHPageResult.Content.ReadAsStringAsync().Result;
 			long last_lastUpdated = lastUpdated;            //Save lastUpdated for success evaluation
@@ -152,18 +200,23 @@ namespace YAHAC.MVVM.Model
 			if (!WholeAHGathered)
 			{
 				auctions.Clear();
+
 				for (int i = 1; i < deserializedPage.totalPages; i++)
 				{
 					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(i)).Result;
 					var serialized = result.Content.ReadAsStringAsync().Result;
 					var deserialized = JsonSerializer.Deserialize<AuctionHousePage>(serialized);
-					if (!AddPageToAuctions(deserialized))
-						return;
+					if (!AddPageToAuctions(deserialized)) throw new Exception();
 				}
 				WholeAHGathered = true;
 			}
 
 			if (!AddPageToAuctions(deserializedPage, last_lastUpdated)) return;
+
+			var AHEndedResult = Task.Run(async () => await AHEndedRequester.GetBodyAsync()).Result;
+			var serializedEndedPage = AHEndedResult.Content.ReadAsStringAsync().Result;
+			var deserializedEndedPage = JsonSerializer.Deserialize<AuctionHouseEndedPage>(serializedEndedPage);
+			RemoveEndedAuctions(deserializedEndedPage);
 
 			lastUpdated = deserializedPage.lastUpdated;
 			success = deserializedPage.success;
@@ -256,5 +309,23 @@ namespace YAHAC.MVVM.Model
 			return true;
 		}
 
+		void RemoveEndedAuctions(AuctionHouseEndedPage endedAuctions)
+		{
+			int removed = new();
+			NBTReader nbtReader = new();
+			endedAuctions.auctions.RemoveAll((a) => !a.bin);
+
+			foreach (var item in endedAuctions.auctions)
+			{
+				item.HyPixel_ID = nbtReader.GetIdFromB64String(item.item_bytes);
+			}
+
+			foreach (var item in endedAuctions.auctions)
+			{
+				auctions.TryGetValue(item.HyPixel_ID, out var lista);
+				if (lista == null) { continue; }
+				removed += lista.RemoveAll((a) => a.uuid == item.auction_id);
+			}
+		}
 	}
 }
