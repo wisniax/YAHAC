@@ -16,6 +16,8 @@ namespace YAHAC.MVVM.ViewModel
 	internal class AuctionHouseViewModel : ObservableObject
 	{
 
+		public List<string> ItemsInObservableCollection { get; set; }
+
 		private ObservableCollection<object> _Items;
 		public ObservableCollection<object> Items
 		{
@@ -82,6 +84,7 @@ namespace YAHAC.MVVM.ViewModel
 			Items = new();
 			HiddenItems = new();
 			SearchQuery = new("");
+			ItemsInObservableCollection = new();
 			MainViewModel.auctionHouse.AHUpdatedEvent += AuctionHouse_Updated;
 			if (Items.Count == 0 && HiddenItems.Count == 0 && MainViewModel.auctionHouse.success) LoadAuctionHouse();
 		}
@@ -89,12 +92,12 @@ namespace YAHAC.MVVM.ViewModel
 		void LoadAuctionHouse()
 		{
 			//await Task.Run(() => (MainViewModel.bazaar.success == true));
-			Items = new();
-			HiddenItems = new();
 
 			foreach (var key in MainViewModel.auctionHouse.auctions.Keys)
 			{
 				if (key == null) continue;
+				if (ItemsInObservableCollection.Contains(key)) continue;
+
 				var item = MainViewModel.itemTextureResolver.GetItemFromID(key);
 				//if (item == null) continue;
 				// In case item does not exist in Hypixel API create an unknown one with id as its name
@@ -109,6 +112,7 @@ namespace YAHAC.MVVM.ViewModel
 						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
 				}
 				ItemView itemBox = new(item);
+				ItemsInObservableCollection.Add(key);
 				Items?.Add(itemBox);
 			}
 			OnSearchQueryChanged();
