@@ -76,13 +76,20 @@ namespace YAHAC.MVVM.UserControls
 		{
 			if (!Dispatcher.CheckAccess())
 			{
-				Dispatcher.Invoke(() =>
+				try
 				{
-					if (item == null || itemUpdated == null) return;
-					if (itemUpdated.HyPixel_ID != item.HyPixel_ID) return;
-					item = new(itemUpdated);
+					Dispatcher.Invoke(() =>
+					{
+						if (item == null || itemUpdated == null) return;
+						if (itemUpdated.HyPixel_ID != item.HyPixel_ID) return;
+						item = new(itemUpdated);
+						return;
+					});
+				}
+				catch (TaskCanceledException e)
+				{
 					return;
-				});
+				}
 			}
 			else
 			{
