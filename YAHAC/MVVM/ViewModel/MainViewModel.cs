@@ -36,6 +36,7 @@ namespace YAHAC.MVVM.ViewModel
 		//Commands
 		public RelayCommand BazaarViewCommand { get; set; }
 		public RelayCommand AuctionHouseViewCommand { get; set; }
+		public RelayCommand BetterAHViewCommand { get; set; }
 		private object _currentView;
 		public object CurrentView
 		{
@@ -55,6 +56,7 @@ namespace YAHAC.MVVM.ViewModel
 		//Views
 		BazaarView bazaarView;
 		AuctionHouseView auctionHouseView;
+		BetterAHView betterAHView;
 
 		public MainViewModel()
 		{
@@ -75,6 +77,7 @@ namespace YAHAC.MVVM.ViewModel
 			auctionHouseView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = bazaarView; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = auctionHouseView; });
+			BetterAHViewCommand = new RelayCommand((o) => { CurrentView = betterAHView; });
 		}
 	}
 }

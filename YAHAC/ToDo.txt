@@ -11,5 +11,5 @@
 	7.	Not Enough Updates github repository support for always up-to-date item data.
 	8.	Http Requester optimizations.
 	9.	Make DebugDataViewModel actually well-written (FAST)																Done
-	10.	AuctionHouse tab lags app for 2-3 secs every 60 secs bc ObservableCollections 
+	10.	AuctionHouse tab lags app for 2-3 secs every 60 secs bc ObservableCollections										Done
 		re-renders everytime ah updates (over 1300 items lmao)

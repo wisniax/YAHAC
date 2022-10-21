@@ -36,8 +36,8 @@
 						   FontSize="36"
 						   FontFamily="/Resources/Fonts/#Rubik Moonrocks"
 						   />
-                <DockPanel Grid.Row="1">
-                    <RadioButton Content="Bazaar"
+				<DockPanel Grid.Row="1">
+					<RadioButton Content="Bazaar"
 								 Name="BtnBZ"
 								 Height="40"
 								 DockPanel.Dock="Top"
@@ -51,11 +51,12 @@
 								 Style="{StaticResource MenuButtonTheme}"
 								 Command="{Binding AuctionHouseViewCommand}"
 								 />
-					<RadioButton Content="Item Crafts"
+					<RadioButton Content="Better AH"
 								 Name="BtnIC"
 								 Height="40"
 								 DockPanel.Dock="Top"
 								 Style="{StaticResource MenuButtonTheme}"
+								 Command="{Binding BetterAHViewCommand}"
 								 />
 					<RadioButton Content="Settings"
 								Name="BtnSett"
