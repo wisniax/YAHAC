@@ -13,6 +13,7 @@
 	BorderThickness="0"
 	d:DesignHeight="450" d:DesignWidth="800"
 	MouseMove="UserControl_MouseMove"
+	MouseDoubleClick="UserControl_MouseDoubleClick"
 	>
 	<UserControl.DataContext>
 		<ViewModel:BetterAHViewModel/>
@@ -86,7 +87,7 @@
 					Text="{Binding RelativeSource={
 					RelativeSource FindAncestor, AncestorType={
 					x:Type local:BetterAHView}}, 
-					Path=DataContext.SelectedItem,
+					Path=DataContext.SelectedItemView.item,
 					Converter={StaticResource ItemToItemName}}"
 					FontSize="18"
 					FontFamily="Lucida Console"

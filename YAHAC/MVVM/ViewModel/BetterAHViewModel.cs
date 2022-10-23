@@ -46,14 +46,14 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
-		private Item _SelectedItem;
-		public Item SelectedItem
+		private ItemView _SelectedItemView;
+		public ItemView SelectedItemView
 		{
-			get { return _SelectedItem; }
+			get { return _SelectedItemView; }
 			set
 			{
 				if (value == null) { AdditionalInfo_Visible = false; return; }
-				_SelectedItem = value;
+				_SelectedItemView = value;
 				OnPropertyChanged();
 				AdditionalInfo_Visible = true;
 			}
@@ -107,7 +107,7 @@ namespace YAHAC.MVVM.ViewModel
 						  true,
 						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
 				}
-				ItemView itemBox = new(item);
+				ItemView itemBox = new(item, auction);
 				Items?.Add(itemBox);
 			}
 		}
@@ -187,6 +187,11 @@ namespace YAHAC.MVVM.ViewModel
 			thread.Join();
 		}
 
+		public void MouseDoubleClicked(object sender, MouseButtonEventArgs e)
+		{
+			if (SelectedItemView.Tag == null) return;
+			CopyToClipboard("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
+		}
 		//This either
 		//private void RenderItemName(itemUC sender, GuiCode.itemUC.MouseEvents mouseEvents)
 		//{

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ITR;
+using SharpNBT;
 using YAHAC.MVVM.ViewModel;
 using YAHAC.Properties;
 
@@ -56,13 +57,10 @@ namespace YAHAC.MVVM.UserControls
 
 
 
-
-
-
-
-		public ItemView(Item item) : this()
+		public ItemView(Item item, object Tag = null) : this()
 		{
 			this.item = item;
+			this.Tag = Tag;
 		}
 		public ItemView()
 		{
