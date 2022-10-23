@@ -52,6 +52,7 @@ namespace YAHAC.MVVM.ViewModel
 		//Models
 		public static Bazaar bazaar;
 		public static AuctionHouse auctionHouse;
+		public static BetterAH betterAH;
 
 		//Views
 		BazaarView bazaarView;
@@ -60,11 +61,15 @@ namespace YAHAC.MVVM.ViewModel
 
 		public MainViewModel()
 		{
-			bazaar = new(false);
-			auctionHouse = new();
-			settings = new();
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
+			settings = new();
+			bazaar = new(false);
+			auctionHouse = new();
+			betterAH = new();
+
+			//betterAH.addRecipe();
+			//betterAH.saveRecipes();
 
 			//ITR.ItemTextureResolver.HyItems_Item hyItem = new();
 			//hyItem.id = Material.ENCHANTED_BOOK.ToString();
@@ -75,6 +80,7 @@ namespace YAHAC.MVVM.ViewModel
 			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
 			bazaarView = new();
 			auctionHouseView = new();
+			betterAHView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = bazaarView; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = auctionHouseView; });
 			BetterAHViewCommand = new RelayCommand((o) => { CurrentView = betterAHView; });

@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YAHAC.Converters;
+using YAHAC.MVVM.UserControls;
+using YAHAC.MVVM.ViewModel;
 
 namespace YAHAC.MVVM.View
 {
@@ -24,5 +27,16 @@ namespace YAHAC.MVVM.View
 		{
 			InitializeComponent();
 		}
-	}
+
+        private void UserControl_MouseMove(object sender, MouseEventArgs e)
+        {
+			MouseToCanvasOffset offs = new();
+			((BetterAHViewModel)DataContext).CanvasPoint = (Point)offs.Convert(sender, typeof(BetterAHView), e, null);
+		}
+
+        private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			((BetterAHViewModel)DataContext).SelectedItem = ((ItemView)((ListBox)sender).SelectedItem)?.item;
+		}
+    }
 }
