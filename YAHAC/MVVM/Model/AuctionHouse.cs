@@ -199,7 +199,7 @@ namespace YAHAC.MVVM.Model
 
 			if (!WholeAHGathered) GatherWholeAH(deserializedPage.totalPages);
 
-			if (!AddPageToAuctions(deserializedPage, last_lastUpdated)) return;
+			AddPageToAuctions(deserializedPage, last_lastUpdated);
 
 			var AHEndedResult = Task.Run(async () => await AHEndedRequester.GetBodyAsync()).Result;
 			var serializedEndedPage = AHEndedResult.Content.ReadAsStringAsync().Result;
@@ -238,7 +238,7 @@ namespace YAHAC.MVVM.Model
 					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(other_i)).Result;
 					var serialized = result.Content.ReadAsStringAsync().Result;
 					var deserialized = JsonSerializer.Deserialize<AuctionHousePage>(serialized);
-					if (!AddPageToAuctions(deserialized)) throw new Exception();
+					AddPageToAuctions(deserialized);
 				}));
 			}
 			Task.WaitAll(tasks.ToArray());
@@ -275,9 +275,9 @@ namespace YAHAC.MVVM.Model
 			return false;
 		}
 
-		bool AddPageToAuctions(AuctionHousePage page, long? lastUpdated = null)
+		void AddPageToAuctions(AuctionHousePage page, long? lastUpdated = null)
 		{
-			if (page == null) return false;
+			if (page == null) throw new ApplicationException();
 			if (!page.success) throw new ApplicationException();
 
 			//I dont care bout regular auctions for now
@@ -311,9 +311,7 @@ namespace YAHAC.MVVM.Model
 					if (!cus) { throw new Exception(); }
 				}
 			}
-
 			page.auctions = remainingAuctions;
-			return true;
 		}
 
 		void RemoveEndedAuctions(AuctionHouseEndedPage endedAuctions)

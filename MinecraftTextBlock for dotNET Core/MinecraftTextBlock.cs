@@ -104,7 +104,7 @@ namespace MinecraftTextBlock_for_dotNET_Core
 			EnsureFormattedText();
 			_formattedText.SetFontSize(FontSize);
 			Width = _formattedText.Width + 2;
-			Height = _formattedText.Height * 1.1;
+			Height = _formattedText.Height;
 			if (VerticalAlignment == VerticalAlignment.Center) drawingContext.DrawText(_formattedText, new Point(0, (Height - _formattedText.Height) / 2));
 			else drawingContext.DrawText(_formattedText, new Point(0, 0));
 			base.OnRender(drawingContext);
