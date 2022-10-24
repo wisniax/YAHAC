@@ -26,20 +26,6 @@ namespace YAHAC.MVVM.UserControls
 	public partial class BazaarItemPeek : UserControl
 	{
 
-		//public string SelectedItemID
-		//{
-		//	get { return (string)GetValue(SelectedItemIDProperty); }
-		//	set
-		//	{
-		//		if (value == null) return;
-		//		SetValue(SelectedItemIDProperty, value);
-		//	}
-		//}
-		//// Using a DependencyProperty as the backing store for SelectedItemID.  This enables animation, styling, binding, etc...
-		//public static readonly DependencyProperty SelectedItemIDProperty =
-		//	DependencyProperty.Register("SelectedItemID", typeof(string), typeof(BazaarItemPeek),
-		//		new PropertyMetadata(OnDependencyChanged));
-
 		public Item SelectedItem
 		{
 			get { return (Item)GetValue(SelectedItemProperty); }

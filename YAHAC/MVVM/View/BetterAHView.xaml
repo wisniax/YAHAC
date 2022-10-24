@@ -83,17 +83,16 @@
 				RelativeSource FindAncestor, AncestorType={
 				x:Type local:BetterAHView}}, 
 				Path=DataContext.CanvasPoint.Y}">
-				<MTB:MinecraftTextBlock
-					Text="{Binding RelativeSource={
+				<UserControls:AuctionItemDisplay
+					SelectedAuction="{Binding RelativeSource={
 					RelativeSource FindAncestor, AncestorType={
 					x:Type local:BetterAHView}}, 
-					Path=DataContext.SelectedItemView.item,
-					Converter={StaticResource ItemToItemName}}"
+					Path=DataContext.SelectedItemView.Tag}"
 					FontSize="18"
 					FontFamily="Lucida Console"
 					Foreground="White"
 				>
-				</MTB:MinecraftTextBlock>
+				</UserControls:AuctionItemDisplay>
 			</Border>
 		</Canvas>
 	</Grid>
