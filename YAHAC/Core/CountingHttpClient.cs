@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace YAHAC.Core
 		/// </summary>
 		public UInt32 DataPeroid { get; set; } = 60;
 
-		readonly private Queue<DataPlusTime> downloadedDataHistory;
+		readonly private ConcurrentQueue<DataPlusTime> downloadedDataHistory;
 
 		private ulong _LifeTimeDataTransfered;
 		/// <summary>
@@ -83,7 +83,7 @@ namespace YAHAC.Core
             {
 				if (Convert.ToInt32((DateTime.Now - entry.timestamp).TotalSeconds) <= DataPeroid)
 					break;
-				downloadedDataHistory.Dequeue();
+				downloadedDataHistory.TryDequeue(out _);
 			}
 		}
 
