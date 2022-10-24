@@ -65,7 +65,7 @@ namespace YAHAC.MVVM.ViewModel
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
 			settings = new();
 			bazaar = new(false);
-			auctionHouse = new();
+			auctionHouse = new(false,true);
 			betterAH = new();
 
 			//betterAH.addRecipe();

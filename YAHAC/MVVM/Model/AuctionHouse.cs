@@ -197,19 +197,7 @@ namespace YAHAC.MVVM.Model
 			//Deserialization goes hereee JsonSerializer.Deserialize<AuctionHousePage>(serialized)
 			var deserializedPage = JsonSerializer.Deserialize<AuctionHousePage>(serializedPage);
 
-			if (!WholeAHGathered)
-			{
-				auctions.Clear();
-
-				for (int i = 1; i < deserializedPage.totalPages; i++)
-				{
-					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(i)).Result;
-					var serialized = result.Content.ReadAsStringAsync().Result;
-					var deserialized = JsonSerializer.Deserialize<AuctionHousePage>(serialized);
-					if (!AddPageToAuctions(deserialized)) throw new Exception();
-				}
-				WholeAHGathered = true;
-			}
+			if (!WholeAHGathered) GatherWholeAH(deserializedPage.totalPages);
 
 			if (!AddPageToAuctions(deserializedPage, last_lastUpdated)) return;
 
@@ -236,6 +224,24 @@ namespace YAHAC.MVVM.Model
 				totalItems += value.Count;
 			}
 			totalItems += 0;
+		}
+
+		private void GatherWholeAH(int totalPages)
+		{
+			auctions.Clear();
+			List<Task> tasks = new();
+			for (int i = 1; i < totalPages; i++)
+			{
+				tasks.Add(Task.Run(() =>
+				{
+					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(i)).Result;
+					var serialized = result.Content.ReadAsStringAsync().Result;
+					var deserialized = JsonSerializer.Deserialize<AuctionHousePage>(serialized);
+					if (!AddPageToAuctions(deserialized)) throw new Exception();
+				}));
+			}
+			Task.WaitAll(tasks.ToArray());
+			WholeAHGathered = true;
 		}
 
 		//Some Copy-Paste from Bazaar ... dont mind me lmao
@@ -271,7 +277,7 @@ namespace YAHAC.MVVM.Model
 		bool AddPageToAuctions(AuctionHousePage page, long? lastUpdated = null)
 		{
 			if (page == null) return false;
-			if (!page.success) return false;
+			if (!page.success) throw new ApplicationException();
 
 			//I dont care bout regular auctions for now
 			page.auctions.RemoveAll((a) => !a.bin);

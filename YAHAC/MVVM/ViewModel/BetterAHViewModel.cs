@@ -152,31 +152,33 @@ namespace YAHAC.MVVM.ViewModel
 		void playSound(string uuid)
 		{
 			if (highlitedAuction_uuid == uuid) { return; }
-			var lista = MainViewModel.betterAH.ItemsToSearchFor.FindAll((a) => a.priority >= 1);
-			foreach (var item in lista)
-			{
-				if (MainViewModel.betterAH.MatchingItems.Exists((a) => a.HyPixel_ID == item.item_dictKey))
-				{
-					soundPlayer.Play();
-					return;
-				}
-			}
+			soundPlayer.Play();
+			//var lista = MainViewModel.betterAH.ItemsToSearchFor.FindAll((a) => a.priority >= 1);
+			//foreach (var item in lista)
+			//{
+			//	if (MainViewModel.betterAH.MatchingItems.Exists((a) => a.HyPixel_ID == item.item_dictKey))
+			//	{
+			//		soundPlayer.Play();
+			//		return;
+			//	}
+			//}
 		}
 
 		void JadeRald(string uuid)
 		{
 			if (highlitedAuction_uuid == uuid) { return; }
-			var lista = MainViewModel.betterAH.ItemsToSearchFor.FindAll((a) => a.priority >= 1);
-			lista.Sort((a, b) => b.priority.CompareTo(a.priority));
-			foreach (var item in lista)
-			{
-				if (MainViewModel.betterAH.MatchingItems.Exists((a) => a.HyPixel_ID == item.item_dictKey))
-				{
-					var smth = MainViewModel.betterAH.MatchingItems.Find((a) => a.HyPixel_ID == item.item_dictKey);
-					CopyToClipboard("/viewauction " + smth.uuid);
-					return;
-				}
-			}
+			CopyToClipboard("/viewauction " + uuid);
+			//var lista = MainViewModel.betterAH.ItemsToSearchFor.FindAll((a) => a.priority >= 1);
+			//lista.Sort((a, b) => b.priority.CompareTo(a.priority));
+			//foreach (var item in lista)
+			//{
+			//	if (MainViewModel.betterAH.MatchingItems.Exists((a) => a.HyPixel_ID == item.item_dictKey))
+			//	{
+			//		var smth = MainViewModel.betterAH.MatchingItems.Find((a) => a.HyPixel_ID == item.item_dictKey);
+			//		CopyToClipboard("/viewauction " + smth.uuid);
+			//		return;
+			//	}
+			//}
 		}
 
 		void CopyToClipboard(string str)
@@ -192,33 +194,5 @@ namespace YAHAC.MVVM.ViewModel
 			if (SelectedItemView.Tag == null) return;
 			CopyToClipboard("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
 		}
-		//This either
-		//private void RenderItemName(itemUC sender, GuiCode.itemUC.MouseEvents mouseEvents)
-		//{
-		//	switch (mouseEvents)
-		//	{
-		//		case GuiCode.itemUC.MouseEvents.Enter:
-		//			labelItemNameTip.Enabled = true;
-		//			labelItemNameTip.Text = Properties.AllItemsREPO.IDtoNAME(sender.item_id);
-		//			labelItemNameTip.Location = CalcPointPosition(labelItemNameTip);
-		//			labelItemNameTip.Refresh();
-		//			labelItemNameTip.Visible = true;
-		//			break;
-		//		case GuiCode.itemUC.MouseEvents.LocationChanged:
-		//			labelItemNameTip.Location = CalcPointPosition(labelItemNameTip);
-		//			break;
-		//		case GuiCode.itemUC.MouseEvents.Click:
-		//			labelItemNameTip.Visible = false;
-		//			labelItemNameTip.Enabled = false;
-		//			CopyToClipboard("/viewauction " + ((AuctionHouseFetcher.itemData)sender.Tag).uuid);
-		//			break;
-		//		case GuiCode.itemUC.MouseEvents.Leave:
-		//			labelItemNameTip.Visible = false;
-		//			labelItemNameTip.Enabled = false;
-		//			break;
-		//		default:
-		//			break;
-		//	}
-		//}
 	}
 }
