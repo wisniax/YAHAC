@@ -232,9 +232,10 @@ namespace YAHAC.MVVM.Model
 			List<Task> tasks = new();
 			for (int i = 1; i < totalPages; i++)
 			{
+				int other_i = i;
 				tasks.Add(Task.Run(() =>
 				{
-					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(i)).Result;
+					var result = Task.Run(async () => await AHPageRequester.GetBodyAsync(other_i)).Result;
 					var serialized = result.Content.ReadAsStringAsync().Result;
 					var deserialized = JsonSerializer.Deserialize<AuctionHousePage>(serialized);
 					if (!AddPageToAuctions(deserialized)) throw new Exception();
