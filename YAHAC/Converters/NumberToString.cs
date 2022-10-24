@@ -42,6 +42,9 @@ namespace YAHAC.Converters
 				case int d:
 					if (d >= maxValue) return "NaN";
 					return d.ToString("N0", culture);
+				case long d:
+					if (d >= maxValue) return "NaN";
+					return d.ToString("N0", culture);
 				default:
 					throw new NotImplementedException();
 			}

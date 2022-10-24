@@ -66,12 +66,9 @@
 				Visibility="{Binding AdditionalInfo_Visible,
 			Converter={StaticResource BoolToVisibility}}">
 			<Border 
-				BorderBrush="#FF24015B"
-				BorderThickness="5"
-				CornerRadius="5"
-				Padding="3"
+				BorderThickness="0"
+				Padding="0"
 				Margin="0"
-				Background="#FF100110"
 				RenderOptions.EdgeMode="Aliased"
 				Canvas.Left="{
 				Binding RelativeSource={

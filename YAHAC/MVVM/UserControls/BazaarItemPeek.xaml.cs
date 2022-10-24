@@ -86,12 +86,5 @@ namespace YAHAC.MVVM.UserControls
 				return;
 			}
 		}
-
-		private void RenderOffers()
-		{
-			//var cont = new BazaarOfferDsiplay();
-			//cont.Offers = BazaarItemData.buy_summary;
-			//OffersPanel.Children.Add(cont);
-		}
 	}
 }

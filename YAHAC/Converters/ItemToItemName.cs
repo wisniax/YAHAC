@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using YAHAC.MVVM.Model;
 
 namespace YAHAC.Converters
 {
@@ -13,12 +14,27 @@ namespace YAHAC.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value == null) 
+			if (value == null)
 				return "lol";
 			string str = "";
+			Rarity tier = 0;
+			var name = "";
 			Item item;
-			item = value as Item;
-			switch (item.Tier)
+			if (value is Item)
+			{
+				item = value as Item;
+				tier = item.Tier;
+				name = item.Name;
+			}
+			else if (value is Auction)
+			{
+				var val = value as Auction;
+				tier = Item.GetRarityFromString(val.tier);
+				name = val.item_name;
+			}
+			else throw new NotImplementedException();
+
+			switch (tier)
 			{
 				case Rarity.Common:
 					str = "§f";
@@ -51,7 +67,7 @@ namespace YAHAC.Converters
 					str = "§e";
 					break;
 			}
-			return str += item.Name;
+			return str += name;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
