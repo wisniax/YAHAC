@@ -1,22 +1,24 @@
 ﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:YAHAC.MVVM.View"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:YAHAC.MVVM.View"
 			 xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel"
-			 xmlns:Converters="clr-namespace:YAHAC.Converters" x:Class="YAHAC.MVVM.UserControls.ItemView"
+			 xmlns:Converters="clr-namespace:YAHAC.Converters" 
+			 x:Class="YAHAC.MVVM.UserControls.ItemView"
 			 x:Name="itemControl"
 			 mc:Ignorable="d"
 			 Background="Transparent"
 			 BorderThickness="0"
 			 Margin="1,3,1,3"
-			 DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+			 DataContext="{Binding Mode=OneWay, 
+	RelativeSource={RelativeSource Self}}"
 			 >
-    <UserControl.Resources>
-        <Converters:MemoryStreamToImageSource x:Key="MemoryStreamToImageSource"/>
-    </UserControl.Resources>
-    <Border Width="{Binding ItemBoxSize}"
+	<UserControl.Resources>
+		<Converters:MemoryStreamToImageSource x:Key="MemoryStreamToImageSource"/>
+	</UserControl.Resources>
+	<Border Width="{Binding ItemBoxSize}"
 			Height="{Binding ItemBoxSize}"
 			x:Name="border"
 			d:Width="68" d:Height="68"
@@ -25,10 +27,28 @@
 			CornerRadius="5"
 			ClipToBounds="True"
 			>
-        <!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
-        <Border.Background>
-            <ImageBrush Stretch="Fill" 
-						ImageSource="{Binding item.Texture, Converter={StaticResource MemoryStreamToImageSource}}"/>
-        </Border.Background>
-    </Border>
+		<!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
+		<Border.Background>
+			<ImageBrush Stretch="Fill" 
+						ImageSource="{Binding item.Texture, 
+				Converter={StaticResource MemoryStreamToImageSource}}"/>
+		</Border.Background>
+		<Grid Background="Transparent"
+			  Margin="1">
+			<Button
+				HorizontalAlignment="Right"
+				VerticalAlignment="Top"
+				Background="Transparent"
+				Visibility="Visible"
+				IsEnabled="True"
+				Foreground="Wheat"
+				FontSize="5"
+				Margin="0"
+				BorderThickness="0"
+				Padding="0"
+				ToolTip="Delete Item">
+				XD
+			</Button>
+		</Grid>
+	</Border>
 </UserControl>

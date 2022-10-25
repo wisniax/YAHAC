@@ -29,9 +29,9 @@
 	<Grid Background="Transparent">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
-		<ListBox  x:Name="ItemsList"
+		<Grid>
+			<ListBox  x:Name="ItemsList"
 				  Grid.Row="0"
 				  HorizontalContentAlignment="Center"
 				  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -40,28 +40,29 @@
 				  Background="Transparent"
 				  ItemsSource="{Binding Items}"
 				  SelectionChanged="ItemsList_SelectionChanged">
-			<ListBox.ItemContainerStyle>
-				<Style TargetType="{x:Type ListBoxItem}">
-					<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
-					<Style.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="IsSelected" Value="True"/>
-						</Trigger>
-					</Style.Triggers>
-				</Style>
-			</ListBox.ItemContainerStyle>
-			<!--<ListBox.ItemContainerStyle>
+				<ListBox.ItemContainerStyle>
+					<Style TargetType="{x:Type ListBoxItem}">
+						<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="IsSelected" Value="True"/>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</ListBox.ItemContainerStyle>
+				<!--<ListBox.ItemContainerStyle>
 			<Style TargetType="ListBoxItem">
 				<Setter Property="Margin" Value="2"/>
 			</Style>
 		</ListBox.ItemContainerStyle>-->
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel HorizontalAlignment="Center"
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel HorizontalAlignment="Center"
 						   />
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
-		</ListBox>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+			</ListBox>
+		</Grid>
 		<Canvas Panel.ZIndex="10"
 				Visibility="{Binding AdditionalInfo_Visible,
 			Converter={StaticResource BoolToVisibility}}">
@@ -92,5 +93,17 @@
 				</UserControls:AuctionItemDisplay>
 			</Border>
 		</Canvas>
+		<Button
+			Panel.ZIndex="9"
+			Margin="5"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Right"
+			Background="Transparent"
+			Foreground="White"
+			Command="{Binding BetterAHSettings}"
+			>
+			<TextBlock Text="JD"
+					   FontSize="15"/>
+		</Button>
 	</Grid>
 </UserControl>

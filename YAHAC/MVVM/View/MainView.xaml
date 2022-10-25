@@ -64,13 +64,13 @@
 								 Height="40"
 								 Style="{StaticResource MenuButtonTheme}"
 								 />
-					<local:DebugDataView Grid.Row="4"
+					<local:DebugDataView VerticalAlignment="Bottom"
 										 DockPanel.Dock="Bottom"/>
-					<Button Content="Button" 
+					<!--<Button Content="Button" 
 							Grid.Row="3" 
 							Width="150" 
 							Height="20"
-							Click="Button_Click"/>
+							Click="Button_Click"/>-->
 				</DockPanel>
 			</Grid>
 			<ContentControl Grid.Column="1"

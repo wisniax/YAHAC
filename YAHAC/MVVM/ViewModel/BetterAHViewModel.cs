@@ -16,12 +16,15 @@ using System.Windows.Input;
 using YAHAC.Core;
 using YAHAC.MVVM.Model;
 using YAHAC.MVVM.UserControls;
+using YAHAC.MVVM.View;
 
 namespace YAHAC.MVVM.ViewModel
 {
 	internal class BetterAHViewModel : ObservableObject
 	{
 		SoundPlayer soundPlayer;
+
+		public RelayCommand BetterAHSettings { get; private set; }
 
 		private ObservableCollection<object> _Items;
 		/// <summary>
@@ -75,6 +78,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		public BetterAHViewModel()
 		{
+			BetterAHSettings = new RelayCommand((o) => { });
 			Items = new();
 			highlitedAuction_uuid = "";
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;

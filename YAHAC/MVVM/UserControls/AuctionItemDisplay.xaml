@@ -20,17 +20,17 @@
 	<Border BorderBrush="#FF24015B"
 			BorderThickness="5"
 			CornerRadius="5"
-			Padding="3"
+			Padding="5"
 			Margin="0"
 			Background="#FF100110"
 			RenderOptions.EdgeMode="Aliased">
 		<DockPanel>
 			<MTB:MinecraftTextBlock
-				Margin="4,2,2,2"
+				Margin="0"
 				Text="{Binding SelectedAuction,
 				Converter={StaticResource ItemToItemName}}"
 				d:Text="§k123§r §4T§2E§6S§eT §r§k123"
-				FontSize="18"
+				FontSize="19"
 				FontFamily="Lucida Console"
 				VerticalAlignment="Center"
 				Foreground="White"
@@ -39,7 +39,7 @@
 				TextAlignment="Left"
 				HorizontalAlignment="Left"/>
 			<MTB:MinecraftTextBlock
-				Margin="4,2,2,2"
+				Margin="0"
 				Text="{Binding SelectedAuction.item_lore}"
 				d:Text="§k123§r §4T§2E§6S§eT §r§k123"
 				FontSize="14"
@@ -50,6 +50,7 @@
 				TextAlignment="Left"
 				HorizontalAlignment="Left"/>
 			<Grid
+				Margin="0,5,0,0"
 				DockPanel.Dock="Top">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="auto"/>
@@ -59,6 +60,7 @@
 				Grid.Column="0"
 				Text="Starting BID: "
 				Background="Transparent"
+				Margin="0"
 				Foreground="LightGray"
 				TextAlignment="Left"
 				HorizontalAlignment="Left"
@@ -72,6 +74,7 @@
 				Converter={StaticResource NumberToString}}"
 				Background="Transparent"
 				Foreground="#FFFFAA00"
+				Margin="0"
 				TextAlignment="Left"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Center"
