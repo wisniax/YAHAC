@@ -103,7 +103,8 @@
 			Command="{Binding BetterAHSettings}"
 			>
 			<TextBlock Text="JD"
-					   FontSize="15"/>
+					   FontSize="15"
+					   />
 		</Button>
 	</Grid>
 </UserControl>

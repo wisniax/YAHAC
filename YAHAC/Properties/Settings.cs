@@ -22,12 +22,14 @@ namespace YAHAC.Properties
 	}
 	public class ItemToSearchFor
 	{
-		public ItemToSearchFor(string item_dictKey, List<String> searchQueries = null, UInt32 maxPrice = 0, UInt16 priority = 0)
+		public ItemToSearchFor(string item_dictKey, List<String> searchQueries = null, UInt32 maxPrice = 0, UInt16 priority = 0, bool enabled = true, bool playSound = false)
 		{
 			this.item_dictKey = item_dictKey;
 			this.searchQueries = searchQueries == null ? new() : searchQueries;
 			this.maxPrice = maxPrice;
 			this.priority = priority;
+			this.enabled = enabled;
+			this.playSound = playSound;
 			//this.recipe_key = recipe_key;
 		}
 		public string item_dictKey { get; set; }
@@ -35,6 +37,8 @@ namespace YAHAC.Properties
 		public UInt32 maxPrice { get; set; }
 		public UInt16 priority { get; set; }
 		public string recipe_key { get; set; }
+		public bool enabled { get; set; }
+		public bool playSound { get; set; }
 	}
 
 	public enum UserInterfaces

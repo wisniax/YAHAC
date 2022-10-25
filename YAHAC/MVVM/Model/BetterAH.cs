@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
@@ -130,26 +131,90 @@ namespace YAHAC.MVVM.Model
 			return null;
 		}
 
+		/// <summary>
+		/// Saves Recipes from RAM to Config for later use
+		/// </summary>
 		public void SaveRecipes()
 		{
 			MainViewModel.settings.Default.BetterAH_Query = ItemsToSearchFor;
 			MainViewModel.settings.Save();
 		}
 
+		/// <summary>
+		/// Loads Recipes from Config (Not saved changes will perish)
+		/// </summary>
 		public void LoadRecipes()
 		{
 			ItemsToSearchFor = MainViewModel.settings.Default.BetterAH_Query;
 			return;
 		}
 
+		/// <summary>
+		/// Searches Query List for specific item with given recipe_key
+		/// </summary>
+		/// <param name="recipe_key">ItemToSearchFor unique id</param>
+		/// <returns></returns>
 		public ItemToSearchFor GetRecipe(string recipe_key)
 		{
 			return ItemsToSearchFor.Find((a) => a.recipe_key == recipe_key);
 		}
 
-		public void addRecipe(ItemToSearchFor searchQuery)
+		/// <summary>
+		/// Assigns recipe_key and adds Query to list
+		/// </summary>
+		/// <param name="searchQuery">Query to be added to list</param>
+		public void AddRecipe(ItemToSearchFor searchQuery)
 		{
+			if (searchQuery == null) return;
+			searchQuery.recipe_key = AssignNewUniqueKey(searchQuery.item_dictKey);
+
+
 			ItemsToSearchFor.Add(searchQuery);
+		}
+
+		/// <summary>
+		/// Assigns new unique recipe_key from item's hypixel_ID
+		/// </summary>
+		/// <param name="item_dictKey">Item's hypixel_ID</param>
+		/// <returns></returns>
+		private string AssignNewUniqueKey(string item_dictKey)
+		{
+			string str = new(item_dictKey);
+			str += ':';
+			var matchingDictKeys = ItemsToSearchFor.FindAll((a) => a.item_dictKey == item_dictKey);
+			int i = new();
+			while (i < matchingDictKeys.Count)
+			{
+				var tempstr = str + i.ToString();
+				if (ItemsToSearchFor.Exists((a) => a.recipe_key == tempstr)) i++;
+				else break;
+			}
+
+			str += i.ToString();
+
+			return str;
+		}
+
+		public Auction FindCheapestMatchingItem(ItemToSearchFor toMatch)
+		{
+			if (!MainViewModel.auctionHouse.auctions.TryGetValue(toMatch.item_dictKey, out var itemsToSearchOn)) { return null; }
+
+			itemsToSearchOn.Sort((a, b) => a.starting_bid.CompareTo(b.starting_bid));
+
+			foreach (var entry in itemsToSearchOn)
+			{
+				if (!entry.bin) continue;                           //Skip if not bin
+				bool doesMatch = true;
+				//Skip if lore doesn't contain text
+
+				foreach (var text in toMatch.searchQueries)
+				{
+					if (!entry.item_lore.Contains(text)) { doesMatch = false; break; }
+				}
+				if (!doesMatch) continue;
+				return entry;
+			}
+			return null;
 		}
 
 		//To be Rewritten
@@ -181,18 +246,7 @@ namespace YAHAC.MVVM.Model
 		///
 		///		METHODS
 		///
-		void saveRecipes()
-		{
-			var stronk = JsonSerializer.Serialize(itemsToSearchFor);
-			Properties.Settings.Default.BetterAHQuery = stronk;
-			Properties.Settings.Default.Save();
-		}
 
-		List<BetterAH.ItemToSearchFor> loadRecipes()
-		{
-			var stronk = JsonSerializer.Deserialize<List<BetterAH.ItemToSearchFor>>(Properties.Settings.Default.BetterAHQuery);
-			return stronk;
-		}
 		//Generates combo box responsible for selecting stored item recipes
 		private void generateComboItemToCraftList(string selectKey = null)
 		{
@@ -233,25 +287,6 @@ namespace YAHAC.MVVM.Model
 			{
 				textBoxRecipe.AppendText(item + Environment.NewLine); //New line is "\r\n"
 			}
-		}
-
-		private string assignNewUniqueKey(string item_dictKey)
-		{
-
-			string str = new(item_dictKey);
-			str += ':';
-			var matchingDictKeys = itemsToSearchFor.FindAll((a) => a.item_dictKey == item_dictKey);
-			int i = new();
-			while (i < matchingDictKeys.Count)
-			{
-				var tempstr = str + i.ToString();
-				if (itemsToSearchFor.Exists((a) => a.recipe_key == tempstr)) i++;
-				else break;
-			}
-
-			str += i.ToString();
-
-			return str;
 		}
 
 		///

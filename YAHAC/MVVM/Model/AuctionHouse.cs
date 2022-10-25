@@ -211,7 +211,7 @@ namespace YAHAC.MVVM.Model
 			totalAuctions = deserializedPage.totalAuctions;
 			totalPages = deserializedPage.totalPages;
 
-			if (!success || (last_lastUpdated + 1000 >= lastUpdated)) return;
+			//if (!success || (last_lastUpdated + 1000 >= lastUpdated)) return;
 
 			latestHeaders = new(AHPageResult.Headers, AHPageResult.Content.Headers);
 			Header_TimeOffset = DateTimeOffset.Now - latestHeaders.Key.Date;

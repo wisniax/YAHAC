@@ -33,8 +33,32 @@
 						ImageSource="{Binding item.Texture, 
 				Converter={StaticResource MemoryStreamToImageSource}}"/>
 		</Border.Background>
-		<Grid Background="Transparent"
-			  Margin="1">
+		<DockPanel Background="Transparent"
+			  Margin="1"
+			  Visibility="Visible"
+			  IsEnabled="True"
+			  >
+			
+			<CheckBox
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Background="Transparent"
+				BorderThickness="0"
+				DockPanel.Dock="Left"
+				ToolTip="Enabled?"
+				>
+			</CheckBox>
+			
+			<CheckBox
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Background="Transparent"
+				BorderThickness="0"
+				ToolTip="Play Sound?"
+				DockPanel.Dock="Left"
+				>
+			</CheckBox>
+
 			<Button
 				HorizontalAlignment="Right"
 				VerticalAlignment="Top"
@@ -45,10 +69,44 @@
 				FontSize="5"
 				Margin="0"
 				BorderThickness="0"
+				DockPanel.Dock="Right"
+				x:Name="Delete_Btn"
 				Padding="0"
 				ToolTip="Delete Item">
 				XD
 			</Button>
-		</Grid>
+			<Button
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				DockPanel.Dock="Left"
+				Background="Transparent"
+				Visibility="Visible"
+				IsEnabled="True"
+				Foreground="Wheat"
+				FontSize="5"
+				Margin="0"
+				BorderThickness="0"
+				x:Name="Edit_Btn"
+				Padding="0"
+				ToolTip="Modify Query">
+				M
+			</Button>
+			<Button
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Background="Transparent"
+				DockPanel.Dock="Left"
+				Visibility="Visible"
+				IsEnabled="True"
+				Foreground="Wheat"
+				FontSize="5"
+				Margin="0"
+				BorderThickness="0"
+				x:Name="Copy_Btn"
+				Padding="0"
+				ToolTip="Duplicate Query">
+				C
+			</Button>
+		</DockPanel>
 	</Border>
 </UserControl>
