@@ -71,15 +71,26 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
+		private ObservableCollection<object> _ItemsToSearchForCollection;
+		public ObservableCollection<object> ItemsToSearchForCollection
+		{
+			get { return _ItemsToSearchForCollection; }
+			set
+			{
+				_ItemsToSearchForCollection = value;
+				OnPropertyChanged();
+			}
+		}
+
+
 
 		string highlitedAuction_uuid;
-
-		//public List<GuiCode.itemUC> itemsUi;
 
 		public BetterAHViewModel()
 		{
 			BetterAHSettings = new RelayCommand((o) => { });
 			Items = new();
+			ItemsToSearchForCollection = new();
 			highlitedAuction_uuid = "";
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
 			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAH();
@@ -116,6 +127,31 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
+		void LoadItemsToSearchForCollection()
+		{
+			ItemsToSearchForCollection = new();
+			foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
+			{
+				if (itemToSearchFor == null) return;
+
+				var item = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+				if (item == null)
+				{
+					Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+					item = new Item(
+						  itemToSearchFor.item_dictKey,
+						  itemToSearchFor.item_dictKey,
+						  Material.AIR,
+						  true,
+						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+				}
+
+				var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+				ItemView itemBox = new(item, auction, true, itemToSearchFor);
+				ItemsToSearchForCollection?.Add(itemBox);
+			}
+		}
+
 		private void BetterAH_Updated(Model.BetterAH source)
 		{
 			if (!Application.Current.Dispatcher.CheckAccess())
@@ -125,6 +161,7 @@ namespace YAHAC.MVVM.ViewModel
 					if (source == null) return;
 					if (!source.success) return;
 					LoadBetterAH();
+					LoadItemsToSearchForCollection();
 					var auc = MainViewModel.betterAH.GetHighestPriorityAuction();
 					if (auc != null)
 					{
@@ -141,6 +178,7 @@ namespace YAHAC.MVVM.ViewModel
 				if (source == null) return;
 				if (!source.success) return;
 				LoadBetterAH();
+				LoadItemsToSearchForCollection();
 				var auc = MainViewModel.betterAH.GetHighestPriorityAuction();
 				if (auc != null)
 				{

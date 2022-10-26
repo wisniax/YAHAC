@@ -68,6 +68,7 @@ namespace YAHAC.MVVM.Model
 			var tasks = new List<Task>();
 			foreach (var item in ItemsToSearchFor)
 			{
+				if (!item.enabled) continue;
 				tasks.Add(Task.Run(() => checkIfItemsMatch(item, tempmatchingItems)));
 			}
 			Task.WaitAll(tasks.ToArray());
@@ -138,6 +139,7 @@ namespace YAHAC.MVVM.Model
 		{
 			MainViewModel.settings.Default.BetterAH_Query = ItemsToSearchFor;
 			MainViewModel.settings.Save();
+			findMatchingItems();
 		}
 
 		/// <summary>
@@ -145,8 +147,9 @@ namespace YAHAC.MVVM.Model
 		/// </summary>
 		public void LoadRecipes()
 		{
+			MainViewModel.settings.Load();
 			ItemsToSearchFor = MainViewModel.settings.Default.BetterAH_Query;
-			return;
+			findMatchingItems();
 		}
 
 		/// <summary>
@@ -166,10 +169,16 @@ namespace YAHAC.MVVM.Model
 		public void AddRecipe(ItemToSearchFor searchQuery)
 		{
 			if (searchQuery == null) return;
-			searchQuery.recipe_key = AssignNewUniqueKey(searchQuery.item_dictKey);
+			var query = new ItemToSearchFor(searchQuery);
+			query.recipe_key = AssignNewUniqueKey(query.item_dictKey);
+			ItemsToSearchFor.Add(query);
+			findMatchingItems();
+		}
 
-
-			ItemsToSearchFor.Add(searchQuery);
+		public void RemoveRecipe(string recipe_key)
+		{
+			ItemsToSearchFor.RemoveAll((a)=>a.recipe_key.Equals(recipe_key));
+			findMatchingItems();
 		}
 
 		/// <summary>

@@ -32,6 +32,20 @@ namespace YAHAC.Properties
 			this.playSound = playSound;
 			//this.recipe_key = recipe_key;
 		}
+		public ItemToSearchFor(ItemToSearchFor itemToSearchFor)
+		{
+			item_dictKey = itemToSearchFor.item_dictKey;
+			searchQueries = itemToSearchFor.searchQueries;
+			maxPrice = itemToSearchFor.maxPrice;
+			priority = itemToSearchFor.priority;
+			enabled = itemToSearchFor.enabled;
+			playSound = itemToSearchFor.playSound;
+			recipe_key = itemToSearchFor.recipe_key;
+		}
+		public ItemToSearchFor()
+		{
+
+		}
 		public string item_dictKey { get; set; }
 		public List<String> searchQueries { get; set; }
 		public UInt32 maxPrice { get; set; }
@@ -71,7 +85,7 @@ namespace YAHAC.Properties
 			if (!Load()) createNew();
 		}
 
-		bool Load()
+		public bool Load()
 		{
 			if (!Directory.Exists(SettingsPath))
 			{

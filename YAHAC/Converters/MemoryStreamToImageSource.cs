@@ -25,7 +25,7 @@ namespace YAHAC.Converters
                 image.EndInit();
                 return image;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

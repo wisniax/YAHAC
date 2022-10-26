@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ITR;
 using SharpNBT;
+using YAHAC.Core;
 using YAHAC.MVVM.ViewModel;
 using YAHAC.Properties;
 
@@ -44,7 +45,6 @@ namespace YAHAC.MVVM.UserControls
 				new Item(null, null, Material.AIR, true, ImageToStream(Properties.Resources.NoTextureMark), false)));
 
 
-
 		public int ItemBoxSize
 		{
 			get { return (int)GetValue(ItemBoxSizeProperty); }
@@ -57,10 +57,36 @@ namespace YAHAC.MVVM.UserControls
 
 
 
-		public ItemView(Item item, object Tag = null) : this()
+		public bool visible
+		{
+			get { return (bool)GetValue(visibleProperty); }
+			set { SetValue(visibleProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for visible.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty visibleProperty =
+			DependencyProperty.Register("visible", typeof(bool), typeof(ItemView), new PropertyMetadata(false));
+
+
+
+		public ItemToSearchFor itemToSearchFor
+		{
+			get { return (ItemToSearchFor)GetValue(itemToSearchForProperty); }
+			set { SetValue(itemToSearchForProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for itemToSearchFor.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty itemToSearchForProperty =
+			DependencyProperty.Register("itemToSearchFor", typeof(ItemToSearchFor), typeof(ItemView), new FrameworkPropertyMetadata(
+			null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+
+		public ItemView(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null) : this()
 		{
 			this.item = item;
 			this.Tag = Tag;
+			this.visible = visible;
+			this.itemToSearchFor = itemToSearchFor;
 		}
 		public ItemView()
 		{
@@ -95,6 +121,24 @@ namespace YAHAC.MVVM.UserControls
 				if (itemUpdated.HyPixel_ID != item.HyPixel_ID) return;
 				item = new(itemUpdated);
 			}
+		}
+
+		private void Delete_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			if (itemToSearchFor == null) return;
+			MainViewModel.betterAH.RemoveRecipe(itemToSearchFor.recipe_key);
+		}
+
+		private void Modify_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			if (itemToSearchFor == null) return;
+
+		}
+
+		private void Dupe_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			if (itemToSearchFor == null) return;
+			MainViewModel.betterAH.AddRecipe(itemToSearchFor);
 		}
 	}
 }

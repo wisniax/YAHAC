@@ -28,20 +28,30 @@ namespace YAHAC.MVVM.View
 			InitializeComponent();
 		}
 
-        private void UserControl_MouseMove(object sender, MouseEventArgs e)
-        {
+		private void UserControl_MouseMove(object sender, MouseEventArgs e)
+		{
 			MouseToCanvasOffset offs = new();
 			((BetterAHViewModel)DataContext).CanvasPoint = (Point)offs.Convert(sender, typeof(BetterAHView), e, null);
 		}
 
-        private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+		private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
 			((BetterAHViewModel)DataContext).SelectedItemView = ((ItemView)((ListBox)sender).SelectedItem);
 		}
 
-        private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
+		private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
 			((BetterAHViewModel)DataContext).MouseDoubleClicked(sender, e);
 		}
-    }
+
+		private void LoadConfig_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			MainViewModel.betterAH.LoadRecipes();
+		}
+
+		private void SaveConfig_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			MainViewModel.betterAH.SaveRecipes();
+		}
+	}
 }

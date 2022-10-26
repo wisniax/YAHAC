@@ -30,7 +30,7 @@ namespace YAHAC.Converters
 			point.Offset(15, -30);
 			if (point.X + CanvasSize.Width > ControlSize.Width) point.X = point.X - 2 * (point.X - mousePosition.X)-CanvasSize.Width;
 			if (mousePosition.Y + CanvasSize.Height - (mousePosition.Y - point.Y) > ControlSize.Height) point.Y = ControlSize.Height - CanvasSize.Height;
-			if (point.Y < 0) point.Y = 0;
+			if (point.Y < 0&&point.Y+ ControlSize.Height>=CanvasSize.Height) point.Y = 0;
 			return point;
 		}
 
