@@ -173,11 +173,17 @@
 				Margin="5"
 				HorizontalAlignment="Right">
 				<ComboBox
+					IsEditable="True"
 					DockPanel.Dock="Left"
-					Width="150"
-					Background="Transparent"
-					Opacity="0.35"
-					Foreground="LightCyan">
+					MinWidth="200"
+					Opacity="0.4"
+					ItemsSource="{Binding AuctionableItems}"
+					SelectedItem="{Binding SelectedAuctionableItem}">
+					<ComboBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</ComboBox.ItemsPanel>
 
 				</ComboBox>
 				<Button
@@ -185,7 +191,9 @@
 					Background="Transparent"
 					Foreground="LightCyan"
 					BorderThickness="0"
+					x:Name="AddConfig_Btn"
 					ToolTip="Adds selected item to query"
+					Command="{Binding AddItemInComboBox}"
 					Margin="3,0,3,0">
 					<TextBlock
 						Text="Add" />

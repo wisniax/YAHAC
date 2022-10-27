@@ -36,7 +36,7 @@ namespace YAHAC.MVVM.View
 
 		private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			((BetterAHViewModel)DataContext).SelectedItemView = ((ItemView)((ListBox)sender).SelectedItem);
+			((BetterAHViewModel)DataContext).SelectedItemView = ((sender as ListBox).SelectedItem as ItemView);
 		}
 
 		private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -53,5 +53,5 @@ namespace YAHAC.MVVM.View
 		{
 			MainViewModel.betterAH.SaveRecipes();
 		}
-    }
+	}
 }
