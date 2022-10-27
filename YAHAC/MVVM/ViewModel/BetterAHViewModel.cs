@@ -25,6 +25,7 @@ namespace YAHAC.MVVM.ViewModel
 		SoundPlayer soundPlayer;
 
 		public RelayCommand BetterAHSettings { get; private set; }
+		public RelayCommand AddItemInComboBox { get; private set; }
 
 		private ObservableCollection<object> _Items;
 		/// <summary>
@@ -92,6 +93,29 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
+		private ObservableCollection<object> _AuctionableItems;
+		public ObservableCollection<object> AuctionableItems
+		{
+			get { return _AuctionableItems; }
+			set
+			{
+				_AuctionableItems = value;
+				OnPropertyChanged();
+			}
+		}
+		private object _SelectedAuctionableItem;
+
+		public object SelectedAuctionableItem
+		{
+			get { return _SelectedAuctionableItem; }
+			set
+			{
+				_SelectedAuctionableItem = value;
+				OnPropertyChanged();
+			}
+		}
+
+
 
 
 
@@ -100,9 +124,16 @@ namespace YAHAC.MVVM.ViewModel
 
 		public BetterAHViewModel()
 		{
+			SelectedAuctionableItem = new();
 			BetterAHSettings = new RelayCommand((o) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
+			AddItemInComboBox = new RelayCommand((o) =>
+			{
+				if (SelectedAuctionableItem == null) return;
+				MainViewModel.betterAH.AddRecipe(new Properties.ItemToSearchFor(SelectedAuctionableItem as string, enabled: false));
+			});
 			ItemsToSearchForVisibility = false;
 			Items = new();
+			AuctionableItems = new();
 			ItemsToSearchForCollection = new();
 			highlitedAuction_uuid = "";
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
@@ -144,6 +175,7 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			if (!ItemsToSearchForVisibility) return;
 			ItemsToSearchForCollection = new();
+			AuctionableItems = new(MainViewModel.auctionHouse.auctions.Keys);
 			foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
 			{
 				if (itemToSearchFor == null) return;
@@ -162,8 +194,14 @@ namespace YAHAC.MVVM.ViewModel
 
 				var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 				ItemView itemBox = new(item, auction, true, itemToSearchFor);
+				itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
 				ItemsToSearchForCollection?.Add(itemBox);
 			}
+		}
+
+		private void ItemToSearchForModifyRequested(ItemView source)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void BetterAH_Updated(Model.BetterAH source)
@@ -247,6 +285,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		public void MouseDoubleClicked(object sender, MouseButtonEventArgs e)
 		{
+			if (SelectedItemView == null) return;
 			if (SelectedItemView.Tag == null) return;
 			CopyToClipboard("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
 		}

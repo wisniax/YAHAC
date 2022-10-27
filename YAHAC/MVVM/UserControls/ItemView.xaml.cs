@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using ITR;
 using SharpNBT;
 using YAHAC.Core;
+using YAHAC.MVVM.Model;
+using YAHAC.MVVM.View;
 using YAHAC.MVVM.ViewModel;
 using YAHAC.Properties;
 
@@ -80,6 +82,9 @@ namespace YAHAC.MVVM.UserControls
 			DependencyProperty.Register("itemToSearchFor", typeof(ItemToSearchFor), typeof(ItemView), new FrameworkPropertyMetadata(
 			null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+		public delegate void ItemModifyRequestedHandler(ItemView source);
+		public event ItemModifyRequestedHandler ItemModifyRequestedEvent;
+
 
 		public ItemView(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null) : this()
 		{
@@ -93,6 +98,11 @@ namespace YAHAC.MVVM.UserControls
 			ItemBoxSize = MainViewModel.settings.Default.MinecraftItemBox_Size;
 			MainViewModel.itemTextureResolver.DownloadedItemEvent += ItemTextureResolver_DownloadedItemEvent;
 			InitializeComponent();
+		}
+
+		private void OnBetterAHUpdated()
+		{
+			ItemModifyRequestedEvent?.Invoke(this);
 		}
 
 		//https://stackoverflow.com/questions/15504826/invokerequired-in-wpf
@@ -132,7 +142,8 @@ namespace YAHAC.MVVM.UserControls
 		private void Modify_Btn_Click(object sender, RoutedEventArgs e)
 		{
 			if (itemToSearchFor == null) return;
-
+			if (!visible) return;
+			OnBetterAHUpdated();
 		}
 
 		private void Dupe_Btn_Click(object sender, RoutedEventArgs e)

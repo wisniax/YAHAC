@@ -117,7 +117,7 @@ namespace YAHAC.MVVM.Model
 		public long lastUpdated { get; set; }
 		public int totalPages { get; set; }
 		public int totalAuctions { get; set; }
-		public Dictionary<string, List<Auction>> auctions { get; set; }
+		public ConcurrentDictionary<string, List<Auction>> auctions { get; set; }
 
 
 		BackgroundTask backgroundTask;
