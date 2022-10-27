@@ -53,5 +53,5 @@ namespace YAHAC.MVVM.View
 		{
 			MainViewModel.betterAH.SaveRecipes();
 		}
-	}
+    }
 }

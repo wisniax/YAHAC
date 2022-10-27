@@ -81,6 +81,18 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
+		private bool _ItemsToSearchForVisibility;
+		public bool ItemsToSearchForVisibility
+		{
+			get { return _ItemsToSearchForVisibility; }
+			set
+			{
+				_ItemsToSearchForVisibility = value;
+				LoadItemsToSearchForCollection();
+				OnPropertyChanged();
+			}
+		}
+
 
 
 
@@ -88,7 +100,8 @@ namespace YAHAC.MVVM.ViewModel
 
 		public BetterAHViewModel()
 		{
-			BetterAHSettings = new RelayCommand((o) => { });
+			BetterAHSettings = new RelayCommand((o) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
+			ItemsToSearchForVisibility = false;
 			Items = new();
 			ItemsToSearchForCollection = new();
 			highlitedAuction_uuid = "";
@@ -129,6 +142,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		void LoadItemsToSearchForCollection()
 		{
+			if (!ItemsToSearchForVisibility) return;
 			ItemsToSearchForCollection = new();
 			foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
 			{
