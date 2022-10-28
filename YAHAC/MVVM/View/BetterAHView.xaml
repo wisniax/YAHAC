@@ -81,6 +81,8 @@
 			</ListBox>
 		</Grid>
 		<Canvas
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
 			Panel.ZIndex="10"
 			Visibility="{Binding AdditionalInfo_Visible,
 			Converter={StaticResource BoolToVisibility}}">
@@ -223,6 +225,20 @@
 						Text="Load" />
 				</Button>
 			</DockPanel>
+			<Canvas
+				Panel.ZIndex="10"
+				VerticalAlignment="Bottom"
+				HorizontalAlignment="Right">
+				<UserControls:BetterAH_RecipeConfig
+					Background="#202020"
+					itemToSearchFor="{Binding RelativeSource={
+					RelativeSource FindAncestor, AncestorType={
+					x:Type local:BetterAHView}}, 
+					Path=DataContext.SelectedItemToRecipeConfig}"
+					Canvas.Right="0"
+					Canvas.Bottom="0" />
+
+			</Canvas>
 		</Grid>
 
 	</Grid>

@@ -17,6 +17,7 @@ using YAHAC.Core;
 using YAHAC.MVVM.Model;
 using YAHAC.MVVM.UserControls;
 using YAHAC.MVVM.View;
+using YAHAC.Properties;
 
 namespace YAHAC.MVVM.ViewModel
 {
@@ -104,7 +105,6 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 		private object _SelectedAuctionableItem;
-
 		public object SelectedAuctionableItem
 		{
 			get { return _SelectedAuctionableItem; }
@@ -114,6 +114,17 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
+		private ItemToSearchFor _SelectedItemToRecipeConfig;
+		public ItemToSearchFor SelectedItemToRecipeConfig
+		{
+			get { return _SelectedItemToRecipeConfig; }
+			set
+			{
+				_SelectedItemToRecipeConfig = value;
+				OnPropertyChanged();
+			}
+		}
+
 
 
 
@@ -201,7 +212,9 @@ namespace YAHAC.MVVM.ViewModel
 
 		private void ItemToSearchForModifyRequested(ItemView source)
 		{
-			throw new NotImplementedException();
+			if (source == null) return;
+			if (source.itemToSearchFor == null) return;
+			SelectedItemToRecipeConfig = source.itemToSearchFor;
 		}
 
 		private void BetterAH_Updated(Model.BetterAH source)
