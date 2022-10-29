@@ -241,7 +241,7 @@ namespace YAHAC.MVVM.Model
 			if (highlitedAuction_uuid == uuid) { return; }
 			highlitedAuction_uuid = uuid;
 			soundPlayer.Play();
-			CopyToClipboard.Copy("/viewauction " + uuid);
+			if (MainViewModel.jsonStruct.Copy) CopyToClipboard.Copy("/viewauction " + uuid);
 		}
 	}
 }

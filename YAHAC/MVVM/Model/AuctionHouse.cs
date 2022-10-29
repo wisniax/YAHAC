@@ -8,6 +8,8 @@ using YAHAC.Core;
 using System.Text.Json;
 using System.Collections.Concurrent;
 using System.Windows.Controls;
+using System.Configuration;
+using YAHAC.MVVM.ViewModel;
 
 namespace YAHAC.MVVM.Model
 {
@@ -205,7 +207,7 @@ namespace YAHAC.MVVM.Model
 			var serializedEndedPage = AHEndedResult.Content.ReadAsStringAsync().Result;
 			var deserializedEndedPage = JsonSerializer.Deserialize<AuctionHouseEndedPage>(serializedEndedPage);
 			RemoveEndedAuctions(deserializedEndedPage);
-
+			Task.Delay(new TimeSpan(0, 0, MainViewModel.jsonStruct.Time)).Wait();
 			lastUpdated = deserializedPage.lastUpdated;
 			success = deserializedPage.success;
 			totalAuctions = deserializedPage.totalAuctions;

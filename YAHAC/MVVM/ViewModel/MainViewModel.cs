@@ -10,6 +10,7 @@ using YAHAC.MVVM.Model;
 using System.Windows;
 using System.ComponentModel;
 using ITR;
+using static YAHAC.Core.HypixelCertificateHandling;
 
 namespace YAHAC.MVVM.ViewModel
 {
@@ -26,6 +27,8 @@ namespace YAHAC.MVVM.ViewModel
 				settings_Changed();
 			}
 		}
+		public static JsonStruct jsonStruct { get; set; }
+
 		static public void settings_Changed()
 		{
 			StaticPropertyChanged?.Invoke(null, FilterStringPropertyEventArgs);
@@ -64,6 +67,7 @@ namespace YAHAC.MVVM.ViewModel
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
 			settings = new();
+			jsonStruct = GetApiData();
 			bazaar = new();
 			auctionHouse = new();
 			betterAH = new();
