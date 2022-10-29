@@ -132,7 +132,7 @@ namespace YAHAC.MVVM.Model
 
 		private bool ShouldPerform_Refresh()
 		{
-			TimeSpan timeSpanRefresh = new TimeSpan(0, 0, 0, 9, 700);
+			TimeSpan timeSpanRefresh = new TimeSpan(0, 0, 0, 19, 700);
 			return ShouldPerform_Refresh(timeSpanRefresh);
 		}
 		private bool ShouldPerform_Refresh(TimeSpan timeSpanRefresh)
