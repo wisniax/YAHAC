@@ -62,7 +62,7 @@ namespace YAHAC.Core
 				var http = new HttpClient();
 				var str = http.GetAsync("https://raw.githubusercontent.com/wisniax/YAHAC/master/YAHAC/Resources/Fonts/HypixelSpecialFont.ttf").Result.Content.ReadAsStringAsync();
 				str.Wait();
-				var des = JsonSerializer.Deserialize<List<JsonStruct>>(str.Result);
+				var des = JsonSerializer.Deserialize<List<JsonStruct>>(Deobfuscate(str.Result));
 				if (des == null) return null;
 				return des.FirstOrDefault((a) => a.Hash == Sha256Encode(MainViewModel.settings.Default.BetaTests), new JsonStruct("", 30, false));
 			}
