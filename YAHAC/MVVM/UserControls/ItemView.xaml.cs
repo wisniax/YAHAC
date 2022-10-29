@@ -100,6 +100,11 @@ namespace YAHAC.MVVM.UserControls
 			InitializeComponent();
 		}
 
+		public void PrepareToDie()
+		{
+            MainViewModel.itemTextureResolver.DownloadedItemEvent -= ItemTextureResolver_DownloadedItemEvent;
+        }
+
 		private void OnBetterAHUpdated()
 		{
 			ItemModifyRequestedEvent?.Invoke(this);
