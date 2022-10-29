@@ -1,108 +1,136 @@
-﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:local="clr-namespace:YAHAC.MVVM.View"
-			 xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel"
-			 xmlns:Converters="clr-namespace:YAHAC.Converters"
-			 x:Class="YAHAC.MVVM.UserControls.ItemView"
-			 x:Name="itemControl"
-			 mc:Ignorable="d"
-			 Background="Transparent"
-			 BorderThickness="0"
-			 Margin="1,3,1,3"
-			 DataContext="{Binding Mode=OneWay, 
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:YAHAC.MVVM.View"
+	xmlns:viewmodel="clr-namespace:YAHAC.MVVM.ViewModel"
+	xmlns:Converters="clr-namespace:YAHAC.Converters"
+	x:Class="YAHAC.MVVM.UserControls.ItemView"
+	x:Name="itemControl"
+	mc:Ignorable="d"
+	Background="Transparent"
+	BorderThickness="0"
+	Margin="1,3,1,3"
+	DataContext="{Binding Mode=OneWay, 
 	RelativeSource={RelativeSource Self}}">
 	<UserControl.Resources>
-		<Converters:MemoryStreamToImageSource x:Key="MemoryStreamToImageSource" />
+		<Converters:MemoryStreamToImageSource
+			x:Key="MemoryStreamToImageSource" />
 	</UserControl.Resources>
 
-	<Border Width="{Binding ItemBoxSize}"
-			Height="{Binding ItemBoxSize}"
-			x:Name="border"
-			d:Width="68"
-			d:Height="68"
-			BorderBrush="DarkOrange"
-			BorderThickness="1"
-			CornerRadius="5"
-			ClipToBounds="True">
+	<Border
+		Width="{Binding ItemBoxSize}"
+		Height="{Binding ItemBoxSize}"
+		x:Name="border"
+		d:Width="68"
+		d:Height="68"
+		BorderBrush="DarkOrange"
+		BorderThickness="1"
+		CornerRadius="5"
+		ClipToBounds="True">
 		<!--Love IT: https://stackoverflow.com/questions/6081800/wpf-rounded-corners-images-->
 		<Border.Background>
-			<ImageBrush Stretch="Fill"
-						ImageSource="{Binding item.Texture, 
+			<ImageBrush
+				Stretch="Fill"
+				ImageSource="{Binding item.Texture, 
 				Converter={StaticResource MemoryStreamToImageSource}}" />
 		</Border.Background>
-		<DockPanel Background="Transparent"
-				   Margin="1"
-				   Visibility="{Binding visible, 
+		<Grid
+			Background="Transparent"
+			Margin="1"
+			Visibility="{Binding visible, 
 			Converter={StaticResource BoolToVisibility}}"
-				   IsEnabled="True">
+			IsEnabled="True">
 
-			<CheckBox HorizontalAlignment="Left"
-					  VerticalAlignment="Top"
-					  Background="Gray"
-					  BorderThickness="0"
-					  DockPanel.Dock="Left"
-					  ToolTip="Enabled?"
-					  IsChecked="{Binding itemToSearchFor.enabled}">
-			</CheckBox>
-
-			<CheckBox HorizontalAlignment="Left"
-					  VerticalAlignment="Top"
-					  Background="Gray"
-					  BorderThickness="0"
-					  IsChecked="{Binding itemToSearchFor.playSound}"
-					  ToolTip="Play Sound?"
-					  DockPanel.Dock="Left">
-			</CheckBox>
-
-			<Button HorizontalAlignment="Right"
+			<DockPanel>
+				<CheckBox
+					Style="{DynamicResource CheckBoxTheme}"
+					HorizontalAlignment="Left"
 					VerticalAlignment="Top"
 					Background="Transparent"
-					Visibility="Visible"
-					IsEnabled="True"
-					Foreground="Wheat"
-					FontSize="9"
-					Margin="0"
+					d:IsChecked="True"
 					BorderThickness="0"
-					DockPanel.Dock="Right"
-					Padding="0"
-					ToolTip="Delete Item"
-					x:Name="Delete_Btn"
-					Click="Delete_Btn_Click">
-				XD
-			</Button>
-			<Button HorizontalAlignment="Left"
-					VerticalAlignment="Top"
 					DockPanel.Dock="Left"
+					ToolTip="Enabled?"
+					IsChecked="{Binding itemToSearchFor.enabled}"
+					RenderTransformOrigin="0.5,0.5">
+					<CheckBox.LayoutTransform>
+						<TransformGroup>
+							<ScaleTransform
+								ScaleX="1.3"
+								ScaleY="1.3" />
+							<SkewTransform />
+							<RotateTransform />
+							<TranslateTransform />
+						</TransformGroup>
+					</CheckBox.LayoutTransform>
+				</CheckBox>
+
+				<CheckBox
+					Style="{DynamicResource CheckBoxTheme}"
 					Background="Transparent"
-					Visibility="Visible"
-					BorderThickness="0"
-					IsEnabled="True"
-					Foreground="Wheat"
-					FontSize="9"
-					x:Name="Modify_Btn"
-					Margin="1,0,1,0"
-					Padding="0"
-					ToolTip="Modify Query"
-					Click="Modify_Btn_Click">
-				M
-			</Button>
-			<Button HorizontalAlignment="Left"
+					HorizontalAlignment="Left"
 					VerticalAlignment="Top"
-					Background="Transparent"
-					DockPanel.Dock="Left"
-					Margin="1,0,1,0"
-					IsEnabled="True"
-					Foreground="Wheat"
-					FontSize="9"
+					d:IsChecked="True"
 					BorderThickness="0"
-					Padding="0"
-					x:Name="Dupe_Btn"
-					Click="Dupe_Btn_Click"
-					ToolTip="Duplicate Query">
-				C
+					IsChecked="{Binding itemToSearchFor.playSound}"
+					ToolTip="Play Sound?"
+					DockPanel.Dock="Left"
+					RenderTransformOrigin="0.5,0.5">
+					<CheckBox.LayoutTransform>
+						<TransformGroup>
+							<ScaleTransform
+								ScaleX="1.3"
+								ScaleY="1.3" />
+							<SkewTransform />
+							<RotateTransform />
+							<TranslateTransform />
+						</TransformGroup>
+					</CheckBox.LayoutTransform>
+				</CheckBox>
+			</DockPanel>
+
+			<Button
+				HorizontalAlignment="Right"
+				VerticalAlignment="Top"
+				Background="Transparent"
+				Margin="0,1,-1,1"
+				BorderThickness="0"
+				Padding="0"
+				ToolTip="Delete Item"
+				x:Name="Delete_Btn"
+				Click="Delete_Btn_Click">
+				<Control
+					Style="{StaticResource DeleteIconTheme}" />
 			</Button>
-		</DockPanel>
+			<Button
+				HorizontalAlignment="Left"
+				VerticalAlignment="Bottom"
+				DockPanel.Dock="Bottom"
+				BorderThickness="0"
+				x:Name="Modify_Btn"
+				Background="Transparent"
+				Margin="0"
+				Padding="0"
+				ToolTip="Modify Query"
+				Click="Modify_Btn_Click">
+				<Control
+					Style="{StaticResource EditIconTheme}" />
+			</Button>
+			<Button
+				HorizontalAlignment="Right"
+				VerticalAlignment="Bottom"
+				Background="Transparent"
+				Margin="0"
+				BorderThickness="0"
+				Padding="0"
+				x:Name="Dupe_Btn"
+				Click="Dupe_Btn_Click"
+				ToolTip="Duplicate Query">
+				<Control
+					Style="{StaticResource CopyIconTheme}" />
+			</Button>
+		</Grid>
 	</Border>
 </UserControl>

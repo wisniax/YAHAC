@@ -80,16 +80,6 @@ namespace YAHAC.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        public static byte[] FurfSkyRebornFULL {
-            get {
-                object obj = ResourceManager.GetObject("FurfSkyRebornFULL", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap NoTextureMark {
@@ -105,16 +95,6 @@ namespace YAHAC.Properties {
         public static System.IO.UnmanagedMemoryStream notify_sound {
             get {
                 return ResourceManager.GetStream("notify_sound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap wiggle_random {
-            get {
-                object obj = ResourceManager.GetObject("wiggle_random", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

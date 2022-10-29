@@ -13,8 +13,9 @@
 	Visibility="{Binding visibile, 
 	Converter={StaticResource BoolToVisibility}}">
 	<Border
-		BorderThickness="2"
-		BorderBrush="Blue"
+		BorderThickness="5"
+		BorderBrush="#FF24015B"
+		Background="#FF100110"
 		Padding="3"
 		Margin="5">
 		<DockPanel
@@ -25,12 +26,25 @@
 				Background="Transparent">
 				<Button
 					DockPanel.Dock="Right"
-					Margin="5"
+					Margin="0"
 					Background="Transparent"
-					Foreground="LightCyan"
+					VerticalAlignment="Center"
 					x:Name="Close_Btn"
+					BorderThickness="0"
 					Click="Close_Btn_Click">
-					X
+					<Control
+						Style="{StaticResource CloseIconTheme}">
+						<Control.LayoutTransform>
+							<TransformGroup>
+								<ScaleTransform
+									ScaleX="1.2"
+									ScaleY="1.2" />
+								<SkewTransform />
+								<RotateTransform />
+								<TranslateTransform />
+							</TransformGroup>
+						</Control.LayoutTransform>
+					</Control>
 				</Button>
 				<TextBlock
 					d:Text="Item Name"
@@ -41,7 +55,7 @@
 					Foreground="LightCyan"
 					Margin="5"
 					HorizontalAlignment="Center"
-					VerticalAlignment="Stretch" />
+					VerticalAlignment="Center" />
 			</DockPanel>
 			<xctk:LongUpDown
 				Background="Transparent"

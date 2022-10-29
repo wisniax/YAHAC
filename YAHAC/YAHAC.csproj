@@ -24,6 +24,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\WindowsIcons\**" />
+    <EmbeddedResource Remove="Resources\WindowsIcons\**" />
+    <None Remove="Resources\WindowsIcons\**" />
+    <Page Remove="Resources\WindowsIcons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<None Remove="Resources\enchanted_item_glint.png" />
 	<None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
 	<None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />

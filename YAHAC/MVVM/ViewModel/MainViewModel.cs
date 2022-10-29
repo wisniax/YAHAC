@@ -64,7 +64,7 @@ namespace YAHAC.MVVM.ViewModel
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
 			settings = new();
-			bazaar = new(false);
+			bazaar = new();
 			auctionHouse = new();
 			betterAH = new();
 

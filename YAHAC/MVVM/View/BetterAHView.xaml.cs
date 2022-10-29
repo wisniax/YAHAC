@@ -53,6 +53,7 @@ namespace YAHAC.MVVM.View
 		private void SaveConfig_Btn_Click(object sender, RoutedEventArgs e)
 		{
 			MainViewModel.betterAH.SaveRecipes();
+			((BetterAHViewModel)DataContext).SelectedItemToRecipeConfig = null;
 		}
 	}
 }

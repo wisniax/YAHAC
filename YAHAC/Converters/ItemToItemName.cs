@@ -15,7 +15,7 @@ namespace YAHAC.Converters
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (value == null)
-				return "lol";
+				return "Not Found";
 			string str = "";
 			Rarity tier = 0;
 			var name = "";
