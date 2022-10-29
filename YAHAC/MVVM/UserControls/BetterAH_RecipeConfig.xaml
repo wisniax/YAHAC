@@ -8,7 +8,7 @@
 	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 	mc:Ignorable="d"
 	DataContext="{Binding Mode=OneWay, 
-	RelativeSource={RelativeSource Self}}"
+	RelativeSource={RelativeSource Self}, UpdateSourceTrigger=PropertyChanged}"
 	d:DesignHeight="500"
 	Visibility="{Binding visibile, 
 	Converter={StaticResource BoolToVisibility}}">
@@ -20,15 +20,29 @@
 		<DockPanel
 			Background="Transparent"
 			DataContext="{Binding itemToSearchFor}">
-			<TextBlock
-				Text="Item Name"
-				FontSize="20"
+			<DockPanel
 				DockPanel.Dock="Top"
-				Background="Transparent"
-				Foreground="LightCyan"
-				Margin="5"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Top" />
+				Background="Transparent">
+				<Button
+					DockPanel.Dock="Right"
+					Margin="5"
+					Background="Transparent"
+					Foreground="LightCyan"
+					x:Name="Close_Btn"
+					Click="Close_Btn_Click">
+					X
+				</Button>
+				<TextBlock
+					d:Text="Item Name"
+					Text="{Binding item_dictKey}"
+					FontSize="20"
+					DockPanel.Dock="Top"
+					Background="Transparent"
+					Foreground="LightCyan"
+					Margin="5"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Stretch" />
+			</DockPanel>
 			<xctk:LongUpDown
 				Background="Transparent"
 				Foreground="Wheat"
@@ -82,17 +96,24 @@
 					Width="150"
 					Background="Transparent"
 					Foreground="LightCyan"
-					ToolTip="Add query to search in auction. Press ENTER to add." />
+					ToolTip="Add query to search in auction. Press ENTER to add."
+					x:Name="AddToQuery_Textbox"
+					KeyDown="AddToQuery_Textbox_KeyDown" />
 			</DockPanel>
 			<ListView
 				Background="Transparent"
 				Foreground="LightCyan"
 				DockPanel.Dock="Top"
 				VerticalAlignment="Top"
-				ItemsSource="{Binding searchQueries}"
+				ItemsSource="{Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BetterAH_RecipeConfig}}, 
+				Path=SearchQueries}"
 				Margin="5"
 				BorderThickness="0"
-				ToolTip="Double-Click query to remove">
+				ToolTip="Double-Click query to remove"
+				x:Name="SearchQueries_List"
+				MouseDoubleClick="SearchQueries_List_MouseDoubleClick">
 			</ListView>
 
 		</DockPanel>

@@ -27,9 +27,7 @@
 	<None Remove="Resources\enchanted_item_glint.png" />
 	<None Remove="Resources\Fonts\RubikMoonrocks-Regular.ttf" />
 	<None Remove="Resources\Fonts\StickNoBills-Regular.ttf" />
-	<None Remove="Resources\FurfSkyRebornFULL.zip" />
 	<None Remove="Resources\NoTextureMark.png" />
-	<None Remove="Resources\wiggle-random.gif" />
 	<None Remove="sgKey.snk" />
   </ItemGroup>
 
@@ -56,9 +54,7 @@
 	<Resource Include="Resources\Fonts\StickNoBills-Regular.ttf">
 	  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	</Resource>
-	<Resource Include="Resources\FurfSkyRebornFULL.zip" />
 	<Resource Include="Resources\NoTextureMark.png" />
-	<Resource Include="Resources\wiggle-random.gif" />
   </ItemGroup>
 
   <ItemGroup>

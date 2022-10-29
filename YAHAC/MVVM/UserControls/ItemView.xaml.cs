@@ -120,7 +120,7 @@ namespace YAHAC.MVVM.UserControls
 						return;
 					});
 				}
-				catch (TaskCanceledException e)
+				catch (TaskCanceledException)
 				{
 					return;
 				}

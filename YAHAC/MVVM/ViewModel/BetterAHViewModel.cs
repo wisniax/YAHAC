@@ -139,7 +139,7 @@ namespace YAHAC.MVVM.ViewModel
 			BetterAHSettings = new RelayCommand((o) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
 			AddItemInComboBox = new RelayCommand((o) =>
 			{
-				if (SelectedAuctionableItem == null) return;
+				if (SelectedAuctionableItem as string == null) return;
 				MainViewModel.betterAH.AddRecipe(new Properties.ItemToSearchFor(SelectedAuctionableItem as string, enabled: false));
 			});
 			ItemsToSearchForVisibility = false;
@@ -214,6 +214,7 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			if (source == null) return;
 			if (source.itemToSearchFor == null) return;
+			SelectedItemToRecipeConfig = null;
 			SelectedItemToRecipeConfig = source.itemToSearchFor;
 		}
 
