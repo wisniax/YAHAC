@@ -23,8 +23,6 @@ namespace YAHAC.MVVM.ViewModel
 {
 	internal class BetterAHViewModel : ObservableObject
 	{
-		SoundPlayer soundPlayer;
-
 		public RelayCommand BetterAHSettings { get; private set; }
 		public RelayCommand AddItemInComboBox { get; private set; }
 
@@ -125,14 +123,6 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
-
-
-
-
-
-
-		string highlitedAuction_uuid;
-
 		public BetterAHViewModel()
 		{
 			SelectedAuctionableItem = new();
@@ -146,10 +136,8 @@ namespace YAHAC.MVVM.ViewModel
 			Items = new();
 			AuctionableItems = new();
 			ItemsToSearchForCollection = new();
-			highlitedAuction_uuid = "";
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
 			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAH();
-			soundPlayer = new(Properties.Resources.notify_sound);
 			//if (MainViewModel.settings.Default.PlaySound)
 			//{
 			//	soundPlayer = new(Properties.Resources.notify_sound);
@@ -228,14 +216,6 @@ namespace YAHAC.MVVM.ViewModel
 					if (!source.success) return;
 					LoadBetterAH();
 					LoadItemsToSearchForCollection();
-					var auc = MainViewModel.betterAH.GetHighestPriorityAuction();
-					if (auc != null)
-					{
-						var uuid = auc.uuid;
-						playSound(uuid);
-						JadeRald(uuid);
-						highlitedAuction_uuid = uuid;
-					}
 					return;
 				});
 			}
@@ -245,63 +225,15 @@ namespace YAHAC.MVVM.ViewModel
 				if (!source.success) return;
 				LoadBetterAH();
 				LoadItemsToSearchForCollection();
-				var auc = MainViewModel.betterAH.GetHighestPriorityAuction();
-				if (auc != null)
-				{
-					var uuid = auc.uuid;
-					playSound(uuid);
-					JadeRald(uuid);
-					highlitedAuction_uuid = uuid;
-				}
 				return;
 			}
-		}
-
-		void playSound(string uuid)
-		{
-			if (highlitedAuction_uuid == uuid) { return; }
-			soundPlayer.Play();
-			//var lista = MainViewModel.betterAH.ItemsToSearchFor.FindAll((a) => a.priority >= 1);
-			//foreach (var item in lista)
-			//{
-			//	if (MainViewModel.betterAH.MatchingItems.Exists((a) => a.HyPixel_ID == item.item_dictKey))
-			//	{
-			//		soundPlayer.Play();
-			//		return;
-			//	}
-			//}
-		}
-
-		void JadeRald(string uuid)
-		{
-			if (highlitedAuction_uuid == uuid) { return; }
-			CopyToClipboard("/viewauction " + uuid);
-			//var lista = MainViewModel.betterAH.ItemsToSearchFor.FindAll((a) => a.priority >= 1);
-			//lista.Sort((a, b) => b.priority.CompareTo(a.priority));
-			//foreach (var item in lista)
-			//{
-			//	if (MainViewModel.betterAH.MatchingItems.Exists((a) => a.HyPixel_ID == item.item_dictKey))
-			//	{
-			//		var smth = MainViewModel.betterAH.MatchingItems.Find((a) => a.HyPixel_ID == item.item_dictKey);
-			//		CopyToClipboard("/viewauction " + smth.uuid);
-			//		return;
-			//	}
-			//}
-		}
-
-		void CopyToClipboard(string str)
-		{
-			var thread = new Thread(() => Clipboard.SetText(str));
-			thread.SetApartmentState(ApartmentState.STA);
-			thread.Start();
-			thread.Join();
 		}
 
 		public void MouseDoubleClicked(object sender, MouseButtonEventArgs e)
 		{
 			if (SelectedItemView == null) return;
 			if (SelectedItemView.Tag == null) return;
-			CopyToClipboard("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
+			CopyToClipboard.Copy("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
 		}
 	}
 }
