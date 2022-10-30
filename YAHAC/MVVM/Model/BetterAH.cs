@@ -236,9 +236,8 @@ namespace YAHAC.MVVM.Model
 		{
 			string str = new(item_dictKey);
 			str += ':';
-			var matchingDictKeys = ItemsToSearchFor.FindAll((a) => a.item_dictKey == item_dictKey);
 			int i = new();
-			while (i < matchingDictKeys.Count)
+			while (i < ItemsToSearchFor.Count)
 			{
 				var tempstr = str + i.ToString();
 				if (ItemsToSearchFor.Exists((a) => a.recipe_key == tempstr)) i++;
