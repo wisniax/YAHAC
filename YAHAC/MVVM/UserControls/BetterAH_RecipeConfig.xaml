@@ -60,33 +60,65 @@
 			<xctk:LongUpDown
 				Background="Transparent"
 				Foreground="Wheat"
-				Value="{Binding maxPrice}"
 				DockPanel.Dock="Top"
 				Margin="5"
 				FontSize="15"
 				Increment="100000"
-				DefaultValue="0"
 				Watermark="Set maximum price"
 				Maximum="5000000000"
 				Minimum="0"
 				ToolTip="Set maximum price"
 				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top" />
+				VerticalAlignment="Top">
+				<xctk:LongUpDown.Style>
+					<Style
+						TargetType="{x:Type xctk:LongUpDown}">
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding maxPrice}"
+								Value="0">
+								<Setter
+									Property="Value"
+									Value="{x:Null}" />
+							</DataTrigger>
+						</Style.Triggers>
+						<Setter
+							Property="Value"
+							Value="{Binding maxPrice}" />
+					</Style>
+				</xctk:LongUpDown.Style>
+			</xctk:LongUpDown>
 			<xctk:IntegerUpDown
 				Background="Transparent"
 				Foreground="Wheat"
-				Value="{Binding priority}"
 				FontSize="15"
 				DockPanel.Dock="Top"
 				Margin="5"
 				Increment="1"
-				DefaultValue="0"
 				Watermark="Set priority"
 				Maximum="1000"
 				Minimum="0"
 				ToolTip="Set priority"
 				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top" />
+				VerticalAlignment="Top">
+				<xctk:IntegerUpDown.Style>
+					<Style
+						TargetType="{x:Type xctk:IntegerUpDown}">
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding priority}"
+								Value="0">
+								<Setter
+									Property="Value"
+									Value="{x:Null}" />
+							</DataTrigger>
+						</Style.Triggers>
+						<Setter
+							Property="Value"
+							Value="{Binding priority}" />
+					</Style>
+				</xctk:IntegerUpDown.Style>
+			</xctk:IntegerUpDown>
 			<DockPanel
 				DockPanel.Dock="Top"
 				HorizontalAlignment="Stretch"

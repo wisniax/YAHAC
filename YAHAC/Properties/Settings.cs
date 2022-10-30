@@ -14,7 +14,7 @@ namespace YAHAC.Properties
 	{
 		public UserInterfaces Starting_Ui { get; set; } = UserInterfaces.Settings;
 		public System.Windows.Visibility DebugVisibility { get; set; } = System.Windows.Visibility.Hidden;
-		public int MinecraftItemBox_Size { get; set; } = 34;
+		public int MinecraftItemBox_Size { get; set; } = 66;
 		public string ItemCrafts_Recipes { get; set; } = String.Empty;
 		public List<ItemToSearchFor> BetterAH_Query { get; set; } = new();
 		public bool PlaySound { get; set; } = false;
@@ -91,16 +91,17 @@ namespace YAHAC.Properties
 			{
 				return false;
 			}
-			StreamReader sr = new(SettingsPath + @"\user.config");
-			string str = sr.ReadToEnd();
-			sr.Close();
 			try
 			{
+				StreamReader sr = new(SettingsPath + @"\user.config");
+				string str = sr.ReadToEnd();
+				sr.Close();
 				Default = JsonSerializer.Deserialize<SettingsVars>(str);
 			}
-			catch (JsonException)
+			catch (Exception e)
 			{
-				return false;
+				if (e is JsonException || e is FileNotFoundException) return false;
+				throw;
 			}
 			return true;
 

@@ -51,6 +51,7 @@ namespace YAHAC.Core
 			public int Time { get; set; }
 			public bool Copy { get; set; }
 		}
+
 		/// <summary>
 		/// Read how many api requests are left in last minute and await their expire date as to not get api-banned...
 		/// </summary>
