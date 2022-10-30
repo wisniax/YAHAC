@@ -299,12 +299,12 @@ namespace ITR
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="IOException"></exception>
-        public int LoadResourcepack(string file)
+        public int LoadResourcepack(string file, string name)
         {
             var plik = File.OpenRead(file);
             byte[] bytes = new byte[plik.Length];
             plik.Read(bytes);
-            return LoadResourcepack(bytes);
+            return LoadResourcepack(bytes, name);
         }
 
 
@@ -324,13 +324,13 @@ namespace ITR
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="IOException"></exception>
 #pragma warning restore CS1584 // Komentarz XML zawiera składniowo niepoprawny atrybut cref
-        public int LoadResourcepack(byte[] bytes)
+        public int LoadResourcepack(byte[] bytes, string name)
         {
             int loaded = 0;
 
             ZipArchive zip = new(new MemoryStream(bytes));
 
-            var ResourcepackName = zip.Entries[0].FullName.TrimEnd('/');
+            var ResourcepackName = name;
 
             foreach (var entry in zip.Entries)
             {
@@ -506,8 +506,16 @@ namespace ITR
                     gifMakeItHappener.Save(cit_Item.Texture);
 
                 }
+                lock (citDict_Lock)
+                {
+                    citDict[material].Add(cit_Item);
+                }
 
-                citDict[material].Add(cit_Item);
+                if (cit_Item.HyPixel_ID != null)
+                {
+                    var loadedItem = GetItemFromID(cit_Item.HyPixel_ID);
+                    OnDownloadedItem(loadedItem);
+                }
 
                 if (!_resourcepackPriority.Contains(cit_Item.ResourcepackName.ToLower()))
                 {
