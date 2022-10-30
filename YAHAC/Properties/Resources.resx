@@ -124,6 +124,9 @@
   <data name="enchanted_item_glint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\enchanted_item_glint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FurfSky_Reborn_1_5_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FurfSky_Reborn_1_5_0.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="NoTextureMark" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NoTextureMark.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

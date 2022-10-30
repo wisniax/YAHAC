@@ -81,7 +81,7 @@ namespace YAHAC.MVVM.ViewModel
 			//itemTextureResolver.RegisterItem(hyItem, itemTextureResolver.GetItemFromID(Material.BREAD.ToString()).Texture);
 			//itemTextureResolver.ResourcepackPrioritySet("Manual", 0);
 
-			//itemTextureResolver.LoadResourcepack(Resources.FurfSkyRebornFULL);
+			itemTextureResolver.LoadResourcepack(Resources.FurfSky_Reborn_1_5_0, "FurfSky");
 			bazaarView = new();
 			auctionHouseView = new();
 			betterAHView = new();
