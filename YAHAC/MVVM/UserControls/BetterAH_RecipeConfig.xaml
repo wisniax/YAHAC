@@ -31,7 +31,8 @@
 					BorderThickness="0"
 					Click="Close_Btn_Click">
 					<Control
-						Width="16" Height="16"
+						Width="16"
+						Height="16"
 						Style="{StaticResource CloseIconTheme}">
 						<Control.LayoutTransform>
 							<TransformGroup>
@@ -69,6 +70,7 @@
 				Foreground="Wheat"
 				DockPanel.Dock="Top"
 				Margin="5"
+				Value="{Binding maxPrice}"
 				FontSize="15"
 				Increment="100000"
 				Watermark="Set maximum price"
@@ -77,30 +79,13 @@
 				DataContext="{Binding itemToSearchFor}"
 				ToolTip="Set maximum price"
 				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top">
-				<xctk:LongUpDown.Style>
-					<Style
-						TargetType="{x:Type xctk:LongUpDown}">
-						<Style.Triggers>
-							<DataTrigger
-								Binding="{Binding maxPrice}"
-								Value="0">
-								<Setter
-									Property="Value"
-									Value="{x:Null}" />
-							</DataTrigger>
-						</Style.Triggers>
-						<Setter
-							Property="Value"
-							Value="{Binding maxPrice}" />
-					</Style>
-				</xctk:LongUpDown.Style>
-			</xctk:LongUpDown>
+				VerticalAlignment="Top" />
 			<xctk:IntegerUpDown
 				Background="Transparent"
 				Foreground="Wheat"
 				FontSize="15"
 				DockPanel.Dock="Top"
+				Value="{Binding priority}"
 				Margin="5"
 				Increment="1"
 				Watermark="Set priority"
@@ -109,25 +94,7 @@
 				Minimum="0"
 				ToolTip="Set priority"
 				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top">
-				<xctk:IntegerUpDown.Style>
-					<Style
-						TargetType="{x:Type xctk:IntegerUpDown}">
-						<Style.Triggers>
-							<DataTrigger
-								Binding="{Binding priority}"
-								Value="0">
-								<Setter
-									Property="Value"
-									Value="{x:Null}" />
-							</DataTrigger>
-						</Style.Triggers>
-						<Setter
-							Property="Value"
-							Value="{Binding priority}" />
-					</Style>
-				</xctk:IntegerUpDown.Style>
-			</xctk:IntegerUpDown>
+				VerticalAlignment="Top" />
 			<DockPanel
 				DockPanel.Dock="Top"
 				HorizontalAlignment="Stretch"
