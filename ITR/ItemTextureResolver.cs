@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Text.Json;
+using Windows.Foundation.Metadata;
 
 namespace ITR
 {
@@ -324,7 +325,8 @@ namespace ITR
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="IOException"></exception>
 #pragma warning restore CS1584 // Komentarz XML zawiera składniowo niepoprawny atrybut cref
-        public int LoadResourcepack(byte[] bytes, string name)
+        [Obsolete("Simpler is better, use LoadResourcepack instead")]
+        public int LoadResourcepackHardmode(byte[] bytes, string name)
         {
             int loaded = 0;
 
@@ -432,6 +434,11 @@ namespace ITR
                                 texturePath = image;
                             break;
 
+                        case "nbt.SkullOwner.Properties.textures.0.Value":
+                            material = Material.SKULL_ITEM;
+                            cit_Item.Skin_pattern = lineSplit[1];
+                            break;
+
                         default:
                             break;
                     }
@@ -529,6 +536,142 @@ namespace ITR
             return loaded;
         }
 
+        public int LoadResourcepack(byte[] bytes, string name)
+        {
+            int loaded = 0;
+
+            ZipArchive zip = new(new MemoryStream(bytes));
+
+            var ResourcepackName = name;
+
+            foreach (var entry in zip.Entries)
+            {
+                if (!entry.Name.Contains(".properties")) continue;
+                var path = entry.FullName[..(entry.FullName.Length - entry.Name.Length)];
+                var propFile = new StreamReader(entry.Open());
+
+                string line;
+                Cit_Item cit_Item = new();
+                Material material = Material.AIR;
+                string texturePath = string.Empty;
+                cit_Item.ResourcepackName = ResourcepackName;
+
+                while ((line = propFile.ReadLine()) != null)
+                {
+                    string[] lineSplit = line.Split('=');
+                    switch (lineSplit[0])
+                    {
+                        case "items":
+                            material = (Material)itemsIDTable.Find(
+                                new Predicate<VanillaID>(
+                                    x =>
+                                    {
+                                        if (lineSplit[1].Contains(':'))
+                                        {
+                                            return x.text_type == lineSplit[1].Split(':')[1];
+                                        }
+                                        else
+                                        {
+                                            return x.type.ToString() == lineSplit[1];
+                                        }
+                                    })).type;
+
+                            if (material == Material.SKULL) material = Material.SKULL_ITEM;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+
+                cit_Item.HyPixel_ID = entry.Name.Split('.')[0];
+                var lastHopeImage = path + entry.Name.Split('.')[0];
+                if (zip.GetEntry(lastHopeImage + ".gif") != null)
+                {
+                    texturePath = lastHopeImage + ".gif";
+                }
+                else
+                if (zip.GetEntry(lastHopeImage + ".png") != null)
+                {
+                    texturePath = lastHopeImage + ".png";
+                }
+
+                if (texturePath == string.Empty) continue;
+
+                cit_Item.Texture = new();
+                zip.GetEntry(texturePath).Open().CopyTo(cit_Item.Texture);
+
+
+                if (texturePath.Contains(".png", StringComparison.CurrentCultureIgnoreCase) && zip.GetEntry(texturePath + ".mcmeta") != null)
+                {
+                    var animMcMeta = JsonDocument.Parse(zip.GetEntry(texturePath + ".mcmeta").Open());
+                    var frametime = animMcMeta.RootElement.GetProperty("animation").GetProperty("frametime").GetInt32() * 50;
+                    bool verticalGif;
+                    int frameResolution;
+
+                    cit_Item.Texture.Seek(0, SeekOrigin.Begin);
+                    var workingImage = new ImageProcessor.ImageFactory();
+                    workingImage.Load(cit_Item.Texture);
+
+
+
+                    if (workingImage.Image.Size.Width > workingImage.Image.Size.Height)
+                    {
+                        verticalGif = false;
+                        frameResolution = workingImage.Image.Size.Height;
+                    }
+                    else
+                    {
+                        verticalGif = true;
+                        frameResolution = workingImage.Image.Size.Width;
+                    }
+
+                    var gifMakeItHappener = new ImageProcessor.Imaging.Formats.GifEncoder(frameResolution, frameResolution);
+
+                    int startingPoint = 0;
+                    while (startingPoint < (verticalGif ? workingImage.Image.Size.Height : workingImage.Image.Size.Width))
+                    {
+                        workingImage.Crop(new Rectangle(
+                            verticalGif ? 0 : startingPoint,
+                            verticalGif ? startingPoint : 0,
+                            frameResolution,
+                            frameResolution));
+                        var frame = new ImageProcessor.Imaging.Formats.GifFrame
+                        {
+                            Delay = new TimeSpan(0, 0, 0, 0, frametime),
+                            Image = workingImage.Image
+                        };
+                        gifMakeItHappener.AddFrame(frame);
+                        startingPoint += frameResolution;
+                        workingImage.Reset();
+                    }
+                    gifMakeItHappener.Save(cit_Item.Texture);
+
+                }
+                lock (citDict_Lock)
+                {
+                    citDict[material].Add(cit_Item);
+                }
+
+                if (cit_Item.HyPixel_ID != null)
+                {
+                    var loadedItem = GetItemFromID(cit_Item.HyPixel_ID);
+                    OnDownloadedItem(loadedItem);
+                }
+
+                if (!_resourcepackPriority.Contains(cit_Item.ResourcepackName.ToLower()))
+                {
+                    _resourcepackPriority.Add(cit_Item.ResourcepackName.ToLower());
+                    ResourcepackPrioritySet(cit_Item.ResourcepackName.ToLower(), 0);
+                }
+
+                loaded++;
+            }
+
+            return loaded;
+        }
+
         public HyItems_Item? GetHyItemDataFromID(string hyPixel_ID)
         {
             if (hyItemsDict.TryGetValue(hyPixel_ID, out HyItems_Item value))
@@ -538,7 +681,7 @@ namespace ITR
             else
             {
                 return null;
-            }    
+            }
         }
 
         /// <summary>
@@ -581,7 +724,12 @@ namespace ITR
                     //Dark Oak Wood
 
                     HyItems_Item citTestTestant = value;
-                    Predicate<Cit_Item> citTest = new(x => x.HyPixel_ID == citTestTestant.id || (x.Name_pattern != null && citTestTestant.name.Contains(x.Name_pattern, StringComparison.InvariantCultureIgnoreCase)));
+                    Predicate<Cit_Item> citTest = new(x =>
+                    {
+                        return
+                        (x.HyPixel_ID != null && citTestTestant.id.Contains(x.HyPixel_ID, StringComparison.InvariantCultureIgnoreCase)) || //same id
+                        (x.Name_pattern != null && citTestTestant.name.Contains(x.Name_pattern, StringComparison.InvariantCultureIgnoreCase));//name pattern match 
+                    });
 
 
                     Cit_Item citBack = new();
@@ -592,7 +740,7 @@ namespace ITR
                         foreach (var resourcepack in _resourcepackPriority)
                         {
                             citBack = allMatches.Find(x => x.ResourcepackName.ToLower() == resourcepack);
-                            if (citBack.HyPixel_ID != null) break;
+                            if (citBack.Texture != null) break;
                         }
 
                     //if not found
