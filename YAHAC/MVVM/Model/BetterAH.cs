@@ -1,11 +1,17 @@
 ﻿using ITR;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
+using System.Drawing;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Automation.Text;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using YAHAC.Core;
 using YAHAC.MVVM.ViewModel;
@@ -193,6 +199,26 @@ namespace YAHAC.MVVM.Model
 			query.recipe_key = AssignNewUniqueKey(query.item_dictKey);
 			ItemsToSearchFor.Add(query);
 			findMatchingItems();
+		}
+		public void MoveRecipe(ItemToSearchFor item, FlowDirection flowDirection)
+		{
+			if (item == null) return;
+			if (!ItemsToSearchFor.Contains(item)) return;
+			var index = ItemsToSearchFor.IndexOf(item);
+			switch (flowDirection)
+			{
+				case FlowDirection.LeftToRight:
+					if (index >= ItemsToSearchFor.Count - 1) return;
+					ItemsToSearchFor.RemoveAt(index);
+					ItemsToSearchFor.Insert(index + 1, item);
+					break;
+				case FlowDirection.RightToLeft:
+					if (index <= 0) return;
+					ItemsToSearchFor.RemoveAt(index);
+					ItemsToSearchFor.Insert(index - 1, item);
+					break;
+			}
+			ReloadRecipes();
 		}
 
 		public void RemoveRecipe(string recipe_key)

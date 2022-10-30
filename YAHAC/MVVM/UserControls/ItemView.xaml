@@ -36,14 +36,17 @@
 				ImageSource="{Binding item.Texture, 
 				Converter={StaticResource MemoryStreamToImageSource}}" />
 		</Border.Background>
-		<Grid
+		<DockPanel
 			Background="Transparent"
 			Margin="1"
 			Visibility="{Binding visible, 
 			Converter={StaticResource BoolToVisibility}}"
 			IsEnabled="True">
 
-			<DockPanel>
+			<DockPanel
+				DockPanel.Dock="Top"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Top">
 				<CheckBox
 					Style="{DynamicResource CheckBoxTheme}"
 					HorizontalAlignment="Left"
@@ -89,48 +92,82 @@
 						</TransformGroup>
 					</CheckBox.LayoutTransform>
 				</CheckBox>
+				<Button
+					HorizontalAlignment="Right"
+					VerticalAlignment="Top"
+					Background="Transparent"
+					Margin="0,1,-1,1"
+					BorderThickness="0"
+					Padding="0"
+					ToolTip="Delete Item"
+					x:Name="Delete_Btn"
+					Click="Delete_Btn_Click">
+					<Control
+						Style="{StaticResource DeleteIconTheme}" />
+				</Button>
 			</DockPanel>
 
-			<Button
-				HorizontalAlignment="Right"
-				VerticalAlignment="Top"
-				Background="Transparent"
-				Margin="0,1,-1,1"
-				BorderThickness="0"
-				Padding="0"
-				ToolTip="Delete Item"
-				x:Name="Delete_Btn"
-				Click="Delete_Btn_Click">
-				<Control
-					Style="{StaticResource DeleteIconTheme}" />
-			</Button>
-			<Button
-				HorizontalAlignment="Left"
+			<DockPanel
 				VerticalAlignment="Bottom"
-				DockPanel.Dock="Bottom"
-				BorderThickness="0"
-				x:Name="Modify_Btn"
-				Background="Transparent"
-				Margin="0"
-				Padding="0"
-				ToolTip="Modify Query"
-				Click="Modify_Btn_Click">
-				<Control
-					Style="{StaticResource EditIconTheme}" />
-			</Button>
-			<Button
-				HorizontalAlignment="Right"
-				VerticalAlignment="Bottom"
-				Background="Transparent"
-				Margin="0"
-				BorderThickness="0"
-				Padding="0"
-				x:Name="Dupe_Btn"
-				Click="Dupe_Btn_Click"
-				ToolTip="Duplicate Query">
-				<Control
-					Style="{StaticResource CopyIconTheme}" />
-			</Button>
-		</Grid>
+				DockPanel.Dock="Bottom">
+				<Button
+					HorizontalAlignment="Left"
+					VerticalAlignment="Bottom"
+					DockPanel.Dock="Left"
+					BorderThickness="0"
+					x:Name="Modify_Btn"
+					Background="Transparent"
+					Margin="0"
+					Padding="0"
+					ToolTip="Modify Query"
+					Click="Modify_Btn_Click">
+					<Control
+						Style="{StaticResource EditIconTheme}" />
+				</Button>
+				<Button
+					HorizontalAlignment="Right"
+					VerticalAlignment="Bottom"
+					DockPanel.Dock="Right"
+					Background="Transparent"
+					Margin="0"
+					BorderThickness="0"
+					Padding="0"
+					x:Name="Dupe_Btn"
+					Click="Dupe_Btn_Click"
+					ToolTip="Duplicate Query">
+					<Control
+						Style="{StaticResource CopyIconTheme}" />
+				</Button>
+			</DockPanel>
+			<DockPanel
+				VerticalAlignment="Center">
+				<Button
+					HorizontalAlignment="Left"
+					DockPanel.Dock="Left"
+					Background="Transparent"
+					Margin="0"
+					BorderThickness="0"
+					Padding="0"
+					x:Name="MoveLeft_Btn"
+					Click="MoveLeft_Btn_Click"
+					ToolTip="Move item to the left">
+					<Control
+						Style="{StaticResource LeftArrowIconTheme}" />
+				</Button>
+				<Button
+					HorizontalAlignment="Right"
+					DockPanel.Dock="Right"
+					Background="Transparent"
+					Margin="0"
+					BorderThickness="0"
+					Padding="0"
+					x:Name="MoveRight_Btn"
+					Click="MoveRight_Btn_Click"
+					ToolTip="Move item to the left">
+					<Control
+						Style="{StaticResource RightArrowIconTheme}" />
+				</Button>
+			</DockPanel>
+		</DockPanel>
 	</Border>
 </UserControl>

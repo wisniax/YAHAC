@@ -32,6 +32,10 @@
 					Source="Theme/CheckBoxTheme.xaml" />
 				<ResourceDictionary
 					Source="Theme/CloseIconTheme.xaml" />
+				<ResourceDictionary
+					Source="Theme/LeftArrowIconTheme.xaml" />
+				<ResourceDictionary
+					Source="Theme/RightArrowIconTheme.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 			<converters:BitmapToWPFSource
 				x:Key="BitmapToWPFSource" />

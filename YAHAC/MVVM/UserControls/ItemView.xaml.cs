@@ -102,8 +102,8 @@ namespace YAHAC.MVVM.UserControls
 
 		public void PrepareToDie()
 		{
-            MainViewModel.itemTextureResolver.DownloadedItemEvent -= ItemTextureResolver_DownloadedItemEvent;
-        }
+			MainViewModel.itemTextureResolver.DownloadedItemEvent -= ItemTextureResolver_DownloadedItemEvent;
+		}
 
 		private void OnBetterAHUpdated()
 		{
@@ -155,6 +155,16 @@ namespace YAHAC.MVVM.UserControls
 		{
 			if (itemToSearchFor == null) return;
 			MainViewModel.betterAH.AddRecipe(itemToSearchFor);
+		}
+
+		private void MoveLeft_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			MainViewModel.betterAH.MoveRecipe(itemToSearchFor, FlowDirection.RightToLeft);
+		}
+
+		private void MoveRight_Btn_Click(object sender, RoutedEventArgs e)
+		{
+			MainViewModel.betterAH.MoveRecipe(itemToSearchFor, FlowDirection.LeftToRight);
 		}
 	}
 }
