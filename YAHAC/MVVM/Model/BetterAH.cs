@@ -147,6 +147,7 @@ namespace YAHAC.MVVM.Model
 		/// </summary>
 		public void SaveRecipes()
 		{
+			ItemsToSearchFor.RemoveAll((a) => a.item_dictKey == null);
 			MainViewModel.settings.Default.BetterAH_Query = ItemsToSearchFor;
 			MainViewModel.settings.Save();
 			findMatchingItems();
@@ -159,6 +160,15 @@ namespace YAHAC.MVVM.Model
 		{
 			MainViewModel.settings.Load();
 			ItemsToSearchFor = MainViewModel.settings.Default.BetterAH_Query;
+			findMatchingItems();
+		}
+
+		/// <summary>
+		/// Finds matching items again for the instanced query <br/>
+		/// Does not Load/Save to hard drive
+		/// </summary>
+		public void ReloadRecipes()
+		{
 			findMatchingItems();
 		}
 
@@ -216,6 +226,7 @@ namespace YAHAC.MVVM.Model
 
 		public Auction FindCheapestMatchingItem(ItemToSearchFor toMatch)
 		{
+			if (toMatch.item_dictKey == null) return null;
 			if (!MainViewModel.auctionHouse.auctions.TryGetValue(toMatch.item_dictKey, out var itemsToSearchOn)) { return null; }
 
 			itemsToSearchOn.Sort((a, b) => a.starting_bid.CompareTo(b.starting_bid));

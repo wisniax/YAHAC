@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YAHAC.MVVM.Model;
+using YAHAC.MVVM.ViewModel;
 using YAHAC.Properties;
 
 namespace YAHAC.MVVM.UserControls
@@ -41,6 +44,8 @@ namespace YAHAC.MVVM.UserControls
 			if (cfg.itemToSearchFor == null) { cfg.visibile = false; return; }
 			cfg.visibile = true;
 			cfg.SearchQueries = cfg.itemToSearchFor.searchQueries;
+			if (!cfg.AuctionableItems.Contains(cfg.itemToSearchFor.item_dictKey)) cfg.AuctionableItems.Add(cfg.itemToSearchFor.item_dictKey);
+			cfg.SelectedAuctionableItem = cfg.itemToSearchFor.item_dictKey;
 		}
 
 		public bool visibile
@@ -74,12 +79,77 @@ namespace YAHAC.MVVM.UserControls
 
 
 
+		public ObservableCollection<object> AuctionableItems
+		{
+			get { return (ObservableCollection<object>)GetValue(AuctionableItemsProperty); }
+			set { SetValue(AuctionableItemsProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for AuctionableItems.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty AuctionableItemsProperty =
+			DependencyProperty.Register("AuctionableItems", typeof(ObservableCollection<object>), typeof(BetterAH_RecipeConfig), new PropertyMetadata(null));
+
+
+
+		public object SelectedAuctionableItem
+		{
+			get { return (object)GetValue(SelectedAuctionableItemProperty); }
+			set { SetValue(SelectedAuctionableItemProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for SelectedAuctionableItem.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty SelectedAuctionableItemProperty =
+			DependencyProperty.Register("SelectedAuctionableItem", typeof(object), typeof(BetterAH_RecipeConfig), new PropertyMetadata(null/*, OnSelectedAuctionableItemChanged*/));
+
+		/// <summary>
+		/// Changes itemToSearchFor.dictKey everytime letter in ComboBox is pressed...
+		/// </summary>
+		/// <param name="d"></param>
+		/// <param name="e"></param>
+		private static void OnSelectedAuctionableItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			BetterAH_RecipeConfig cfg = (BetterAH_RecipeConfig)d;
+			if (cfg == null) return;
+			var str = cfg.SelectedAuctionableItem as string;
+			if (str == null) return;
+			if (str == cfg.itemToSearchFor.item_dictKey) return;
+			cfg.itemToSearchFor.item_dictKey = str;
+		}
 
 
 		//Someday https://www.codeproject.com/Articles/44920/A-Reusable-WPF-Autocomplete-TextBox or https://www.codeproject.com/Articles/31947/WPF-AutoComplete-Folder-TextBox
 		public BetterAH_RecipeConfig()
 		{
+			AuctionableItems = new ObservableCollection<object>();
+			MainViewModel.auctionHouse.AHUpdatedEvent += AH_Updated;
 			InitializeComponent();
+		}
+
+		private void AH_Updated(AuctionHouse source)
+		{
+			if (!Application.Current.Dispatcher.CheckAccess())
+			{
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					if (source == null) return;
+					if (!source.success) return;
+					ObservableCollection<object> tmp = new(source.auctions.Keys);
+					if (itemToSearchFor != null)
+						if (!tmp.Contains(itemToSearchFor.item_dictKey)) tmp.Add(itemToSearchFor.item_dictKey);
+					AuctionableItems = tmp;
+					return;
+				});
+			}
+			else
+			{
+				if (source == null) return;
+				if (!source.success) return;
+				ObservableCollection<object> tmp = new(source.auctions.Keys);
+				if (itemToSearchFor != null)
+					if (!tmp.Contains(itemToSearchFor.item_dictKey)) tmp.Add(itemToSearchFor.item_dictKey);
+				AuctionableItems = tmp;
+				return;
+			}
 		}
 
 		private void Close_Btn_Click(object sender, RoutedEventArgs e)
@@ -96,7 +166,6 @@ namespace YAHAC.MVVM.UserControls
 			List<string> cusie = new(SearchQueries);
 			cusie.Add(textbox.Text);
 			SearchQueries = cusie;
-			//SearchQueries.Add(textbox.Text);
 		}
 
 		private void SearchQueries_List_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -113,5 +182,15 @@ namespace YAHAC.MVVM.UserControls
 		{
 			visibile = false;
 		}
-	}
+
+        private void AuctionableItems_ComboBox_KeyDown(object sender, KeyEventArgs e)
+        {
+			if (e.Key != Key.Enter) return;
+			var str = SelectedAuctionableItem as string;
+			if (str == null) return;
+			if (str == itemToSearchFor.item_dictKey) return;
+			itemToSearchFor.item_dictKey = str;
+			MainViewModel.betterAH.ReloadRecipes();
+		}
+    }
 }

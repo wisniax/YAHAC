@@ -92,26 +92,6 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
-		private ObservableCollection<object> _AuctionableItems;
-		public ObservableCollection<object> AuctionableItems
-		{
-			get { return _AuctionableItems; }
-			set
-			{
-				_AuctionableItems = value;
-				OnPropertyChanged();
-			}
-		}
-		private object _SelectedAuctionableItem;
-		public object SelectedAuctionableItem
-		{
-			get { return _SelectedAuctionableItem; }
-			set
-			{
-				_SelectedAuctionableItem = value;
-				OnPropertyChanged();
-			}
-		}
 		private ItemToSearchFor _SelectedItemToRecipeConfig;
 		public ItemToSearchFor SelectedItemToRecipeConfig
 		{
@@ -125,23 +105,16 @@ namespace YAHAC.MVVM.ViewModel
 
 		public BetterAHViewModel()
 		{
-			SelectedAuctionableItem = new();
 			BetterAHSettings = new RelayCommand((o) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
 			AddItemInComboBox = new RelayCommand((o) =>
 			{
-				if (SelectedAuctionableItem as string == null) return;
-				MainViewModel.betterAH.AddRecipe(new Properties.ItemToSearchFor(SelectedAuctionableItem as string, enabled: false));
+				MainViewModel.betterAH.AddRecipe(new Properties.ItemToSearchFor(null, enabled: false));
 			});
 			ItemsToSearchForVisibility = false;
 			Items = new();
-			AuctionableItems = new();
 			ItemsToSearchForCollection = new();
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
 			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAH();
-			//if (MainViewModel.settings.Default.PlaySound)
-			//{
-			//	soundPlayer = new(Properties.Resources.notify_sound);
-			//}
 		}
 
 		void LoadBetterAH()
@@ -185,7 +158,6 @@ namespace YAHAC.MVVM.ViewModel
                 return;
 			}
 			ItemsToSearchForCollection = new();
-			AuctionableItems = new(MainViewModel.auctionHouse.auctions.Keys);
             foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
 			{
 				if (itemToSearchFor == null) return;
