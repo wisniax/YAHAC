@@ -89,6 +89,7 @@ namespace YAHAC.MVVM.ViewModel
 			if (Items.Count == 0 && HiddenItems.Count == 0 && MainViewModel.auctionHouse.success) LoadAuctionHouse();
 		}
 
+		// Sound too good to be true lmao https://stackoverflow.com/questions/53549710/async-loading-usercontrols-in-itemcontrol-wpf-c-sharp
 		void LoadAuctionHouse()
 		{
 			//await Task.Run(() => (MainViewModel.bazaar.success == true));
