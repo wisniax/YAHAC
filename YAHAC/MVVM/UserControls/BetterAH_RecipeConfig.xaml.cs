@@ -99,7 +99,7 @@ namespace YAHAC.MVVM.UserControls
 
 		// Using a DependencyProperty as the backing store for SelectedAuctionableItem.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty SelectedAuctionableItemProperty =
-			DependencyProperty.Register("SelectedAuctionableItem", typeof(object), typeof(BetterAH_RecipeConfig), new PropertyMetadata(null/*, OnSelectedAuctionableItemChanged*/));
+			DependencyProperty.Register("SelectedAuctionableItem", typeof(object), typeof(BetterAH_RecipeConfig), new PropertyMetadata(null, OnSelectedAuctionableItemChanged));
 
 		/// <summary>
 		/// Changes itemToSearchFor.dictKey everytime letter in ComboBox is pressed...
