@@ -173,7 +173,7 @@ namespace YAHAC.MVVM.ViewModel
 
 				var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 				ItemView itemBox = new(item, auction, true, itemToSearchFor);
-				//itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
+				itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
 				ItemsToSearchForCollection?.Add(itemBox);
 			}
 		}
