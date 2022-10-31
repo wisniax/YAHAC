@@ -78,6 +78,7 @@
 				Minimum="0"
 				DataContext="{Binding itemToSearchFor}"
 				ToolTip="Set maximum price"
+				FormatString="N0"
 				HorizontalAlignment="Stretch"
 				VerticalAlignment="Top" />
 			<xctk:IntegerUpDown
@@ -85,6 +86,7 @@
 				Foreground="Wheat"
 				FontSize="15"
 				DockPanel.Dock="Top"
+				FormatString="N0"
 				Value="{Binding priority}"
 				Margin="5"
 				Increment="1"

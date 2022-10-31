@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -71,8 +72,8 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
-		private ObservableCollection<object> _ItemsToSearchForCollection;
-		public ObservableCollection<object> ItemsToSearchForCollection
+		private ObservableCollection<ItemView> _ItemsToSearchForCollection;
+		public ObservableCollection<ItemView> ItemsToSearchForCollection
 		{
 			get { return _ItemsToSearchForCollection; }
 			set
@@ -131,7 +132,7 @@ namespace YAHAC.MVVM.ViewModel
 				if (item == null)
 				{
 					Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
-					item = new Item(
+					item = new ITR.Item(
 						  auction.HyPixel_ID,
 						  auction.HyPixel_ID,
 						  Material.AIR,
@@ -146,35 +147,48 @@ namespace YAHAC.MVVM.ViewModel
 		void LoadItemsToSearchForCollection()
 		{
 			if (!ItemsToSearchForVisibility) return;
-			if (ItemsToSearchForCollection == null)
-				return;
+			if (ItemsToSearchForCollection == null) return;
 
-			foreach (var item in ItemsToSearchForCollection)
+			//foreach (var item in ItemsToSearchForCollection)
+			//{
+			//	item.PrepareToDie();
+			//}
+
+			//ItemsToSearchForCollection.Clear();
+			for (int i = 0; i < MainViewModel.betterAH.ItemsToSearchFor.Count; i++)
 			{
-				(item as ItemView).PrepareToDie();
-			}
-
-			ItemsToSearchForCollection.Clear();
-			foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
-			{
-				if (itemToSearchFor == null) return;
-
-				var item = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+				var itemToSearchFor = MainViewModel.betterAH.ItemsToSearchFor[i];
+				if (itemToSearchFor == null) continue;
+				var item = ItemsToSearchForCollection.FirstOrDefault((a) => a.itemToSearchFor == itemToSearchFor, null);
 				if (item == null)
 				{
-					Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
-					item = new Item(
-						  itemToSearchFor.item_dictKey,
-						  itemToSearchFor.item_dictKey,
-						  Material.AIR,
-						  true,
-						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+					var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+					if (mcItem == null)
+					{
+						Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+						mcItem = new Item(
+							  itemToSearchFor.item_dictKey,
+							  itemToSearchFor.item_dictKey,
+							  Material.AIR,
+							  true,
+							  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+					}
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
+					itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
+					ItemsToSearchForCollection?.Add(itemBox);
 				}
-
-				var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
-				ItemView itemBox = new(item, auction, true, itemToSearchFor);
-				itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
-				ItemsToSearchForCollection?.Add(itemBox);
+				else
+				{
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					item.Tag = auction;
+				}
+			}
+			foreach (var item in ItemsToSearchForCollection.ToArray())
+			{
+				if (MainViewModel.betterAH.ItemsToSearchFor.Contains(item.itemToSearchFor)) continue;
+				item.PrepareToDie();
+				ItemsToSearchForCollection.Remove(item);
 			}
 		}
 
@@ -208,6 +222,19 @@ namespace YAHAC.MVVM.ViewModel
 				return;
 			}
 		}
+
+		//private void RefreshItemsToSearchForCollection()
+		//{
+		//	if (!ItemsToSearchForVisibility) return;
+		//	if (ItemsToSearchForCollection == null) return;
+		//	foreach (var ite in ItemsToSearchForCollection)
+		//	{
+		//		if (ite == null) continue;
+
+		//		var auction = MainViewModel.betterAH.FindCheapestMatchingItem(ite.itemToSearchFor);
+		//		ite.Tag = auction;
+		//	}
+		//}
 
 		public void MouseDoubleClicked(object sender, MouseButtonEventArgs e)
 		{
