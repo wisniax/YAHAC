@@ -35,6 +35,7 @@ namespace YAHAC.MVVM.UserControls
 
 
 
+
 		public AuctionItemDisplay()
 		{
 			InitializeComponent();
