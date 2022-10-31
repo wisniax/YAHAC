@@ -103,6 +103,7 @@ namespace YAHAC.MVVM.UserControls
 		public void PrepareToDie()
 		{
 			MainViewModel.itemTextureResolver.DownloadedItemEvent -= ItemTextureResolver_DownloadedItemEvent;
+			this.DataContext = null;
 		}
 
 		private void OnBetterAHUpdated()
