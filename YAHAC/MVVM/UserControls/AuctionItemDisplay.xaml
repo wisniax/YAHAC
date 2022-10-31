@@ -8,7 +8,7 @@
 	xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
 	mc:Ignorable="d"
 	d:Height="400"
-	d:Width="200"
+	d:Width="300"
 	DataContext="{Binding Mode=OneWay, 
 	RelativeSource={RelativeSource Self}}">
 	<UserControl.Resources>
@@ -33,7 +33,8 @@
 		Margin="0"
 		Background="#FF100110"
 		RenderOptions.EdgeMode="Aliased">
-		<DockPanel>
+		<DockPanel
+			Grid.IsSharedSizeScope="False">
 			<MTB:MinecraftTextBlock
 				Margin="0"
 				Text="{Binding SelectedAuction,
@@ -63,13 +64,16 @@
 				DockPanel.Dock="Top">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition
-						Width="auto" />
+						Width="auto"
+						SharedSizeGroup="FirstColumn" />
 					<ColumnDefinition
-						Width="*" />
+						Width="*"
+						SharedSizeGroup="SecondColumn" />
+
 				</Grid.ColumnDefinitions>
 				<TextBlock
 					Grid.Column="0"
-					Text="Starting BID: "
+					Text="Starting BID:"
 					Background="Transparent"
 					Margin="0"
 					Foreground="LightGray"
@@ -84,30 +88,242 @@
 					Grid.Column="1"
 					Text="{Binding SelectedAuction.starting_bid,
 				Converter={StaticResource NumberToString}}"
+					d:Text="JD"
 					Background="Transparent"
 					Foreground="#FFFFAA00"
-					Margin="0"
+					Margin="5,0,0,0"
 					TextAlignment="Left"
-					HorizontalAlignment="Left"
 					VerticalAlignment="Center"
 					Width="auto"
 					Height="auto"
 					FontSize="16"
 					FontFamily="Lucida Console" />
-			</Grid>
-			<Grid
-				DockPanel.Dock="Top"
-				VerticalAlignment="Top"
-				Margin="0">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="auto" />
-					<RowDefinition Height="*" />
-				</Grid.RowDefinitions>
-				<Separator
-					Foreground="LightGray"
-					Margin="0,5,0,5" />
 
 			</Grid>
+			<DockPanel
+				DockPanel.Dock="Top">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="auto"
+							SharedSizeGroup="FirstColumn" />
+						<ColumnDefinition
+							Width="*"
+							SharedSizeGroup="SecondColumn" />
+
+					</Grid.ColumnDefinitions>
+					<Grid.Style>
+						<Style
+							TargetType="{x:Type Grid}">
+							<Style.Triggers>
+								<DataTrigger
+									Binding="{Binding CheapestAuctionPrice}"
+									Value="0">
+									<Setter
+										Property="Visibility"
+										Value="Collapsed" />
+								</DataTrigger>
+							</Style.Triggers>
+							<Setter
+								Property="Visibility"
+								Value="Visible" />
+						</Style>
+					</Grid.Style>
+					<TextBlock
+						Text="Lowest BIN:"
+						Grid.Column="0"
+						Background="Transparent"
+						Margin="0"
+						Foreground="LightGray"
+						TextAlignment="Left"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						Width="auto"
+						Height="auto"
+						FontSize="15"
+						FontFamily="Lucida Console" />
+					<TextBlock
+						Text="{Binding CheapestAuctionPrice,
+				Converter={StaticResource NumberToString}}"
+						d:Text="JD"
+						Background="Transparent"
+						Grid.Column="1"
+						Foreground="#FFFFAA00"
+						Margin="5,0,0,0"
+						TextAlignment="Left"
+						VerticalAlignment="Center"
+						Width="auto"
+						Height="auto"
+						FontSize="16"
+						FontFamily="Lucida Console" />
+				</Grid>
+			</DockPanel>
+			<DockPanel
+				DockPanel.Dock="Top"
+				VerticalAlignment="Top"
+				d:Visibility="Visible"
+				Margin="0">
+				<DockPanel.Style>
+					<Style
+						TargetType="{x:Type DockPanel}">
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding ItemQuery}"
+								Value="{x:Null}">
+								<Setter
+									Property="Visibility"
+									Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+						<Setter
+							Property="Visibility"
+							Value="Visible" />
+					</Style>
+				</DockPanel.Style>
+				<Separator
+					Foreground="LightGray"
+					Margin="-3,5,-3,5"
+					DockPanel.Dock="Top">
+					<Separator.LayoutTransform>
+						<ScaleTransform
+							ScaleY="2" />
+					</Separator.LayoutTransform>
+				</Separator>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="auto" />
+						<RowDefinition
+							Height="auto" />
+						<RowDefinition
+							Height="*" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="auto" />
+						<ColumnDefinition
+							Width="10" />
+						<ColumnDefinition
+							Width="*" />
+					</Grid.ColumnDefinitions>
+					<StackPanel
+						Grid.Column="1"
+						Grid.RowSpan="3"
+						Orientation="Horizontal"
+						HorizontalAlignment="Center">
+						<Separator
+							Style="{StaticResource 
+							{x:Static ToolBar.SeparatorStyleKey}}" />
+					</StackPanel>
+					<DockPanel
+						Grid.Row="0">
+						<TextBlock
+							Text="{Binding ItemQuery.item_dictKey}"
+							d:Text="item_dictKey"
+							Background="Transparent"
+							Margin="0"
+							Foreground="LightGray"
+							TextAlignment="Left"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							Width="auto"
+							Height="auto"
+							FontSize="14"
+							FontFamily="Lucida Console" />
+					</DockPanel>
+					<DockPanel
+						Grid.Row="1">
+						<TextBlock
+							Text="Max Price: "
+							Background="Transparent"
+							DockPanel.Dock="Left"
+							Margin="0"
+							Foreground="LightGray"
+							TextAlignment="Left"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							Width="auto"
+							Height="auto"
+							FontSize="13"
+							FontFamily="Lucida Console" />
+						<TextBlock
+							Text="{Binding ItemQuery.maxPrice,
+					Converter={StaticResource NumberToString}}"
+							d:Text="maxPrice"
+							Background="Transparent"
+							DockPanel.Dock="Left"
+							Margin="0"
+							Foreground="#FFFFAA00"
+							TextAlignment="Left"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							Width="auto"
+							Height="auto"
+							FontSize="13"
+							FontFamily="Lucida Console" />
+					</DockPanel>
+					<DockPanel
+						Grid.Row="2">
+						<TextBlock
+							Text="Priority: "
+							Background="Transparent"
+							Margin="0"
+							DockPanel.Dock="Left"
+							Foreground="LightGray"
+							TextAlignment="Left"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							Width="auto"
+							Height="auto"
+							FontSize="13"
+							FontFamily="Lucida Console" />
+						<TextBlock
+							Text="{Binding ItemQuery.priority}"
+							d:Text="priority"
+							Background="Transparent"
+							Margin="0"
+							DockPanel.Dock="Left"
+							Foreground="LightGray"
+							TextAlignment="Left"
+							HorizontalAlignment="Left"
+							VerticalAlignment="Center"
+							Width="auto"
+							Height="auto"
+							FontSize="13"
+							FontFamily="Lucida Console" />
+					</DockPanel>
+					<DockPanel
+						Grid.Column="2"
+						Grid.RowSpan="3"
+						Margin="0">
+						<TextBlock
+							Text="Search Queries:"
+							Background="Transparent"
+							Margin="0"
+							DockPanel.Dock="Top"
+							Foreground="LightGray"
+							TextAlignment="Left"
+							VerticalAlignment="Top"
+							Width="auto"
+							Height="auto"
+							FontSize="14"
+							FontFamily="Lucida Console" />
+						<ListView
+							Background="Transparent"
+							Foreground="LightGray"
+							FontSize="13"
+							DockPanel.Dock="Top"
+							VerticalAlignment="Top"
+							ItemsSource="{Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:AuctionItemDisplay}}, 
+				Path=ItemQuery.searchQueries}"
+							Margin="0"
+							BorderThickness="0">
+						</ListView>
+					</DockPanel>
+				</Grid>
+			</DockPanel>
 		</DockPanel>
 	</Border>
 </UserControl>

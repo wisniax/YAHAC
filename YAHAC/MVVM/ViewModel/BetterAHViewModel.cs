@@ -160,36 +160,64 @@ namespace YAHAC.MVVM.ViewModel
 				var itemToSearchFor = MainViewModel.betterAH.ItemsToSearchFor[i];
 				if (itemToSearchFor == null) continue;
 				var item = ItemsToSearchForCollection.FirstOrDefault((a) => a.itemToSearchFor == itemToSearchFor, null);
-				if (item == null)
+				if (ItemsToSearchForCollection.IndexOf(item) != i)
 				{
-					var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-					if (mcItem == null)
+					if (ItemsToSearchForCollection.IndexOf(item) == -1)
 					{
-						Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
-						mcItem = new Item(
-							  itemToSearchFor.item_dictKey,
-							  itemToSearchFor.item_dictKey,
-							  Material.AIR,
-							  true,
-							  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+						if (mcItem == null)
+						{
+							Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+							mcItem = new Item(
+								  itemToSearchFor.item_dictKey,
+								  itemToSearchFor.item_dictKey,
+								  Material.AIR,
+								  true,
+								  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						}
+						var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+						ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
+						itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
+						ItemsToSearchForCollection?.Insert(i, itemBox);
 					}
-					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
-					ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
-					itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
-					ItemsToSearchForCollection?.Add(itemBox);
+					else
+					{
+						ItemsToSearchForCollection.Move(ItemsToSearchForCollection.IndexOf(item), i);
+					}
+
 				}
 				else
 				{
+					if (item.item.HyPixel_ID != itemToSearchFor.item_dictKey)
+					{
+						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+						if (mcItem == null)
+						{
+							Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+							mcItem = new Item(
+								  itemToSearchFor.item_dictKey,
+								  itemToSearchFor.item_dictKey,
+								  Material.AIR,
+								  true,
+								  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						}
+						item.item = mcItem;
+					}
 					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 					item.Tag = auction;
 				}
 			}
-			foreach (var item in ItemsToSearchForCollection.ToArray())
+			for (int i = ItemsToSearchForCollection.Count - 1; i >= MainViewModel.betterAH.ItemsToSearchFor.Count; i--)
 			{
-				if (MainViewModel.betterAH.ItemsToSearchFor.Contains(item.itemToSearchFor)) continue;
-				item.PrepareToDie();
-				ItemsToSearchForCollection.Remove(item);
+				ItemsToSearchForCollection[i].PrepareToDie();
+				ItemsToSearchForCollection.RemoveAt(i);
 			}
+			//foreach (var item in ItemsToSearchForCollection.ToArray())
+			//{
+			//	if (MainViewModel.betterAH.ItemsToSearchFor.Contains(item.itemToSearchFor)) continue;
+			//	item.PrepareToDie();
+			//	ItemsToSearchForCollection.Remove(item);
+			//}
 		}
 
 		private void ItemToSearchForModifyRequested(ItemView source)

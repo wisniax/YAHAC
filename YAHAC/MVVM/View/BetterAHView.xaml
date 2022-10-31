@@ -109,6 +109,10 @@
 					RelativeSource FindAncestor, AncestorType={
 					x:Type local:BetterAHView}}, 
 					Path=DataContext.SelectedItemView.Tag}"
+					ItemQuery="{Binding RelativeSource={
+					RelativeSource FindAncestor, AncestorType={
+					x:Type local:BetterAHView}}, 
+					Path=DataContext.SelectedItemView.itemToSearchFor}"
 					FontSize="18"
 					FontFamily="Lucida Console"
 					Foreground="White">

@@ -27,7 +27,7 @@
 	<!--But heyy it works ... i think...-->
 	<Grid
 			   HorizontalAlignment="Stretch"
-			   Opacity="0.75"
+			   Opacity="1"
 			   Visibility="{Binding RelativeSource=
 		{RelativeSource FindAncestor, 
 		AncestorType={x:Type local:MainView}}, 

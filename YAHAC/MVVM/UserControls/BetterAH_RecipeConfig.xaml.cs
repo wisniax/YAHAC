@@ -188,8 +188,8 @@ namespace YAHAC.MVVM.UserControls
 			if (e.Key != Key.Enter) return;
 			var str = SelectedAuctionableItem as string;
 			if (str == null) return;
-			if (str == itemToSearchFor.item_dictKey) return;
-			itemToSearchFor.item_dictKey = str;
+			//if (str == itemToSearchFor.item_dictKey) return;
+			//itemToSearchFor.item_dictKey = str;
 			MainViewModel.betterAH.ReloadRecipes();
 		}
     }
