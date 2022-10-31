@@ -145,20 +145,17 @@ namespace YAHAC.MVVM.ViewModel
 
 		void LoadItemsToSearchForCollection()
 		{
-			if (!ItemsToSearchForVisibility)
-			{
-				if (ItemsToSearchForCollection == null)
-                return;
+			if (!ItemsToSearchForVisibility) return;
+			if (ItemsToSearchForCollection == null)
+				return;
 
-				foreach (ItemView item in ItemsToSearchForCollection)
-				{
-					item.PrepareToDie();
-                }
-				ItemsToSearchForCollection = null;
-                return;
+			foreach (var item in ItemsToSearchForCollection)
+			{
+				(item as ItemView).PrepareToDie();
 			}
-			ItemsToSearchForCollection = new();
-            foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
+
+			ItemsToSearchForCollection.Clear();
+			foreach (var itemToSearchFor in MainViewModel.betterAH.ItemsToSearchFor)
 			{
 				if (itemToSearchFor == null) return;
 
@@ -176,8 +173,8 @@ namespace YAHAC.MVVM.ViewModel
 
 				var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 				ItemView itemBox = new(item, auction, true, itemToSearchFor);
-				itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
-				 ItemsToSearchForCollection?.Add(itemBox);
+				//itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
+				ItemsToSearchForCollection?.Add(itemBox);
 			}
 		}
 
