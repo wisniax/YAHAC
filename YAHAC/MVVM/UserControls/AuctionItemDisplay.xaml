@@ -71,6 +71,23 @@
 						SharedSizeGroup="SecondColumn" />
 
 				</Grid.ColumnDefinitions>
+				<Grid.Style>
+					<Style
+						TargetType="{x:Type Grid}">
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding SelectedAuction}"
+								Value="{x:Null}">
+								<Setter
+									Property="Visibility"
+									Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+						<Setter
+							Property="Visibility"
+							Value="Visible" />
+					</Style>
+				</Grid.Style>
 				<TextBlock
 					Grid.Column="0"
 					Text="Starting BID:"
@@ -182,7 +199,7 @@
 				</DockPanel.Style>
 				<Separator
 					Foreground="LightGray"
-					Margin="-3,5,-3,5"
+					Margin="-2,4,-2,5"
 					DockPanel.Dock="Top">
 					<Separator.LayoutTransform>
 						<ScaleTransform
@@ -216,6 +233,7 @@
 							{x:Static ToolBar.SeparatorStyleKey}}" />
 					</StackPanel>
 					<DockPanel
+						Margin="2"
 						Grid.Row="0">
 						<TextBlock
 							Text="{Binding ItemQuery.item_dictKey}"
@@ -232,6 +250,7 @@
 							FontFamily="Lucida Console" />
 					</DockPanel>
 					<DockPanel
+						Margin="2"
 						Grid.Row="1">
 						<TextBlock
 							Text="Max Price: "
@@ -263,6 +282,7 @@
 							FontFamily="Lucida Console" />
 					</DockPanel>
 					<DockPanel
+						Margin="2"
 						Grid.Row="2">
 						<TextBlock
 							Text="Priority: "
@@ -295,7 +315,7 @@
 					<DockPanel
 						Grid.Column="2"
 						Grid.RowSpan="3"
-						Margin="0">
+						Margin="2">
 						<TextBlock
 							Text="Search Queries:"
 							Background="Transparent"
@@ -311,6 +331,7 @@
 						<ListView
 							Background="Transparent"
 							Foreground="LightGray"
+							HorizontalAlignment="Left"
 							FontSize="13"
 							DockPanel.Dock="Top"
 							VerticalAlignment="Top"
