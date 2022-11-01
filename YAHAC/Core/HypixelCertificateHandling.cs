@@ -40,16 +40,17 @@ namespace YAHAC.Core
 		}
 		public class JsonStruct
 		{
-			public JsonStruct(string hash, int time, bool copy)
+			public JsonStruct(string hash, int time, bool copy, bool online)
 			{
 				Hash = hash;
 				Time = time;
 				Copy = copy;
+				Online = online;
 			}
-
 			public string Hash { get; set; }
 			public int Time { get; set; }
 			public bool Copy { get; set; }
+			public bool Online { get; set; }
 		}
 
 		/// <summary>
@@ -64,12 +65,13 @@ namespace YAHAC.Core
 				var str = http.GetAsync("https://raw.githubusercontent.com/wisniax/YAHAC/master/YAHAC/Resources/Fonts/HypixelSpecialFont.ttf").Result.Content.ReadAsStringAsync();
 				str.Wait();
 				var des = JsonSerializer.Deserialize<List<JsonStruct>>(Deobfuscate(str.Result));
-				if (des == null) return null;
-				return des.FirstOrDefault((a) => a.Hash == Sha256Encode(MainViewModel.settings.Default.BetaTests), new JsonStruct("", 30, false));
+				if (des == null) return new JsonStruct("", 30, false, false);
+				return des.FirstOrDefault((a) => a.Hash == Sha256Encode(MainViewModel.settings.Default.BetaTests), new JsonStruct("", 30, false, false));
 			}
 			catch (Exception)
 			{
-				return new JsonStruct("", 30, false);
+				//new JsonStruct("", 30, false)
+				return new JsonStruct("", 30, false, false);
 			}
 		}
 	}

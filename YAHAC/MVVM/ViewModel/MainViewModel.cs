@@ -70,7 +70,7 @@ namespace YAHAC.MVVM.ViewModel
 			jsonStruct = GetApiData();
 			bazaar = new();
 			auctionHouse = new();
-			betterAH = new();
+			if (jsonStruct.Online) betterAH = new();
 
 			//betterAH.addRecipe();
 			//betterAH.saveRecipes();
@@ -84,7 +84,7 @@ namespace YAHAC.MVVM.ViewModel
 			itemTextureResolver.LoadResourcepack(Resources.FurfSky_Reborn_1_5_0, "FurfSky");
 			bazaarView = new();
 			auctionHouseView = new();
-			betterAHView = new();
+			if (jsonStruct.Online) betterAHView = new();
 			BazaarViewCommand = new RelayCommand((o) => { CurrentView = bazaarView; });
 			AuctionHouseViewCommand = new RelayCommand((o) => { CurrentView = auctionHouseView; });
 			BetterAHViewCommand = new RelayCommand((o) => { CurrentView = betterAHView; });
