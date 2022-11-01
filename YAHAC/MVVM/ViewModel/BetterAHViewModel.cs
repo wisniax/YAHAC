@@ -9,6 +9,7 @@ using System.Media;
 using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -109,13 +110,39 @@ namespace YAHAC.MVVM.ViewModel
 			BetterAHSettings = new RelayCommand((o) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
 			AddItemInComboBox = new RelayCommand((o) =>
 			{
-				MainViewModel.betterAH.AddRecipe(new Properties.ItemToSearchFor(null, enabled: false));
+				ItemToSearchFor itemek = null;
+				if (Keyboard.IsKeyDown(Key.LeftShift))
+				{
+					itemek = ReadFromCowlectionNbt();
+				}
+				if (itemek == null) itemek = new Properties.ItemToSearchFor(null, enabled: false);
+				MainViewModel.betterAH.AddRecipe(itemek);
 			});
 			ItemsToSearchForVisibility = false;
 			Items = new();
 			ItemsToSearchForCollection = new();
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
 			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAH();
+		}
+
+		private ItemToSearchFor ReadFromCowlectionNbt()
+		{
+			var itemTag = NBTReader.ReadCowlectionNbtFromClipboard();
+			if (itemTag == null) return null;
+			if (itemTag.tag.ExtraAttributes == null) return null;
+			if (itemTag.tag.ExtraAttributes.attributes == null) return new ItemToSearchFor(itemTag.tag.ExtraAttributes.id);
+			var str = itemTag.tag.ExtraAttributes.attributes.ToString().Trim();
+			if (str == null) return new ItemToSearchFor(itemTag.tag.ExtraAttributes.id);
+			var regex = new Regex("(?<=\").+?(?=\")");
+			var matches = regex.Matches(str).ToList();
+			List<string> queries = new();
+			foreach (var query in matches)
+			{
+				var tmp = query.Value.Replace('_', ' ');
+				tmp = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(tmp.ToLower());
+				queries.Add(tmp);
+			}
+			return new ItemToSearchFor(itemTag.tag.ExtraAttributes.id, searchQueries: queries, enabled: false);
 		}
 
 		void LoadBetterAH()

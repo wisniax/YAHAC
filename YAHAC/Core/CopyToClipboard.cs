@@ -17,5 +17,16 @@ namespace YAHAC.Core
 			thread.Start();
 			thread.Join();
 		}
+
+		public static string GetFromClipboard()
+		{
+			if (Clipboard.ContainsText(TextDataFormat.Text))
+			{
+				string clipboardText = Clipboard.GetText(TextDataFormat.Text);
+				return clipboardText;
+				// Do whatever you need to do with clipboardText
+			}
+			else return "";
+		}
 	}
 }
