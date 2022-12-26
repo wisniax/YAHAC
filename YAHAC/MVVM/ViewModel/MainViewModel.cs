@@ -17,10 +17,10 @@ namespace YAHAC.MVVM.ViewModel
 	internal class MainViewModel : ObservableObject
 	{
 		//Thats how u bind a static property lmao
-		static private Settings _settings;
-		static public Settings settings
+		private static Settings _settings;
+		public static Settings Settings
 		{
-			get { return _settings; }
+			get => _settings;
 			set
 			{
 				_settings = value;
@@ -33,7 +33,7 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			StaticPropertyChanged?.Invoke(null, FilterStringPropertyEventArgs);
 		}
-		private static readonly PropertyChangedEventArgs FilterStringPropertyEventArgs = new PropertyChangedEventArgs(nameof(settings));
+		private static readonly PropertyChangedEventArgs FilterStringPropertyEventArgs = new PropertyChangedEventArgs(nameof(Settings));
 		public static event PropertyChangedEventHandler StaticPropertyChanged;
 		public static ItemTextureResolver itemTextureResolver { get; private set; }
 		//Commands
@@ -66,7 +66,7 @@ namespace YAHAC.MVVM.ViewModel
 		{
 			itemTextureResolver = new();
 			itemTextureResolver.FastInit(Settings.SettingsPath + @"\ITR_Cache.zip");
-			settings = new();
+			Settings = new();
 			jsonStruct = GetApiData();
 			bazaar = new();
 			auctionHouse = new();

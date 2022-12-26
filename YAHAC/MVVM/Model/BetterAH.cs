@@ -154,8 +154,8 @@ namespace YAHAC.MVVM.Model
 		public void SaveRecipes()
 		{
 			ItemsToSearchFor.RemoveAll((a) => a.item_dictKey == null);
-			MainViewModel.settings.Default.BetterAH_Query = ItemsToSearchFor;
-			MainViewModel.settings.Save();
+			MainViewModel.Settings.Default.BetterAH_Query = ItemsToSearchFor;
+			MainViewModel.Settings.Save();
 			findMatchingItems();
 		}
 
@@ -164,8 +164,8 @@ namespace YAHAC.MVVM.Model
 		/// </summary>
 		public void LoadRecipes()
 		{
-			MainViewModel.settings.Load();
-			ItemsToSearchFor = MainViewModel.settings.Default.BetterAH_Query;
+			MainViewModel.Settings.Load();
+			ItemsToSearchFor = MainViewModel.Settings.Default.BetterAH_Query;
 			findMatchingItems();
 		}
 

@@ -66,7 +66,7 @@ namespace YAHAC.Core
 				str.Wait();
 				var des = JsonSerializer.Deserialize<List<JsonStruct>>(Deobfuscate(str.Result));
 				if (des == null) return new JsonStruct("", 30, false, false);
-				return des.FirstOrDefault((a) => a.Hash == Sha256Encode(MainViewModel.settings.Default.BetaTests), new JsonStruct("", 30, false, false));
+				return des.FirstOrDefault((a) => a.Hash == Sha256Encode(MainViewModel.Settings.Default.BetaTests), new JsonStruct("", 30, false, false));
 			}
 			catch (Exception)
 			{

@@ -31,29 +31,29 @@ namespace YAHAC.MVVM.View
 		private void UserControl_MouseMove(object sender, MouseEventArgs e)
 		{
 			MouseToCanvasOffset offs = new();
-			((BetterAHViewModel)DataContext).CanvasPoint = (Point)offs.Convert(sender, typeof(BetterAHView), e, null);
+			((BetterAhViewModel)DataContext).CanvasPoint = (Point)offs.Convert(sender, typeof(BetterAHView), e, null);
 		}
 
 		private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			((BetterAHViewModel)DataContext).SelectedItemView = ((sender as ListBox).SelectedItem as ItemView);
+			((BetterAhViewModel)DataContext).SelectedItemView = ((sender as ListBox).SelectedItem as ItemView);
 		}
 
 		private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			((BetterAHViewModel)DataContext).MouseDoubleClicked(sender, e);
+			((BetterAhViewModel)DataContext).MouseDoubleClicked(sender, e);
 		}
 
 		private void LoadConfig_Btn_Click(object sender, RoutedEventArgs e)
 		{
 			MainViewModel.betterAH.LoadRecipes();
-			((BetterAHViewModel)DataContext).SelectedItemToRecipeConfig = null;
+			((BetterAhViewModel)DataContext).SelectedItemToRecipeConfig = null;
 		}
 
 		private void SaveConfig_Btn_Click(object sender, RoutedEventArgs e)
 		{
 			MainViewModel.betterAH.SaveRecipes();
-			((BetterAHViewModel)DataContext).SelectedItemToRecipeConfig = null;
+			((BetterAhViewModel)DataContext).SelectedItemToRecipeConfig = null;
 		}
 	}
 }

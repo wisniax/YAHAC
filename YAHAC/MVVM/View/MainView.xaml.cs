@@ -27,7 +27,7 @@ namespace YAHAC.MVVM.View
         {
             InitializeComponent();
             var dataCont = ((MainViewModel)this.DataContext);
-            var Starting_Ui = MainViewModel.settings.Default.Starting_Ui;
+            var Starting_Ui = MainViewModel.Settings.Default.Starting_Ui;
             if (Starting_Ui.Equals(UserInterfaces.Bazaar)) { BtnBZ.IsChecked = true; dataCont.BazaarViewCommand.Execute(dataCont); }
             if (Starting_Ui.Equals(UserInterfaces.AuctionHouse)) { BtnAH.IsChecked = true; dataCont.AuctionHouseViewCommand.Execute(dataCont); }
         }
@@ -35,7 +35,7 @@ namespace YAHAC.MVVM.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //MainViewModel.settings.Default.MinecraftItemBox_Size = 34;
-            MainViewModel.settings.Default.DebugVisibility = Visibility.Hidden;
+            MainViewModel.Settings.Default.DebugVisibility = Visibility.Hidden;
             MainViewModel.settings_Changed();
         }
     }

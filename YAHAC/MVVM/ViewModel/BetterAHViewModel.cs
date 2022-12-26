@@ -1,138 +1,124 @@
 ﻿using ITR;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Media;
-using System.Security.Policy;
-using System.Text;
-using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using YAHAC.Core;
 using YAHAC.MVVM.Model;
 using YAHAC.MVVM.UserControls;
-using YAHAC.MVVM.View;
 using YAHAC.Properties;
 
 namespace YAHAC.MVVM.ViewModel
 {
-	internal class BetterAHViewModel : ObservableObject
+	internal class BetterAhViewModel : ObservableObject
 	{
-		public RelayCommand BetterAHSettings { get; private set; }
+		public RelayCommand BetterAhSettings { get; private set; }
 		public RelayCommand AddItemInComboBox { get; private set; }
 
-		private ObservableCollection<object> _Items;
+		private ObservableCollection<object> _items;
 		/// <summary>
 		/// Collection of auctions in matchingItems list presented in graphical format
 		/// </summary>
 		public ObservableCollection<object> Items
 		{
-			get { return _Items; }
+			get => _items;
 			set
 			{
-				_Items = value;
+				_items = value;
 				OnPropertyChanged();
 			}
 		}
-		private bool _AdditonalInfo_Visible;
-		public bool AdditionalInfo_Visible
+		private bool _additonalInfoVisible;
+		public bool AdditionalInfoVisible
 		{
-			get { return _AdditonalInfo_Visible; }
+			get => _additonalInfoVisible;
 			set
 			{
-				_AdditonalInfo_Visible = value;
+				_additonalInfoVisible = value;
 				OnPropertyChanged();
 			}
 		}
-		private ItemView _SelectedItemView;
+		private ItemView _selectedItemView;
 		public ItemView SelectedItemView
 		{
-			get { return _SelectedItemView; }
+			get => _selectedItemView;
 			set
 			{
-				if (value == null) { AdditionalInfo_Visible = false; return; }
-				_SelectedItemView = value;
+				if (value == null) { AdditionalInfoVisible = false; return; }
+				_selectedItemView = value;
 				OnPropertyChanged();
-				AdditionalInfo_Visible = true;
+				AdditionalInfoVisible = true;
 			}
 		}
-		private Point _CanvasPoint;
+		private Point _canvasPoint;
 		public Point CanvasPoint
 		{
-			get { return _CanvasPoint; }
+			get => _canvasPoint;
 			set
 			{
-				_CanvasPoint = value;
+				_canvasPoint = value;
 				OnPropertyChanged();
 			}
 		}
-		private ObservableCollection<ItemView> _ItemsToSearchForCollection;
+		private ObservableCollection<ItemView> _itemsToSearchForCollection;
 		public ObservableCollection<ItemView> ItemsToSearchForCollection
 		{
-			get { return _ItemsToSearchForCollection; }
+			get => _itemsToSearchForCollection;
 			set
 			{
-				_ItemsToSearchForCollection = value;
+				_itemsToSearchForCollection = value;
 				OnPropertyChanged();
 			}
 		}
-		private bool _ItemsToSearchForVisibility;
+		private bool _itemsToSearchForVisibility;
 		public bool ItemsToSearchForVisibility
 		{
-			get { return _ItemsToSearchForVisibility; }
+			get => _itemsToSearchForVisibility;
 			set
 			{
-				_ItemsToSearchForVisibility = value;
+				_itemsToSearchForVisibility = value;
 				LoadItemsToSearchForCollection();
 				OnPropertyChanged();
 			}
 		}
-		private ItemToSearchFor _SelectedItemToRecipeConfig;
+		private ItemToSearchFor _selectedItemToRecipeConfig;
 		public ItemToSearchFor SelectedItemToRecipeConfig
 		{
-			get { return _SelectedItemToRecipeConfig; }
+			get => _selectedItemToRecipeConfig;
 			set
 			{
-				_SelectedItemToRecipeConfig = value;
+				_selectedItemToRecipeConfig = value;
 				OnPropertyChanged();
 			}
 		}
 
-		public BetterAHViewModel()
+		public BetterAhViewModel()
 		{
-			BetterAHSettings = new RelayCommand((o) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
-			AddItemInComboBox = new RelayCommand((o) =>
+			BetterAhSettings = new RelayCommand((_) => { ItemsToSearchForVisibility = !ItemsToSearchForVisibility; });
+			AddItemInComboBox = new RelayCommand((_) =>
 			{
 				ItemToSearchFor itemek = null;
-				if (Keyboard.IsKeyDown(Key.LeftShift))
-				{
-					itemek = ReadFromCowlectionNbt();
-				}
-				if (itemek == null) itemek = new Properties.ItemToSearchFor(null, enabled: false);
+				if (Keyboard.IsKeyDown(Key.LeftShift)) itemek = ReadFromCowlectionNbt();
+				itemek ??= new Properties.ItemToSearchFor(null, enabled: false);
 				MainViewModel.betterAH.AddRecipe(itemek);
 			});
 			ItemsToSearchForVisibility = false;
 			Items = new();
 			ItemsToSearchForCollection = new();
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
-			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAH();
+			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAh();
 		}
 
 		private ItemToSearchFor ReadFromCowlectionNbt()
 		{
 			var itemTag = NBTReader.ReadCowlectionNbtFromClipboard();
-			if (itemTag == null) return null;
-			if (itemTag.tag.ExtraAttributes == null) return null;
+			if (itemTag?.tag.ExtraAttributes == null) return null;
 			if (itemTag.tag.ExtraAttributes.attributes == null) return new ItemToSearchFor(itemTag.tag.ExtraAttributes.id);
-			var str = itemTag.tag.ExtraAttributes.attributes.ToString().Trim();
-			if (str == null) return new ItemToSearchFor(itemTag.tag.ExtraAttributes.id);
+			var str = itemTag.tag.ExtraAttributes.attributes.ToString()!.Trim();
 			var regex = new Regex("(?<=\").+?(?=\")");
 			var matches = regex.Matches(str).ToList();
 			List<string> queries = new();
@@ -145,7 +131,7 @@ namespace YAHAC.MVVM.ViewModel
 			return new ItemToSearchFor(itemTag.tag.ExtraAttributes.id, searchQueries: queries, enabled: false);
 		}
 
-		void LoadBetterAH()
+		void LoadBetterAh()
 		{
 			Items = new();
 			if (!MainViewModel.betterAH.success) return;
@@ -158,7 +144,7 @@ namespace YAHAC.MVVM.ViewModel
 				// In case item does not exist in Hypixel API create an unknown one with id as its name
 				if (item == null)
 				{
-					Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+					var convbtm = new Converters.BitmapToMemoryStream();
 					item = new ITR.Item(
 						  auction.HyPixel_ID,
 						  auction.HyPixel_ID,
@@ -192,16 +178,13 @@ namespace YAHAC.MVVM.ViewModel
 					if (ItemsToSearchForCollection.IndexOf(item) == -1)
 					{
 						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-						if (mcItem == null)
-						{
-							Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
-							mcItem = new Item(
-								  itemToSearchFor.item_dictKey,
-								  itemToSearchFor.item_dictKey,
-								  Material.AIR,
-								  true,
-								  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
-						}
+						var convbtm = new Converters.BitmapToMemoryStream();
+						mcItem ??= new Item(
+							itemToSearchFor.item_dictKey,
+							itemToSearchFor.item_dictKey,
+							Material.AIR,
+							true,
+							convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
 						var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 						ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
 						itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
@@ -220,7 +203,7 @@ namespace YAHAC.MVVM.ViewModel
 						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
 						if (mcItem == null)
 						{
-							Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
+							var convbtm = new Converters.BitmapToMemoryStream();
 							mcItem = new Item(
 								  itemToSearchFor.item_dictKey,
 								  itemToSearchFor.item_dictKey,
@@ -249,8 +232,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		private void ItemToSearchForModifyRequested(ItemView source)
 		{
-			if (source == null) return;
-			if (source.itemToSearchFor == null) return;
+			if (source?.itemToSearchFor == null) return;
 			SelectedItemToRecipeConfig = null;
 			SelectedItemToRecipeConfig = source.itemToSearchFor;
 		}
@@ -261,18 +243,16 @@ namespace YAHAC.MVVM.ViewModel
 			{
 				Application.Current.Dispatcher.Invoke(() =>
 				{
-					if (source == null) return;
-					if (!source.success) return;
-					LoadBetterAH();
+					if (source is not { success: true }) return;
+					LoadBetterAh();
 					LoadItemsToSearchForCollection();
 					return;
 				});
 			}
 			else
 			{
-				if (source == null) return;
-				if (!source.success) return;
-				LoadBetterAH();
+				if (source is not { success: true }) return;
+				LoadBetterAh();
 				LoadItemsToSearchForCollection();
 				return;
 			}
@@ -293,8 +273,7 @@ namespace YAHAC.MVVM.ViewModel
 
 		public void MouseDoubleClicked(object sender, MouseButtonEventArgs e)
 		{
-			if (SelectedItemView == null) return;
-			if (SelectedItemView.Tag == null) return;
+			if (SelectedItemView?.Tag == null) return;
 			CopyToClipboard.Copy("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
 		}
 	}

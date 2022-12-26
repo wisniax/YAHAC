@@ -95,7 +95,7 @@ namespace YAHAC.MVVM.UserControls
 		}
 		public ItemView()
 		{
-			ItemBoxSize = MainViewModel.settings.Default.MinecraftItemBox_Size;
+			ItemBoxSize = MainViewModel.Settings.Default.MinecraftItemBox_Size;
 			MainViewModel.itemTextureResolver.DownloadedItemEvent += ItemTextureResolver_DownloadedItemEvent;
 			InitializeComponent();
 		}
