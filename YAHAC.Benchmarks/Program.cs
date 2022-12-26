@@ -7,7 +7,8 @@ namespace YAHAC.Benchmarks
 	{
 		static void Main(string[] args)
 		{
-			BenchmarkRunner.Run<BitmapToWPFSourceBenchmarks>();
+			//BenchmarkRunner.Run<BitmapToWPFSourceBenchmarks>();
+			BenchmarkRunner.Run<HttpRequestersBenchmarks>();
 		}
 	}
 }
