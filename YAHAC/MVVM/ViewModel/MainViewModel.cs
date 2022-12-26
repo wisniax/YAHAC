@@ -43,7 +43,7 @@ namespace YAHAC.MVVM.ViewModel
 		private object _currentView;
 		public object CurrentView
 		{
-			get { return _currentView; }
+			get => _currentView;
 			set
 			{
 				_currentView = value;

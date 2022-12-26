@@ -1,53 +1,75 @@
-﻿<UserControl x:Class="YAHAC.MVVM.View.AuctionHouseView"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:local="clr-namespace:YAHAC.MVVM.View"
-			 xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
-			 xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
-			 xmlns:UserControls="clr-namespace:YAHAC.MVVM.UserControls"
-			 mc:Ignorable="d" 
-			 d:DesignHeight="450" d:DesignWidth="800"
-			 BorderThickness="0"
-			 Background="#202020"
-			 MouseMove="UserControl_MouseMove">
+﻿<UserControl
+	x:Class="YAHAC.MVVM.View.AuctionHouseView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:YAHAC.MVVM.View"
+	xmlns:ViewModel="clr-namespace:YAHAC.MVVM.ViewModel"
+	xmlns:MTB="clr-namespace:MinecraftTextBlock_for_dotNET_Core;assembly=MinecraftTextBlock_for_dotNET_Core"
+	xmlns:UserControls="clr-namespace:YAHAC.MVVM.UserControls"
+	mc:Ignorable="d"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	BorderThickness="0"
+	Background="#202020"
+	MouseMove="UserControl_MouseMove">
 	<UserControl.DataContext>
-		<ViewModel:AuctionHouseViewModel/>
+		<ViewModel:AuctionHouseViewModel />
 	</UserControl.DataContext>
 	<UserControl.Resources>
-		<Style TargetType="ScrollBar">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="BorderBrush" Value="Black"/>
-			<Setter Property="Opacity" Value="0.22"/>
-			<Setter Property="Margin" Value="2,6,2,2"/>
+		<Style
+			TargetType="ScrollBar">
+			<Setter
+				Property="Background"
+				Value="Transparent" />
+			<Setter
+				Property="BorderBrush"
+				Value="Black" />
+			<Setter
+				Property="Opacity"
+				Value="0.22" />
+			<Setter
+				Property="Margin"
+				Value="2,6,2,2" />
 		</Style>
 	</UserControl.Resources>
-	<Grid Background="Transparent">
+	<Grid
+		Background="Transparent">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition
+				Height="auto" />
+			<RowDefinition
+				Height="*" />
 		</Grid.RowDefinitions>
-		<TextBox Grid.Row="0"
-				 Style="{StaticResource SearchBoxTheme}"
-				 Text="{Binding Path=SearchQuery,
+		<TextBox
+			Grid.Row="0"
+			Style="{StaticResource SearchBoxTheme}"
+			Text="{Binding Path=SearchQuery,
 				Mode=TwoWay, 
-				UpdateSourceTrigger=PropertyChanged}"/>
-		<ListBox  x:Name="ItemsList"
-				  Grid.Row="1"
-				  HorizontalContentAlignment="Center"
-				  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-				  BorderThickness="0"
-				  Background="Transparent"
-				  ItemsSource="{Binding Items}"
-				  SelectionChanged="ItemsList_SelectionChanged">
+				UpdateSourceTrigger=PropertyChanged}" />
+		<ListBox
+			x:Name="ItemsList"
+			Grid.Row="1"
+			HorizontalContentAlignment="Center"
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+			ScrollViewer.VerticalScrollBarVisibility="Auto"
+			BorderThickness="0"
+			Background="Transparent"
+			ItemsSource="{Binding Items,
+			IsAsync=True}"
+			SelectionChanged="ItemsList_SelectionChanged">
 			<ListBox.ItemContainerStyle>
-				<Style TargetType="{x:Type ListBoxItem}">
+				<Style
+					TargetType="{x:Type ListBoxItem}">
 					<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
 					<Style.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="IsSelected" Value="True"/>
+						<Trigger
+							Property="IsMouseOver"
+							Value="True">
+							<Setter
+								Property="IsSelected"
+								Value="True" />
 						</Trigger>
 					</Style.Triggers>
 				</Style>
@@ -59,15 +81,16 @@
 		</ListBox.ItemContainerStyle>-->
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<WrapPanel HorizontalAlignment="Center"
-						   />
+					<WrapPanel
+						HorizontalAlignment="Center" />
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
-		<Canvas Panel.ZIndex="10"
-				Visibility="{Binding AdditionalInfo_Visible,
+		<Canvas
+			Panel.ZIndex="10"
+			Visibility="{Binding AdditionalInfo_Visible,
 			Converter={StaticResource BoolToVisibility}}">
-			<Border 
+			<Border
 				BorderBrush="#FF24015B"
 				BorderThickness="5"
 				CornerRadius="5"
@@ -93,8 +116,7 @@
 					Converter={StaticResource ItemToItemName}}"
 					FontSize="18"
 					FontFamily="Lucida Console"
-					Foreground="White"
-				>
+					Foreground="White">
 				</MTB:MinecraftTextBlock>
 			</Border>
 		</Canvas>

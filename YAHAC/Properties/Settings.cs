@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using YAHAC.Core;
+// ReSharper disable InconsistentNaming
 
 namespace YAHAC.Properties
 {
@@ -15,17 +16,26 @@ namespace YAHAC.Properties
 		public UserInterfaces Starting_Ui { get; set; } = UserInterfaces.Settings;
 		public System.Windows.Visibility DebugVisibility { get; set; } = System.Windows.Visibility.Hidden;
 		public int MinecraftItemBox_Size { get; set; } = 66;
-		public string ItemCrafts_Recipes { get; set; } = String.Empty;
+		public string ItemCrafts_Recipes { get; set; } = string.Empty;
+		public List<ItemsToSearchForCatalogue> BetterAH_ItemsToSearchForCatalogues { get; set; } = new();
+		[Obsolete("Use BetterAH_ItemsToSearchForCatalogues instead")]
 		public List<ItemToSearchFor> BetterAH_Query { get; set; } = new();
 		public bool PlaySound { get; set; } = false;
-		public string BetaTests { get; set; } = String.Empty;
+		public string BetaTests { get; set; } = string.Empty;
 	}
+
+	public class ItemsToSearchForCatalogue
+	{
+		public List<ItemToSearchFor> Items { get; set; } = new();
+	}
+
 	public class ItemToSearchFor
 	{
-		public ItemToSearchFor(string item_dictKey, List<String> searchQueries = null, UInt32 maxPrice = 0, UInt16 priority = 0, bool enabled = true, bool playSound = false)
+		public ItemToSearchFor(string item_dictKey, List<string> searchQueries = null, UInt32 maxPrice = 0,
+			UInt16 priority = 0, bool enabled = true, bool playSound = false)
 		{
 			this.item_dictKey = item_dictKey;
-			this.searchQueries = searchQueries == null ? new() : searchQueries;
+			this.searchQueries = searchQueries ?? new();
 			this.maxPrice = maxPrice;
 			this.priority = priority;
 			this.enabled = enabled;
@@ -42,10 +52,7 @@ namespace YAHAC.Properties
 			playSound = itemToSearchFor.playSound;
 			recipe_key = itemToSearchFor.recipe_key;
 		}
-		public ItemToSearchFor()
-		{
-
-		}
+		public ItemToSearchFor() { }
 		public string item_dictKey { get; set; }
 		public List<String> searchQueries { get; set; }
 		public UInt32 maxPrice { get; set; }
@@ -66,19 +73,9 @@ namespace YAHAC.Properties
 
 	public class Settings
 	{
-		static string _settingsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\YAHAC";
-		private SettingsVars _Default;
+		public SettingsVars Default { get; set; }
 
-		public SettingsVars Default
-		{
-			get { return _Default; }
-			set { _Default = value; }
-		}
-
-		public static string SettingsPath
-		{
-			get { return _settingsPath; }
-		}
+		public static string SettingsPath { get; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\YAHAC";
 
 		public Settings()
 		{

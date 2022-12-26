@@ -1,18 +1,7 @@
-﻿using ITR;
-using System;
-using System.Collections.Generic;
-using System.DirectoryServices;
-using System.Drawing;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Media;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Text;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using YAHAC.Core;
 using YAHAC.MVVM.ViewModel;
 using YAHAC.Properties;
@@ -56,8 +45,7 @@ namespace YAHAC.MVVM.Model
 
 		private void AuctionHouse_Updated(AuctionHouse source)
 		{
-			if (source == null) return;
-			if (!source.success) return;
+			if (source is not { success: true }) return;
 			findMatchingItems();
 			FindHighestPriorityAuction();
 		}
@@ -272,7 +260,7 @@ namespace YAHAC.MVVM.Model
 			return null;
 		}
 
-		void PlaySound(string uuid)
+		private void PlaySound(string uuid)
 		{
 			if (highlitedAuction_uuid == uuid) { return; }
 			highlitedAuction_uuid = uuid;
