@@ -26,6 +26,16 @@ namespace YAHAC.Properties
 
 	public class ItemsToSearchForCatalogue
 	{
+		public ItemsToSearchForCatalogue()
+		{
+			
+		}
+		public ItemsToSearchForCatalogue(string Name, List<ItemToSearchFor> ItemsToSearchFor)
+		{
+			this.Name = Name;
+			this.ID = Name.Replace(" ", "_").ToUpper();
+			this.Items = ItemsToSearchFor;
+		}
 		public string Name { get; set; } = string.Empty;
 		public string ID { get; set; } = string.Empty;
 		public List<ItemToSearchFor> Items { get; set; } = new();
@@ -146,7 +156,7 @@ namespace YAHAC.Properties
 		private List<ItemsToSearchForCatalogue> ConvertOldItemsToSearchForConfig()
 		{
 			List<ItemsToSearchForCatalogue> itemsToSearchForCatalogues = new();
-			ItemsToSearchForCatalogue itemsToSearchForCatalogue = new() { Name = "Default", ID = "Default", Items = new() };
+			ItemsToSearchForCatalogue itemsToSearchForCatalogue = new("Default", new List<ItemToSearchFor>());
 			itemsToSearchForCatalogue.Items.AddRange(Default.BetterAH_Query);
 			itemsToSearchForCatalogues.Add(itemsToSearchForCatalogue);
 			return itemsToSearchForCatalogues;

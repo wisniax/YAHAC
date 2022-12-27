@@ -38,50 +38,48 @@
 		Background="Transparent">
 		<Grid.RowDefinitions>
 			<RowDefinition
-				Height="auto" />
+				Height="*"/>
 			<RowDefinition
-				Height="*" />
+				Height="*"/>
 		</Grid.RowDefinitions>
-		<Grid>
-			<ListBox
-				x:Name="ItemsList"
-				Grid.Row="0"
-				HorizontalContentAlignment="Center"
-				ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				ScrollViewer.VerticalScrollBarVisibility="Auto"
-				BorderThickness="0"
-				Background="Transparent"
-				MouseDoubleClick="UserControl_MouseDoubleClick"
-				ItemsSource="{Binding Items}"
-				SelectionChanged="ItemsList_SelectionChanged">
-				<ListBox.ItemContainerStyle>
-					<Style
-						TargetType="{x:Type ListBoxItem}">
-						<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
-						<Style.Triggers>
-							<Trigger
-								Property="IsMouseOver"
-								Value="True">
-								<Setter
-									Property="IsSelected"
-									Value="True" />
-							</Trigger>
-						</Style.Triggers>
-					</Style>
-				</ListBox.ItemContainerStyle>
-				<!--<ListBox.ItemContainerStyle>
+		<ListBox
+			x:Name="ItemsList"
+			Grid.Row="0"
+			HorizontalContentAlignment="Center"
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+			ScrollViewer.VerticalScrollBarVisibility="Auto"
+			BorderThickness="0"
+			Background="Transparent"
+			MouseDoubleClick="UserControl_MouseDoubleClick"
+			ItemsSource="{Binding Items}"
+			SelectionChanged="ItemsList_SelectionChanged">
+			<ListBox.ItemContainerStyle>
+				<Style
+					TargetType="{x:Type ListBoxItem}">
+					<!--<Setter Property="IsHitTestVisible" Value="False"/>-->
+					<Style.Triggers>
+						<Trigger
+							Property="IsMouseOver"
+							Value="True">
+							<Setter
+								Property="IsSelected"
+								Value="True" />
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</ListBox.ItemContainerStyle>
+			<!--<ListBox.ItemContainerStyle>
 			<Style TargetType="ListBoxItem">
 				<Setter Property="Margin" Value="2"/>
 			</Style>
 		</ListBox.ItemContainerStyle>-->
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel
-							HorizontalAlignment="Center" />
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-			</ListBox>
-		</Grid>
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel
+						HorizontalAlignment="Center" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
 		<Canvas
 			Grid.RowSpan="2"
 			HorizontalAlignment="Left"
@@ -158,43 +156,80 @@
 			Converter={StaticResource BoolToVisibility}}">
 			<Grid.RowDefinitions>
 				<RowDefinition
-					Height="auto" />
+					Height="auto"
+					MinHeight="70" />
 				<RowDefinition
 					Height="*"
 					MinHeight="70" />
 				<RowDefinition
 					Height="auto" />
 			</Grid.RowDefinitions>
-			<ListBox
-				Grid.Row="0"
-				HorizontalContentAlignment="Center"
-				ScrollViewer.HorizontalScrollBarVisibility="Auto"
-				ScrollViewer.VerticalScrollBarVisibility="Disabled"
-				BorderThickness="0"
-				Background="Transparent"
-				SelectionChanged="ItemsList_SelectionChanged"
-				ItemsSource="{Binding Catalogues}">
-				<ListBox.ItemContainerStyle>
-					<Style
-						TargetType="{x:Type ListBoxItem}">
-						<Style.Triggers>
-							<Trigger
-								Property="IsMouseOver"
-								Value="True">
-								<Setter
-									Property="IsSelected"
-									Value="True" />
-							</Trigger>
-						</Style.Triggers>
-					</Style>
-				</ListBox.ItemContainerStyle>
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel
-							HorizontalAlignment="Left" />
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-			</ListBox>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="*" />
+					<ColumnDefinition
+						Width="auto" />
+				</Grid.ColumnDefinitions>
+				<ListBox
+					HorizontalContentAlignment="Center"
+					ScrollViewer.HorizontalScrollBarVisibility="Auto"
+					d:Width="400"
+					d:Height="70"
+					ScrollViewer.VerticalScrollBarVisibility="Disabled"
+					BorderThickness="0"
+					Background="Transparent"
+					SelectionChanged="ItemsList_SelectionChanged"
+					ItemsSource="{Binding Catalogues}">
+					<ListBox.ItemContainerStyle>
+						<Style
+							TargetType="{x:Type ListBoxItem}">
+							<Style.Triggers>
+								<Trigger
+									Property="IsMouseOver"
+									Value="True">
+									<Setter
+										Property="IsSelected"
+										Value="True" />
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</ListBox.ItemContainerStyle>
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel
+								HorizontalAlignment="Left" />
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+				</ListBox>
+				<Button
+					Grid.Column="1"
+					Background="Transparent"
+					BorderThickness="0"
+					HorizontalAlignment="Right"
+					VerticalAlignment="Bottom"
+					x:Name="AddFolder_Btn"
+					ToolTip="Adds selected item to query"
+					Command="{Binding AddCatalogue}"
+					Margin="0,0,2,3">
+					<Control
+						Style="{StaticResource AddFolderTheme}"
+						RenderTransformOrigin="0.5,0.5"
+						Width="16"
+						Height="16">
+						<Control.LayoutTransform>
+							<TransformGroup>
+								<ScaleTransform
+									ScaleX="1.4"
+									ScaleY="1.4" />
+								<SkewTransform />
+								<RotateTransform />
+								<TranslateTransform />
+							</TransformGroup>
+						</Control.LayoutTransform>
+					</Control>
+				</Button>
+			</Grid>
 			<ListBox
 				x:Name="ItemsToSearchForConfigurableList"
 				Grid.Row="1"

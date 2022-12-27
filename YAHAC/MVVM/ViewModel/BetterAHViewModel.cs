@@ -18,6 +18,7 @@ namespace YAHAC.MVVM.ViewModel
 	{
 		public RelayCommand BetterAhSettings { get; private set; }
 		public RelayCommand AddItemInComboBox { get; private set; }
+		public RelayCommand AddCatalogue { get; private set; }
 
 		private ObservableCollection<object> _items;
 		/// <summary>
@@ -140,6 +141,10 @@ namespace YAHAC.MVVM.ViewModel
 				itemek ??= new Properties.ItemToSearchFor(null, enabled: false);
 				MainViewModel.betterAH.AddRecipe(itemek);
 			});
+			AddCatalogue = new RelayCommand((_) =>
+			{
+				MainViewModel.betterAH.AddNewCatalogue("New Catalogue");
+			});
 			ItemsToSearchForVisibility = false;
 			Items = new();
 			ItemsToSearchForCollection = new();
@@ -200,12 +205,13 @@ namespace YAHAC.MVVM.ViewModel
 			{
 				if (catalogue == null) continue;
 				var convbtm = new Converters.BitmapToMemoryStream();
+				
 				var mcItem = new Item(
 					catalogue.Name,
 					catalogue.ID,
 					Material.CHEST,
 					false,
-					convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+					MainViewModel.itemTextureResolver.GetItemFromID(Material.CHEST.ToString()).Texture);
 				ItemView itemBox = new(mcItem, catalogue, true);
 				Catalogues?.Add(itemBox);
 			}

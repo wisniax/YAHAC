@@ -4,6 +4,7 @@ using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
 using YAHAC.Core;
 using YAHAC.MVVM.ViewModel;
 using YAHAC.Properties;
@@ -257,6 +258,10 @@ namespace YAHAC.MVVM.Model
 
 		private ItemsToSearchForCatalogue FindCatalogueTheItemIsIn(ItemToSearchFor searchQuery)
 		{
+			if (ItemsToSearchForCatalogues.Count == 0)
+			{
+				ItemsToSearchForCatalogues.Add(new ItemsToSearchForCatalogue("Default", new List<ItemToSearchFor>()));
+			}
 			return ItemsToSearchForCatalogues.FirstOrDefault((a) =>
 				a.Items.Contains(searchQuery), ItemsToSearchForCatalogues[0]);
 		}
@@ -293,6 +298,70 @@ namespace YAHAC.MVVM.Model
 					throw new ArgumentOutOfRangeException(nameof(flowDirection), flowDirection, "Ho? How??");
 			}
 			ReloadRecipes();
+		}
+
+		public void AddNewCatalogue(string name)
+		{
+			var catal = new ItemsToSearchForCatalogue(name, new List<ItemToSearchFor>());
+			for (int j = 0; ItemsToSearchForCatalogues.Exists((a) => a.ID == catal.ID); j++)
+			{
+				catal = new ItemsToSearchForCatalogue(name + $" ({j + 1})", new List<ItemToSearchFor>());
+			}
+			ItemsToSearchForCatalogues.Add(catal);
+			OnBetterAHUpdated();
+		}
+
+		public void RenameCatalogue(ItemsToSearchForCatalogue catalogue, string newName)
+		{
+			var catal = new ItemsToSearchForCatalogue(newName, new List<ItemToSearchFor>());
+			for (int j = 0; ItemsToSearchForCatalogues.Exists((a) => a.ID == catal.ID); j++)
+			{
+				catal = new ItemsToSearchForCatalogue(newName + $" ({j + 1})", new List<ItemToSearchFor>());
+			}
+
+			catalogue.Name = catal.Name;
+			catalogue.ID = catal.ID;
+			OnBetterAHUpdated();
+		}
+
+		public void RemoveCatalogue(ItemsToSearchForCatalogue catalogue)
+		{
+			//if (ItemsToSearchForCatalogues.Count <= 1) return;
+			ItemsToSearchForCatalogues.Remove(catalogue);
+			ReloadRecipes();
+		}
+
+		public void MoveCatalogue(ItemsToSearchForCatalogue catalogue, FlowDirection flowDirection)
+		{
+			if (catalogue == null) return;
+			if (!ItemsToSearchForCatalogues.Contains(catalogue)) return;
+			var index = ItemsToSearchForCatalogues.IndexOf(catalogue);
+			switch (flowDirection)
+			{
+				case FlowDirection.LeftToRight:
+					if (index >= ItemsToSearchForCatalogues.Count - 1) return;
+					ItemsToSearchForCatalogues.RemoveAt(index);
+					ItemsToSearchForCatalogues.Insert(index + 1, catalogue);
+					break;
+				case FlowDirection.RightToLeft:
+					if (index <= 0) return;
+					ItemsToSearchForCatalogues.RemoveAt(index);
+					ItemsToSearchForCatalogues.Insert(index - 1, catalogue);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(flowDirection), flowDirection, "Ho? How??");
+			}
+			OnBetterAHUpdated();
+		}
+
+		public void MoveItemToCatalogue(ItemToSearchFor item, ItemsToSearchForCatalogue catalogue)
+		{
+			if (item is null || catalogue is null) return;
+			if (!ItemsToSearchFor.Contains(item) || !ItemsToSearchForCatalogues.Contains(catalogue)) return;
+			var oldCatalogue = FindCatalogueTheItemIsIn(item);
+			oldCatalogue.Items.Remove(item);
+			catalogue.Items.Add(item);
+			OnBetterAHUpdated();
 		}
 
 		/// <summary>

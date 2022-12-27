@@ -36,6 +36,8 @@
 					Source="Theme/LeftArrowIconTheme.xaml" />
 				<ResourceDictionary
 					Source="Theme/RightArrowIconTheme.xaml" />
+				<ResourceDictionary
+					Source="Theme/AddFolderTheme.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 			<converters:BitmapToWPFSource
 				x:Key="BitmapToWPFSource" />

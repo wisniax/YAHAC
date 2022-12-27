@@ -141,15 +141,15 @@ namespace YAHAC.MVVM.UserControls
 
 		private void Delete_Btn_Click(object sender, RoutedEventArgs e)
 		{
-			if (itemToSearchFor == null) return;
-			MainViewModel.betterAH.RemoveRecipe(itemToSearchFor.recipe_key);
+			if (!visible) return;
+			if (itemToSearchFor != null) MainViewModel.betterAH.RemoveRecipe(itemToSearchFor.recipe_key);
+			if (Tag is ItemsToSearchForCatalogue) MainViewModel.betterAH.RemoveCatalogue(Tag as ItemsToSearchForCatalogue);
 		}
 
 		private void Modify_Btn_Click(object sender, RoutedEventArgs e)
 		{
-			if (itemToSearchFor == null) return;
 			if (!visible) return;
-			OnBetterAHUpdated();
+			if (itemToSearchFor != null) OnBetterAHUpdated();
 		}
 
 		private void Dupe_Btn_Click(object sender, RoutedEventArgs e)
