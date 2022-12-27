@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using YAHAC.MVVM.Model;
+using YAHAC.Properties;
 
 namespace YAHAC.Converters
 {
@@ -31,6 +32,12 @@ namespace YAHAC.Converters
 				var val = value as Auction;
 				tier = Item.GetRarityFromString(val.tier);
 				name = val.item_name;
+			}
+			else if (value is ItemsToSearchForCatalogue)
+			{
+				var val = value as ItemsToSearchForCatalogue;
+				tier = Rarity.Custom;
+				name = val.Name;
 			}
 			else throw new NotImplementedException();
 

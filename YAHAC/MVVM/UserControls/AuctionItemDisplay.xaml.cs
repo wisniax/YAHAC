@@ -24,15 +24,15 @@ namespace YAHAC.MVVM.UserControls
 	public partial class AuctionItemDisplay : UserControl
 	{
 
-		public Auction SelectedAuction
+		public Object SelectedAuction
 		{
-			get { return (Auction)GetValue(SelectedAuctionProperty); }
+			get { return (Object)GetValue(SelectedAuctionProperty); }
 			set { SetValue(SelectedAuctionProperty, value); }
 		}
 
 		// Using a DependencyProperty as the backing store for SelectedAuction.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty SelectedAuctionProperty =
-			DependencyProperty.Register("SelectedAuction", typeof(Auction), typeof(AuctionItemDisplay), new PropertyMetadata(OnDependencyChanged));
+			DependencyProperty.Register("SelectedAuction", typeof(Object), typeof(AuctionItemDisplay), new PropertyMetadata(OnDependencyChanged));
 
 
 		public ItemToSearchFor ItemQuery
@@ -68,10 +68,12 @@ namespace YAHAC.MVVM.UserControls
 			if (!MainViewModel.betterAH.success) return;
 			if (!MainViewModel.itemTextureResolver.Initialized) return;
 			var AID = (o as AuctionItemDisplay);
-			if (AID == null || AID.SelectedAuction == null) { AID.CheapestAuctionPrice = 0; return; }
+			if (AID?.SelectedAuction == null) { AID.CheapestAuctionPrice = 0; return; }
 			try
 			{
-				var cus = MainViewModel.auctionHouse.auctions[AID.SelectedAuction.HyPixel_ID];
+				var hyPixelId = (AID.SelectedAuction as Auction)?.HyPixel_ID;
+				if (hyPixelId == null) return;
+				var cus = MainViewModel.auctionHouse.auctions[hyPixelId];
 				cus.Sort((a, b) => a.starting_bid.CompareTo(b.starting_bid));
 				AID.CheapestAuctionPrice = cus[0].starting_bid;
 			}

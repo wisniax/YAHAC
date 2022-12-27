@@ -62,21 +62,26 @@
 			<Grid
 				Margin="0,5,0,0"
 				DockPanel.Dock="Top">
-				<Grid.ColumnDefinitions>
+				<!--<Grid.ColumnDefinitions>
 					<ColumnDefinition
 						Width="auto"
 						SharedSizeGroup="FirstColumn" />
 					<ColumnDefinition
 						Width="*"
 						SharedSizeGroup="SecondColumn" />
-
-				</Grid.ColumnDefinitions>
+				</Grid.ColumnDefinitions>-->
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="auto" />
+					<RowDefinition
+						Height="auto" />
+				</Grid.RowDefinitions>
 				<Grid.Style>
 					<Style
 						TargetType="{x:Type Grid}">
 						<Style.Triggers>
 							<DataTrigger
-								Binding="{Binding SelectedAuction}"
+								Binding="{Binding SelectedAuction.item_lore}"
 								Value="{x:Null}">
 								<Setter
 									Property="Visibility"
@@ -88,50 +93,42 @@
 							Value="Visible" />
 					</Style>
 				</Grid.Style>
-				<TextBlock
-					Grid.Column="0"
-					Text="Starting BID:"
-					Background="Transparent"
-					Margin="0"
-					Foreground="LightGray"
-					TextAlignment="Left"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Center"
-					Width="auto"
-					Height="auto"
-					FontSize="15"
-					FontFamily="Lucida Console" />
-				<TextBlock
-					Grid.Column="1"
-					Text="{Binding SelectedAuction.starting_bid,
+				<DockPanel>
+					<TextBlock
+						Grid.Column="0"
+						Text="Starting BID:"
+						DockPanel.Dock="Left"
+						Background="Transparent"
+						Margin="0"
+						Foreground="LightGray"
+						TextAlignment="Left"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						Width="auto"
+						Height="auto"
+						FontSize="15"
+						FontFamily="Lucida Console" />
+					<TextBlock
+						Grid.Column="1"
+						Text="{Binding SelectedAuction.starting_bid,
 				Converter={StaticResource NumberToString}}"
-					d:Text="JD"
-					Background="Transparent"
-					Foreground="#FFFFAA00"
-					Margin="5,0,0,0"
-					TextAlignment="Left"
-					VerticalAlignment="Center"
-					Width="auto"
-					Height="auto"
-					FontSize="16"
-					FontFamily="Lucida Console" />
-
-			</Grid>
-			<DockPanel
-				DockPanel.Dock="Top">
-				<Grid>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition
-							Width="auto"
-							SharedSizeGroup="FirstColumn" />
-						<ColumnDefinition
-							Width="*"
-							SharedSizeGroup="SecondColumn" />
-
-					</Grid.ColumnDefinitions>
-					<Grid.Style>
+						d:Text="JD"
+						DockPanel.Dock="Left"
+						Background="Transparent"
+						Foreground="#FFFFAA00"
+						Margin="5,0,0,0"
+						TextAlignment="Left"
+						VerticalAlignment="Center"
+						Width="auto"
+						Height="auto"
+						FontSize="16"
+						FontFamily="Lucida Console" />
+				</DockPanel>
+				<DockPanel
+					Grid.Row="1">
+					<DockPanel.Style>
 						<Style
-							TargetType="{x:Type Grid}">
+							TargetType="{x:Type DockPanel}">
 							<Style.Triggers>
 								<DataTrigger
 									Binding="{Binding CheapestAuctionPrice}"
@@ -145,12 +142,13 @@
 								Property="Visibility"
 								Value="Visible" />
 						</Style>
-					</Grid.Style>
+					</DockPanel.Style>
 					<TextBlock
 						Text="Lowest BIN:"
 						Grid.Column="0"
+						DockPanel.Dock="Left"
+						Grid.Row="1"
 						Background="Transparent"
-						Margin="0"
 						Foreground="LightGray"
 						TextAlignment="Left"
 						HorizontalAlignment="Left"
@@ -158,12 +156,15 @@
 						Width="auto"
 						Height="auto"
 						FontSize="15"
-						FontFamily="Lucida Console" />
+						FontFamily="Lucida Console"
+						Grid.ColumnSpan="2" />
 					<TextBlock
 						Text="{Binding CheapestAuctionPrice,
 				Converter={StaticResource NumberToString}}"
 						d:Text="JD"
+						Grid.Row="1"
 						Background="Transparent"
+						DockPanel.Dock="Left"
 						Grid.Column="1"
 						Foreground="#FFFFAA00"
 						Margin="5,0,0,0"
@@ -173,8 +174,8 @@
 						Height="auto"
 						FontSize="16"
 						FontFamily="Lucida Console" />
-				</Grid>
-			</DockPanel>
+				</DockPanel>
+			</Grid>
 			<DockPanel
 				DockPanel.Dock="Top"
 				VerticalAlignment="Top"
