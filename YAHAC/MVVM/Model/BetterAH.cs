@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,8 @@ namespace YAHAC.MVVM.Model
 		/// <summary>
 		/// Items to search for in AH from settings
 		/// </summary>
-		public List<ItemToSearchFor> ItemsToSearchFor { get; private set; }
+		//public List<ItemToSearchFor> ItemsToSearchFor { get; private set; }
+		public List<ItemsToSearchForCatalogue> ItemsToSearchForCatalogues { get; private set; }
 		/// <summary>
 		/// List of auctions that match the query
 		/// </summary>
@@ -28,6 +30,7 @@ namespace YAHAC.MVVM.Model
 		string highlitedAuction_uuid;
 		long lastCalculated;
 		public bool success { get; private set; }
+		public List<ItemToSearchFor> ItemsToSearchFor => ItemsToSearchForCatalogues.SelectMany(x => x.Items).ToList();
 		SoundPlayer soundPlayer;
 		public delegate void BetterAHUpdatedHandler(BetterAH source);
 		public event BetterAHUpdatedHandler BetterAHUpdatedEvent;
@@ -39,14 +42,14 @@ namespace YAHAC.MVVM.Model
 			soundPlayer = new(Properties.Resources.notify_sound);
 			highlitedAuction_uuid = new("");
 			LoadRecipes();
-			if (ItemsToSearchFor == null) ItemsToSearchFor = new();
+			ItemsToSearchForCatalogues ??= new();
 			MainViewModel.auctionHouse.AHUpdatedEvent += AuctionHouse_Updated;
 		}
 
-		private void AuctionHouse_Updated(AuctionHouse source)
+		private async void AuctionHouse_Updated(AuctionHouse source)
 		{
 			if (source is not { success: true }) return;
-			findMatchingItems();
+			await FindAllMatchingItemsAsync();
 			FindHighestPriorityAuction();
 		}
 
@@ -58,22 +61,53 @@ namespace YAHAC.MVVM.Model
 			BetterAHUpdatedEvent?.Invoke(this);
 		}
 
-		void findMatchingItems()
-		{   //THIS WAY FINDING ITEMS IS 12 times faster for me... Wonder whyy (Totally not 12 threads CPU)
+		private async Task FindAllMatchingItemsAsync()
+		{
 			List<Auction> tempmatchingItems = new();
-			if (ItemsToSearchFor.Count == 0) { success = false; return; }
-			var tasks = new List<Task>();
-			foreach (var item in ItemsToSearchFor)
+			List<Task<List<Auction>>> tasks = new();
+			foreach (var catalogue in ItemsToSearchForCatalogues)
 			{
-				if (!item.enabled) continue;
-				tasks.Add(Task.Run(() => checkIfItemsMatch(item, tempmatchingItems)));
+				var catFinal = catalogue;
+				tasks.Add(Task.Run(() => FindMatchingItemsInCatalogue(catFinal.Items)));
 			}
-			Task.WaitAll(tasks.ToArray());
-			tempmatchingItems.Sort((a, b) => a.starting_bid.CompareTo(b.starting_bid));
+			await Task.WhenAll(tasks);
+			tempmatchingItems.AddRange(tasks.SelectMany(x => x.Result));
+			//MatchingItems = new();
 			MatchingItems = tempmatchingItems;
 			lastCalculated = MainViewModel.auctionHouse.lastUpdated;
 			success = true;
 			OnBetterAHUpdated();
+		}
+
+		private void FindAllMatchingItems()
+		{
+			List<Auction> tempmatchingItems = new();
+			foreach (var catalogue in ItemsToSearchForCatalogues)
+			{
+				tempmatchingItems.AddRange(FindMatchingItemsInCatalogue(catalogue.Items));
+			}
+			//MatchingItems = new();
+			MatchingItems = tempmatchingItems;
+			lastCalculated = MainViewModel.auctionHouse.lastUpdated;
+			success = true;
+			OnBetterAHUpdated();
+		}
+
+		private List<Auction> FindMatchingItemsInCatalogue(List<ItemToSearchFor> ItemsToSearchFor)
+		{
+			List<Auction> tempmatchingItems = new();
+			if (ItemsToSearchFor.Count == 0 || MainViewModel.auctionHouse is not { success: true }) { success = false; return new List<Auction>(); }
+			foreach (var item in ItemsToSearchFor.Where((a) => a.enabled))
+			{
+				checkIfItemsMatch(item, tempmatchingItems);
+			}
+			tempmatchingItems.Sort((a, b) => a.starting_bid.CompareTo(b.starting_bid));
+			return tempmatchingItems;
+		}
+
+		private void DeleteDuplicatesInMatchingItems(List<Auction> auctionsToSort)
+		{
+			auctionsToSort = auctionsToSort.GroupBy(x => x.uuid).Select(x => x.First()).ToList();
 		}
 
 		/// <summary>
@@ -120,7 +154,7 @@ namespace YAHAC.MVVM.Model
 		/// <returns></returns>
 		public Auction FindHighestPriorityAuction()
 		{
-			var lista = ItemsToSearchFor.FindAll((a) => a.priority >= 0);
+			var lista = ItemsToSearchFor;
 			lista.Sort((a, b) => b.priority.CompareTo(a.priority));
 
 			foreach (var item in lista)
@@ -135,16 +169,16 @@ namespace YAHAC.MVVM.Model
 			}
 			return null;
 		}
-
+		
 		/// <summary>
 		/// Saves Recipes from RAM to Config for later use
 		/// </summary>
 		public void SaveRecipes()
 		{
-			ItemsToSearchFor.RemoveAll((a) => a.item_dictKey == null);
-			MainViewModel.Settings.Default.BetterAH_Query = ItemsToSearchFor;
+			ItemsToSearchForCatalogues.ForEach((a) => a.Items.RemoveAll((b) => b.item_dictKey == null));
+			MainViewModel.Settings.Default.BetterAH_ItemsToSearchForCatalogues = ItemsToSearchForCatalogues;
 			MainViewModel.Settings.Save();
-			findMatchingItems();
+			ReloadRecipes();
 		}
 
 		/// <summary>
@@ -153,8 +187,14 @@ namespace YAHAC.MVVM.Model
 		public void LoadRecipes()
 		{
 			MainViewModel.Settings.Load();
-			ItemsToSearchFor = MainViewModel.Settings.Default.BetterAH_Query;
-			findMatchingItems();
+			ItemsToSearchForCatalogues = MainViewModel.Settings.Default.BetterAH_ItemsToSearchForCatalogues;
+			ReloadRecipes();
+		}
+		public async Task LoadRecipesAsync()
+		{
+			MainViewModel.Settings.Load();
+			ItemsToSearchForCatalogues = MainViewModel.Settings.Default.BetterAH_ItemsToSearchForCatalogues;
+			await ReloadRecipesAsync();
 		}
 
 		/// <summary>
@@ -163,7 +203,12 @@ namespace YAHAC.MVVM.Model
 		/// </summary>
 		public void ReloadRecipes()
 		{
-			findMatchingItems();
+			FindAllMatchingItems();
+		}
+
+		public async Task ReloadRecipesAsync()
+		{
+			await FindAllMatchingItemsAsync();
 		}
 
 		/// <summary>
@@ -186,7 +231,7 @@ namespace YAHAC.MVVM.Model
 			var query = new ItemToSearchFor(searchQuery);
 			query.recipe_key = AssignNewUniqueKey(query.item_dictKey);
 			ItemsToSearchFor.Add(query);
-			findMatchingItems();
+			ReloadRecipes();
 		}
 		public void MoveRecipe(ItemToSearchFor item, FlowDirection flowDirection)
 		{
@@ -212,7 +257,7 @@ namespace YAHAC.MVVM.Model
 		public void RemoveRecipe(string recipe_key)
 		{
 			ItemsToSearchFor.RemoveAll((a) => a.recipe_key.Equals(recipe_key));
-			findMatchingItems();
+			ReloadRecipes();
 		}
 
 		/// <summary>

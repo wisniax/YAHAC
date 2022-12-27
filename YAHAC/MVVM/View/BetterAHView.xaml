@@ -13,8 +13,7 @@
 	BorderThickness="0"
 	d:DesignHeight="450"
 	d:DesignWidth="800"
-	MouseMove="UserControl_MouseMove"
-	MouseDoubleClick="UserControl_MouseDoubleClick">
+	MouseMove="UserControl_MouseMove">
 	<UserControl.DataContext>
 		<ViewModel:BetterAhViewModel />
 	</UserControl.DataContext>
@@ -39,7 +38,7 @@
 		Background="Transparent">
 		<Grid.RowDefinitions>
 			<RowDefinition
-				Height="*" />
+				Height="auto" />
 			<RowDefinition
 				Height="*" />
 		</Grid.RowDefinitions>
@@ -52,6 +51,7 @@
 				ScrollViewer.VerticalScrollBarVisibility="Auto"
 				BorderThickness="0"
 				Background="Transparent"
+				MouseDoubleClick="UserControl_MouseDoubleClick"
 				ItemsSource="{Binding Items}"
 				SelectionChanged="ItemsList_SelectionChanged">
 				<ListBox.ItemContainerStyle>
@@ -160,7 +160,8 @@
 				<RowDefinition
 					Height="auto" />
 				<RowDefinition
-					Height="*" />
+					Height="*"
+					MinHeight="70" />
 				<RowDefinition
 					Height="auto" />
 			</Grid.RowDefinitions>
@@ -171,9 +172,28 @@
 				ScrollViewer.VerticalScrollBarVisibility="Disabled"
 				BorderThickness="0"
 				Background="Transparent"
-
-				>
-				
+				SelectionChanged="ItemsList_SelectionChanged"
+				ItemsSource="{Binding Catalogues}">
+				<ListBox.ItemContainerStyle>
+					<Style
+						TargetType="{x:Type ListBoxItem}">
+						<Style.Triggers>
+							<Trigger
+								Property="IsMouseOver"
+								Value="True">
+								<Setter
+									Property="IsSelected"
+									Value="True" />
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</ListBox.ItemContainerStyle>
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel
+							HorizontalAlignment="Left" />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
 			</ListBox>
 			<ListBox
 				x:Name="ItemsToSearchForConfigurableList"
@@ -184,7 +204,8 @@
 				BorderThickness="0"
 				Background="Transparent"
 				ItemsSource="{Binding ItemsToSearchForCollection}"
-				SelectionChanged="ItemsList_SelectionChanged">
+				SelectionChanged="ItemsList_SelectionChanged"
+				MouseDoubleClick="UserControl_MouseDoubleClick">
 				<ListBox.ItemContainerStyle>
 					<Style
 						TargetType="{x:Type ListBoxItem}">

@@ -183,14 +183,14 @@ namespace YAHAC.MVVM.UserControls
 			visibile = false;
 		}
 
-        private void AuctionableItems_ComboBox_KeyDown(object sender, KeyEventArgs e)
+        private async void AuctionableItems_ComboBox_KeyDown(object sender, KeyEventArgs e)
         {
 			if (e.Key != Key.Enter) return;
 			var str = SelectedAuctionableItem as string;
 			if (str == null) return;
 			//if (str == itemToSearchFor.item_dictKey) return;
 			//itemToSearchFor.item_dictKey = str;
-			MainViewModel.betterAH.ReloadRecipes();
+			await MainViewModel.betterAH.ReloadRecipesAsync();
 		}
     }
 }

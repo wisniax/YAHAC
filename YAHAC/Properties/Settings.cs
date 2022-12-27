@@ -26,6 +26,8 @@ namespace YAHAC.Properties
 
 	public class ItemsToSearchForCatalogue
 	{
+		public string Name { get; set; } = string.Empty;
+		public string ID { get; set; } = string.Empty;
 		public List<ItemToSearchFor> Items { get; set; } = new();
 	}
 
@@ -90,7 +92,7 @@ namespace YAHAC.Properties
 			}
 			try
 			{
-				StreamReader sr = new(SettingsPath + @"\user.config");
+				StreamReader sr = new(SettingsPath + @"\user.json");
 				string str = sr.ReadToEnd();
 				sr.Close();
 				Default = JsonSerializer.Deserialize<SettingsVars>(str);
@@ -109,23 +111,46 @@ namespace YAHAC.Properties
 			{
 				return false;
 			}
-			StreamWriter sw = new(SettingsPath + @"\user.config");
+			StreamWriter sw = new(SettingsPath + @"\user.json");
 			string str = JsonSerializer.Serialize<SettingsVars>(Default);
 			sw.Write(str);
 			sw.Flush();
 			sw.Close();
 			return true;
 		}
-		bool createNew()
+
+		private bool createNew()
 		{
-			if (!Directory.Exists(SettingsPath))
+			if (!Directory.Exists(SettingsPath)) Directory.CreateDirectory(SettingsPath);
+			try
 			{
-				Directory.CreateDirectory(SettingsPath);
+				//Migration to new ConfigFile
+				StreamReader sr = new(SettingsPath + @"\user.config");
+				string str = sr.ReadToEnd();
+				sr.Close();
+				Default = JsonSerializer.Deserialize<SettingsVars>(str);
+				Default.BetterAH_ItemsToSearchForCatalogues = ConvertOldItemsToSearchForConfig();
+				Default.BetterAH_Query = new();
+				Save();
 			}
-			Default = new SettingsVars();
-			Default.BetterAH_Query = new();
-			Save();
+			catch (Exception e)
+			{
+				if (e is not JsonException and not FileNotFoundException) throw;
+				Default = new SettingsVars();
+				Default.BetterAH_Query = new();
+				Default.BetterAH_ItemsToSearchForCatalogues = new();
+				Save();
+			}
 			return true;
+		}
+
+		private List<ItemsToSearchForCatalogue> ConvertOldItemsToSearchForConfig()
+		{
+			List<ItemsToSearchForCatalogue> itemsToSearchForCatalogues = new();
+			ItemsToSearchForCatalogue itemsToSearchForCatalogue = new() { Name = "Default", ID = "Default", Items = new() };
+			itemsToSearchForCatalogue.Items.AddRange(Default.BetterAH_Query);
+			itemsToSearchForCatalogues.Add(itemsToSearchForCatalogue);
+			return itemsToSearchForCatalogues;
 		}
 	}
 }

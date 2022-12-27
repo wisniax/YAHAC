@@ -54,6 +54,30 @@ namespace YAHAC.MVVM.ViewModel
 				AdditionalInfoVisible = true;
 			}
 		}
+		private ItemView _selectedCatalogue;
+		public ItemView SelectedCatalogue
+		{
+			get => _selectedCatalogue;
+			set
+			{
+				if (value == null) { AdditionalCatalogueInfoVisible = false; return; }
+				_selectedCatalogue = value;
+				OnPropertyChanged();
+				AdditionalCatalogueInfoVisible = true;
+			}
+		}
+		private bool _additionalCatalogueInfoVisible;
+		public bool AdditionalCatalogueInfoVisible
+		{
+			get => _additionalCatalogueInfoVisible;
+			set
+			{
+				_additionalCatalogueInfoVisible = value;
+				OnPropertyChanged();
+			}
+		}
+
+
 		private Point _canvasPoint;
 		public Point CanvasPoint
 		{
@@ -71,6 +95,16 @@ namespace YAHAC.MVVM.ViewModel
 			set
 			{
 				_itemsToSearchForCollection = value;
+				OnPropertyChanged();
+			}
+		}
+		private ObservableCollection<ItemView> _catalogues;
+		public ObservableCollection<ItemView> Catalogues
+		{
+			get => _catalogues;
+			set
+			{
+				_catalogues = value;
 				OnPropertyChanged();
 			}
 		}
@@ -109,6 +143,7 @@ namespace YAHAC.MVVM.ViewModel
 			ItemsToSearchForVisibility = false;
 			Items = new();
 			ItemsToSearchForCollection = new();
+			Catalogues = new();
 			MainViewModel.betterAH.BetterAHUpdatedEvent += BetterAH_Updated;
 			if (Items.Count == 0 && MainViewModel.betterAH.success) LoadBetterAh();
 		}
@@ -155,6 +190,44 @@ namespace YAHAC.MVVM.ViewModel
 				ItemView itemBox = new(item, auction);
 				Items?.Add(itemBox);
 			}
+		}
+
+		void LoadCatalogues()
+		{
+			Catalogues = new();
+			if (!MainViewModel.betterAH.success) return;
+			foreach (var catalogue in MainViewModel.betterAH.ItemsToSearchForCatalogues)
+			{
+				if (catalogue == null) continue;
+				var convbtm = new Converters.BitmapToMemoryStream();
+				var mcItem = new Item(
+					catalogue.Name,
+					catalogue.ID,
+					Material.CHEST,
+					false,
+					convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+				ItemView itemBox = new(mcItem, catalogue, true);
+				Catalogues?.Add(itemBox);
+			}
+		}
+
+		void LoadItemsToSearchForInCatalogue()
+		{
+			//if (SelectedCatalogue == null) return;
+			//Catalogues = new();
+			//foreach (var itemToSearchFor in SelectedCatalogue.Items)
+			//{
+			//	var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+			//	var convbtm = new Converters.BitmapToMemoryStream();
+			//	mcItem ??= new Item(
+			//		itemToSearchFor.item_dictKey,
+			//		itemToSearchFor.item_dictKey,
+			//		Material.AIR,
+			//		true,
+			//		convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+			//	var itemBox = new ItemView(mcItem);
+
+			//}
 		}
 
 		void LoadItemsToSearchForCollection()
@@ -246,6 +319,7 @@ namespace YAHAC.MVVM.ViewModel
 					if (source is not { success: true }) return;
 					LoadBetterAh();
 					LoadItemsToSearchForCollection();
+					LoadCatalogues();
 					return;
 				});
 			}
@@ -254,6 +328,7 @@ namespace YAHAC.MVVM.ViewModel
 				if (source is not { success: true }) return;
 				LoadBetterAh();
 				LoadItemsToSearchForCollection();
+				LoadCatalogues();
 				return;
 			}
 		}
