@@ -52,7 +52,8 @@ namespace YAHAC.MVVM.View
 
 		private void SaveConfig_Btn_Click(object sender, RoutedEventArgs e)
 		{
-			MainViewModel.betterAH.SaveRecipes();
+			if (Keyboard.IsKeyDown(Key.LeftShift)) MainViewModel.betterAH.HardSaveRecipes();
+			else MainViewModel.betterAH.SaveRecipes();
 			((BetterAhViewModel)DataContext).SelectedItemToRecipeConfig = null;
 		}
 	}

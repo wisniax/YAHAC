@@ -52,7 +52,6 @@ namespace YAHAC.Properties
 			priority = itemToSearchFor.priority;
 			enabled = itemToSearchFor.enabled;
 			playSound = itemToSearchFor.playSound;
-			recipe_key = itemToSearchFor.recipe_key;
 		}
 		public ItemToSearchFor() { }
 		public string item_dictKey { get; set; }

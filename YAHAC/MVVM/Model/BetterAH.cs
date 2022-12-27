@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
@@ -73,7 +74,7 @@ namespace YAHAC.MVVM.Model
 			await Task.WhenAll(tasks);
 			tempmatchingItems.AddRange(tasks.SelectMany(x => x.Result));
 			//MatchingItems = new();
-			MatchingItems = tempmatchingItems;
+			MatchingItems = DeleteDuplicatesInMatchingItems(tempmatchingItems);
 			lastCalculated = MainViewModel.auctionHouse.lastUpdated;
 			success = true;
 			OnBetterAHUpdated();
@@ -87,7 +88,7 @@ namespace YAHAC.MVVM.Model
 				tempmatchingItems.AddRange(FindMatchingItemsInCatalogue(catalogue.Items));
 			}
 			//MatchingItems = new();
-			MatchingItems = tempmatchingItems;
+			MatchingItems = DeleteDuplicatesInMatchingItems(tempmatchingItems);
 			lastCalculated = MainViewModel.auctionHouse.lastUpdated;
 			success = true;
 			OnBetterAHUpdated();
@@ -105,9 +106,9 @@ namespace YAHAC.MVVM.Model
 			return tempmatchingItems;
 		}
 
-		private void DeleteDuplicatesInMatchingItems(List<Auction> auctionsToSort)
+		private List<Auction> DeleteDuplicatesInMatchingItems(List<Auction> auctionsToSort)
 		{
-			auctionsToSort = auctionsToSort.GroupBy(x => x.uuid).Select(x => x.First()).ToList();
+			return auctionsToSort.GroupBy(x => x.uuid).Select(x => x.First()).ToList();
 		}
 
 		/// <summary>
@@ -169,7 +170,7 @@ namespace YAHAC.MVVM.Model
 			}
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Saves Recipes from RAM to Config for later use
 		/// </summary>
@@ -179,6 +180,19 @@ namespace YAHAC.MVVM.Model
 			MainViewModel.Settings.Default.BetterAH_ItemsToSearchForCatalogues = ItemsToSearchForCatalogues;
 			MainViewModel.Settings.Save();
 			ReloadRecipes();
+		}
+
+		public void HardSaveRecipes()
+		{
+			ItemsToSearchForCatalogues.ForEach((a) => a.Items.RemoveAll((b) => b.item_dictKey == null));
+			foreach (var catalogue in ItemsToSearchForCatalogues)
+			{
+				foreach (var item in catalogue.Items)
+				{
+					item.recipe_key = AssignNewUniqueKey(item.item_dictKey);
+				}
+			}
+			SaveRecipes();
 		}
 
 		/// <summary>
@@ -225,49 +239,70 @@ namespace YAHAC.MVVM.Model
 		/// Assigns recipe_key and adds Query to list
 		/// </summary>
 		/// <param name="searchQuery">Query to be added to list</param>
-		public void AddRecipe(ItemToSearchFor searchQuery)
+		public void AddRecipe(ItemToSearchFor searchQuery, ItemsToSearchForCatalogue catalogue = null)
 		{
 			if (searchQuery == null) return;
 			var query = new ItemToSearchFor(searchQuery);
 			query.recipe_key = AssignNewUniqueKey(query.item_dictKey);
-			ItemsToSearchFor.Add(query);
-			ReloadRecipes();
-		}
-		public void MoveRecipe(ItemToSearchFor item, FlowDirection flowDirection)
-		{
-			if (item == null) return;
-			if (!ItemsToSearchFor.Contains(item)) return;
-			var index = ItemsToSearchFor.IndexOf(item);
-			switch (flowDirection)
+			if (catalogue == null)
 			{
-				case FlowDirection.LeftToRight:
-					if (index >= ItemsToSearchFor.Count - 1) return;
-					ItemsToSearchFor.RemoveAt(index);
-					ItemsToSearchFor.Insert(index + 1, item);
-					break;
-				case FlowDirection.RightToLeft:
-					if (index <= 0) return;
-					ItemsToSearchFor.RemoveAt(index);
-					ItemsToSearchFor.Insert(index - 1, item);
-					break;
+				FindCatalogueTheItemIsIn(searchQuery).Items.Add(query);
+			}
+			else
+			{
+				catalogue.Items.Add(query);
 			}
 			ReloadRecipes();
 		}
 
+		private ItemsToSearchForCatalogue FindCatalogueTheItemIsIn(ItemToSearchFor searchQuery)
+		{
+			return ItemsToSearchForCatalogues.FirstOrDefault((a) =>
+				a.Items.Contains(searchQuery), ItemsToSearchForCatalogues[0]);
+		}
+
 		public void RemoveRecipe(string recipe_key)
 		{
-			ItemsToSearchFor.RemoveAll((a) => a.recipe_key.Equals(recipe_key));
+			var itemsToDelete = ItemsToSearchFor.FindAll((a) => a.recipe_key.Equals(recipe_key));
+			foreach (var item in itemsToDelete)
+			{
+				FindCatalogueTheItemIsIn(item).Items.Remove(item);
+			}
+			ReloadRecipes();
+		}
+
+		public void MoveRecipe(ItemToSearchFor item, FlowDirection flowDirection)
+		{
+			if (item == null) return;
+			if (!ItemsToSearchFor.Contains(item)) return;
+			var catalogue = FindCatalogueTheItemIsIn(item);
+			var index = catalogue.Items.IndexOf(item);
+			switch (flowDirection)
+			{
+				case FlowDirection.LeftToRight:
+					if (index >= catalogue.Items.Count - 1) return;
+					catalogue.Items.RemoveAt(index);
+					catalogue.Items.Insert(index + 1, item);
+					break;
+				case FlowDirection.RightToLeft:
+					if (index <= 0) return;
+					catalogue.Items.RemoveAt(index);
+					catalogue.Items.Insert(index - 1, item);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(flowDirection), flowDirection, "Ho? How??");
+			}
 			ReloadRecipes();
 		}
 
 		/// <summary>
 		/// Assigns new unique recipe_key from item's hypixel_ID
 		/// </summary>
-		/// <param name="item_dictKey">Item's hypixel_ID</param>
+		/// <param name="itemDictKey">Item's hypixel_ID</param>
 		/// <returns></returns>
-		private string AssignNewUniqueKey(string item_dictKey)
+		private string AssignNewUniqueKey(string itemDictKey)
 		{
-			string str = new(item_dictKey);
+			string str = new(itemDictKey);
 			str += ':';
 			int i = new();
 			while (i < ItemsToSearchFor.Count)
