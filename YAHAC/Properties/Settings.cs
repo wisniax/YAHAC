@@ -108,7 +108,7 @@ namespace YAHAC.Properties
 			}
 			catch (Exception e)
 			{
-				if (e is JsonException || e is FileNotFoundException) return false;
+				if (e is JsonException or FileNotFoundException) return false;
 				throw;
 			}
 			return true;

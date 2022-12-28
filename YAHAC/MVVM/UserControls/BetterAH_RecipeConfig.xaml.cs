@@ -25,27 +25,47 @@ namespace YAHAC.MVVM.UserControls
 	public partial class BetterAH_RecipeConfig : UserControl
 	{
 
-		public ItemToSearchFor itemToSearchFor
+		public object itemToSearchFor
 		{
-			get { return (ItemToSearchFor)GetValue(itemToSearchForProperty); }
+			get { return (object)GetValue(itemToSearchForProperty); }
 			set { SetValue(itemToSearchForProperty, value); }
 		}
 
 		// Using a DependencyProperty as the backing store for itemToSearchFor.  This enables animation, styling, binding, etc...
 		//https://stackoverflow.com/questions/25989018/wpf-usercontrol-twoway-binding-dependency-property
 		public static readonly DependencyProperty itemToSearchForProperty =
-			DependencyProperty.Register("itemToSearchFor", typeof(ItemToSearchFor), typeof(BetterAH_RecipeConfig), new FrameworkPropertyMetadata(
+			DependencyProperty.Register("itemToSearchFor", typeof(object), typeof(BetterAH_RecipeConfig), new FrameworkPropertyMetadata(
 			null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDependencyChanged));
 
 		private static void OnDependencyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			BetterAH_RecipeConfig cfg = d as BetterAH_RecipeConfig;
-			if (cfg == null) return;
-			if (cfg.itemToSearchFor == null) { cfg.visibile = false; return; }
-			cfg.visibile = true;
-			cfg.SearchQueries = cfg.itemToSearchFor.searchQueries;
-			if (!cfg.AuctionableItems.Contains(cfg.itemToSearchFor.item_dictKey)) cfg.AuctionableItems.Add(cfg.itemToSearchFor.item_dictKey);
-			cfg.SelectedAuctionableItem = cfg.itemToSearchFor.item_dictKey;
+			if (d is not BetterAH_RecipeConfig cfg) return;
+			switch (cfg.itemToSearchFor)
+			{
+				case null:
+					cfg.visibile = false; return;
+				case ItemToSearchFor itemToSearchFor:
+					{
+						cfg.CatalogueName_TextBox.Visibility = Visibility.Collapsed;
+						cfg.itemToSearchForConfigDockPanel.Visibility = Visibility.Visible;
+						cfg.visibile = true;
+						cfg.SearchQueries = itemToSearchFor.searchQueries;
+						if (!cfg.AuctionableItems.Contains(itemToSearchFor.item_dictKey))
+							cfg.AuctionableItems.Add(itemToSearchFor.item_dictKey);
+						cfg.SelectedAuctionableItem = itemToSearchFor.item_dictKey;
+						break;
+					}
+				case ItemsToSearchForCatalogue cata:
+					{
+						cfg.visibile = true;
+						cfg.CatalogueName_TextBox.Visibility = Visibility.Visible;
+						cfg.itemToSearchForConfigDockPanel.Visibility = Visibility.Collapsed;
+						cfg.CatalogueName_TextBox.Text = cata.Name;
+						cfg.SelectedAuctionableItem = null;
+						cfg.SearchQueries = null;
+						break;
+					}
+			}
 		}
 
 		public bool visibile
@@ -72,9 +92,8 @@ namespace YAHAC.MVVM.UserControls
 		private static void OnSearchQueriesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			BetterAH_RecipeConfig cfg = d as BetterAH_RecipeConfig;
-			if (cfg == null) return;
-			if (cfg.itemToSearchFor == null) return;
-			cfg.itemToSearchFor.searchQueries = cfg.SearchQueries;
+			if (cfg?.itemToSearchFor is not ItemToSearchFor cfgItemToSearchFor) return;
+			cfgItemToSearchFor.searchQueries = cfg.SearchQueries;
 		}
 
 
@@ -108,12 +127,11 @@ namespace YAHAC.MVVM.UserControls
 		/// <param name="e"></param>
 		private static void OnSelectedAuctionableItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			BetterAH_RecipeConfig cfg = (BetterAH_RecipeConfig)d;
-			if (cfg == null) return;
-			var str = cfg.SelectedAuctionableItem as string;
-			if (str == null) return;
-			if (str == cfg.itemToSearchFor.item_dictKey) return;
-			cfg.itemToSearchFor.item_dictKey = str;
+			var cfg = (BetterAH_RecipeConfig)d;
+			if (cfg?.SelectedAuctionableItem is not string str) return;
+			if (cfg.itemToSearchFor is not ItemToSearchFor cfgItemToSearchFor) return;
+			if (str == cfgItemToSearchFor.item_dictKey) return;
+			cfgItemToSearchFor.item_dictKey = str;
 		}
 
 
@@ -134,8 +152,8 @@ namespace YAHAC.MVVM.UserControls
 					if (source == null) return;
 					if (!source.success) return;
 					ObservableCollection<object> tmp = new(source.auctions.Keys);
-					if (itemToSearchFor != null)
-						if (!tmp.Contains(itemToSearchFor.item_dictKey)) tmp.Add(itemToSearchFor.item_dictKey);
+					if (itemToSearchFor is ItemToSearchFor cfgItemToSearchFor)
+						if (!tmp.Contains(cfgItemToSearchFor.item_dictKey)) tmp.Add(cfgItemToSearchFor.item_dictKey);
 					AuctionableItems = tmp;
 					return;
 				});
@@ -145,8 +163,8 @@ namespace YAHAC.MVVM.UserControls
 				if (source == null) return;
 				if (!source.success) return;
 				ObservableCollection<object> tmp = new(source.auctions.Keys);
-				if (itemToSearchFor != null)
-					if (!tmp.Contains(itemToSearchFor.item_dictKey)) tmp.Add(itemToSearchFor.item_dictKey);
+				if (itemToSearchFor is ItemToSearchFor cfgItemToSearchFor)
+					if (!tmp.Contains(cfgItemToSearchFor.item_dictKey)) tmp.Add(cfgItemToSearchFor.item_dictKey);
 				AuctionableItems = tmp;
 				return;
 			}
@@ -183,8 +201,8 @@ namespace YAHAC.MVVM.UserControls
 			visibile = false;
 		}
 
-        private async void AuctionableItems_ComboBox_KeyDown(object sender, KeyEventArgs e)
-        {
+		private async void AuctionableItems_ComboBox_KeyDown(object sender, KeyEventArgs e)
+		{
 			if (e.Key != Key.Enter) return;
 			var str = SelectedAuctionableItem as string;
 			if (str == null) return;
@@ -192,5 +210,14 @@ namespace YAHAC.MVVM.UserControls
 			//itemToSearchFor.item_dictKey = str;
 			await MainViewModel.betterAH.ReloadRecipesAsync();
 		}
-    }
+
+		private void CatalogueName_TextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key != Key.Enter) return;
+			if (sender is not TextBox textbox || itemToSearchFor is not ItemsToSearchForCatalogue cata) return;
+			MainViewModel.betterAH.RenameCatalogue(cata, textbox.Text);
+			//if (str == itemToSearchFor.item_dictKey) return;
+			//itemToSearchFor.item_dictKey = str;
+		}
+	}
 }

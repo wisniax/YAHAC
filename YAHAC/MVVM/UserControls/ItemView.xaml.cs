@@ -106,7 +106,7 @@ namespace YAHAC.MVVM.UserControls
 			this.DataContext = null;
 		}
 
-		private void OnBetterAHUpdated()
+		private void ItemModifyRequested()
 		{
 			ItemModifyRequestedEvent?.Invoke(this);
 		}
@@ -149,23 +149,24 @@ namespace YAHAC.MVVM.UserControls
 		private void Modify_Btn_Click(object sender, RoutedEventArgs e)
 		{
 			if (!visible) return;
-			if (itemToSearchFor != null) OnBetterAHUpdated();
+			if (itemToSearchFor != null || Tag != null) ItemModifyRequested();
 		}
 
 		private void Dupe_Btn_Click(object sender, RoutedEventArgs e)
 		{
-			if (itemToSearchFor == null) return;
-			MainViewModel.betterAH.AddRecipe(itemToSearchFor);
+			if (itemToSearchFor != null) MainViewModel.betterAH.AddRecipe(itemToSearchFor);
 		}
 
 		private void MoveLeft_Btn_Click(object sender, RoutedEventArgs e)
 		{
-			MainViewModel.betterAH.MoveRecipe(itemToSearchFor, FlowDirection.RightToLeft);
+			if (itemToSearchFor != null) MainViewModel.betterAH.MoveRecipe(itemToSearchFor, FlowDirection.RightToLeft);
+			if (Tag is ItemsToSearchForCatalogue) MainViewModel.betterAH.MoveCatalogue(Tag as ItemsToSearchForCatalogue, FlowDirection.RightToLeft);
 		}
 
 		private void MoveRight_Btn_Click(object sender, RoutedEventArgs e)
 		{
-			MainViewModel.betterAH.MoveRecipe(itemToSearchFor, FlowDirection.LeftToRight);
+			if (itemToSearchFor != null) MainViewModel.betterAH.MoveRecipe(itemToSearchFor, FlowDirection.LeftToRight);
+			if (Tag is ItemsToSearchForCatalogue) MainViewModel.betterAH.MoveCatalogue(Tag as ItemsToSearchForCatalogue, FlowDirection.LeftToRight);
 		}
 	}
 }

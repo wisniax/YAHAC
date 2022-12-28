@@ -65,80 +65,117 @@
 
 				</ComboBox>
 			</DockPanel>
-			<xctk:LongUpDown
+			<TextBox
 				Background="Transparent"
-				Foreground="Wheat"
+				BorderThickness="1"
+				d:Text="Yoo"
 				DockPanel.Dock="Top"
-				Margin="5"
-				Value="{Binding maxPrice}"
+				Visibility="Collapsed"
+				d:Visibility="Visible"
+				Foreground="LightCyan"
+				ToolTip="Set Catalogue Name"
 				FontSize="15"
-				Increment="100000"
-				Watermark="Set maximum price"
-				Maximum="5000000000"
-				Minimum="0"
-				DataContext="{Binding itemToSearchFor}"
-				ToolTip="Set maximum price"
-				FormatString="N0"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top" />
-			<xctk:IntegerUpDown
-				Background="Transparent"
-				Foreground="Wheat"
-				FontSize="15"
-				DockPanel.Dock="Top"
-				FormatString="N0"
-				Value="{Binding priority}"
-				Margin="5"
-				Increment="1"
-				Watermark="Set priority"
-				DataContext="{Binding itemToSearchFor}"
-				Maximum="1000"
-				Minimum="0"
-				ToolTip="Set priority"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top" />
-			<DockPanel
-				DockPanel.Dock="Top"
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Top"
+				MaxLines="1"
+				MaxLength="26"
+				Name="CatalogueName_TextBox"
+				KeyDown="CatalogueName_TextBox_KeyDown"
 				Margin="5">
-				<TextBlock
-					Text="Add query:"
-					DockPanel.Dock="Left"
-					FontSize="12"
-					Foreground="LightCyan"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Center"
-					Margin="0,0,5,0" />
-				<TextBox
-					DockPanel.Dock="Left"
-					VerticalAlignment="Top"
-					HorizontalAlignment="Right"
+				<!--<TextBox.Style>
+					<Style
+						TargetType="{x:Type TextBox}">
+						<Style.Triggers>
+							<DataTrigger
+								Binding="{Binding itemToSearchFor.ID}"
+								Value="{x:Null}">
+								<Setter
+									Property="Visibility"
+									Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+						<Setter
+							Property="Visibility"
+							Value="Visible" />
+
+					</Style>
+				</TextBox.Style>-->
+			</TextBox>
+			<DockPanel DockPanel.Dock="Top"
+			           Name="itemToSearchForConfigDockPanel">
+				<xctk:LongUpDown
+					Background="Transparent"
+					Foreground="Wheat"
+					DockPanel.Dock="Top"
+					Margin="5"
+					Value="{Binding maxPrice}"
 					FontSize="15"
-					MaxLines="1"
-					MaxLength="32"
-					Width="150"
+					Increment="100000"
+					Watermark="Set maximum price"
+					Maximum="5000000000"
+					Minimum="0"
+					DataContext="{Binding itemToSearchFor}"
+					ToolTip="Set maximum price"
+					FormatString="N0"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Top" />
+				<xctk:IntegerUpDown
+					Background="Transparent"
+					Foreground="Wheat"
+					FontSize="15"
+					DockPanel.Dock="Top"
+					FormatString="N0"
+					Value="{Binding priority}"
+					Margin="5"
+					Increment="1"
+					Watermark="Set priority"
+					DataContext="{Binding itemToSearchFor}"
+					Maximum="1000"
+					Minimum="0"
+					ToolTip="Set priority"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Top" />
+				<DockPanel
+					DockPanel.Dock="Top"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Top"
+					Margin="5">
+					<TextBlock
+						Text="Add query:"
+						DockPanel.Dock="Left"
+						FontSize="12"
+						Foreground="LightCyan"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Center"
+						Margin="0,0,5,0" />
+					<TextBox
+						DockPanel.Dock="Left"
+						VerticalAlignment="Top"
+						HorizontalAlignment="Right"
+						FontSize="15"
+						MaxLines="1"
+						MaxLength="32"
+						Width="150"
+						Background="Transparent"
+						Foreground="LightCyan"
+						ToolTip="Add query to search in auction. Press ENTER to add."
+						x:Name="AddToQuery_Textbox"
+						KeyDown="AddToQuery_Textbox_KeyDown" />
+				</DockPanel>
+				<ListView
 					Background="Transparent"
 					Foreground="LightCyan"
-					ToolTip="Add query to search in auction. Press ENTER to add."
-					x:Name="AddToQuery_Textbox"
-					KeyDown="AddToQuery_Textbox_KeyDown" />
-			</DockPanel>
-			<ListView
-				Background="Transparent"
-				Foreground="LightCyan"
-				DockPanel.Dock="Top"
-				VerticalAlignment="Top"
-				ItemsSource="{Binding RelativeSource={
+					DockPanel.Dock="Top"
+					VerticalAlignment="Top"
+					ItemsSource="{Binding RelativeSource={
 				RelativeSource FindAncestor, AncestorType={
 				x:Type local:BetterAH_RecipeConfig}}, 
 				Path=SearchQueries}"
-				Margin="5"
-				BorderThickness="0"
-				ToolTip="Double-Click query to remove"
-				x:Name="SearchQueries_List"
-				MouseDoubleClick="SearchQueries_List_MouseDoubleClick">
-			</ListView>
+					Margin="5"
+					BorderThickness="0"
+					ToolTip="Double-Click query to remove"
+					x:Name="SearchQueries_List"
+					MouseDoubleClick="SearchQueries_List_MouseDoubleClick">
+				</ListView>
+			</DockPanel>
 
 		</DockPanel>
 	</Border>

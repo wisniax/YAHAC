@@ -120,8 +120,8 @@ namespace YAHAC.MVVM.ViewModel
 				OnPropertyChanged();
 			}
 		}
-		private ItemToSearchFor _selectedItemToRecipeConfig;
-		public ItemToSearchFor SelectedItemToRecipeConfig
+		private object _selectedItemToRecipeConfig;
+		public object SelectedItemToRecipeConfig
 		{
 			get => _selectedItemToRecipeConfig;
 			set
@@ -213,6 +213,7 @@ namespace YAHAC.MVVM.ViewModel
 					false,
 					MainViewModel.itemTextureResolver.GetItemFromID(Material.CHEST.ToString()).Texture);
 				ItemView itemBox = new(mcItem, catalogue, true);
+				itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
 				Catalogues?.Add(itemBox);
 			}
 		}
@@ -311,9 +312,17 @@ namespace YAHAC.MVVM.ViewModel
 
 		private void ItemToSearchForModifyRequested(ItemView source)
 		{
-			if (source?.itemToSearchFor == null) return;
-			SelectedItemToRecipeConfig = null;
-			SelectedItemToRecipeConfig = source.itemToSearchFor;
+			if (source?.itemToSearchFor != null)
+			{
+				SelectedItemToRecipeConfig = null;
+				SelectedItemToRecipeConfig = source.itemToSearchFor;
+			}
+
+			if (source?.Tag is ItemsToSearchForCatalogue)
+			{
+				SelectedItemToRecipeConfig = null;
+				SelectedItemToRecipeConfig = source.Tag;
+			}
 		}
 
 		private void BetterAH_Updated(Model.BetterAH source)
