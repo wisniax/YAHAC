@@ -45,7 +45,7 @@ namespace YAHAC.MVVM.UserControls
 		// Using a DependencyProperty as the backing store for item.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty itemProperty =
 			DependencyProperty.Register("item", typeof(Item), typeof(ItemView), new PropertyMetadata(
-				new Item(null, null, Material.AIR, true, ImageToStream(Properties.Resources.NoTextureMark), false)));
+				new Item(null, null, Material.AIR, true, MainViewModel.NoTextureMarkItem, false)));
 
 
 		public int ItemBoxSize

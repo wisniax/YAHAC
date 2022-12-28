@@ -105,13 +105,12 @@ namespace YAHAC.MVVM.ViewModel
 				// In case item does not exist in Hypixel API create an unknown one with id as its name
 				if (item == null)
 				{
-					Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
 					item = new Item(
 						  key,
 						  key,
 						  Material.AIR,
 						  true,
-						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						  MainViewModel.NoTextureMarkItem);
 				}
 				ItemView itemBox = new(item);
 				ItemsInObservableCollection.Add(key);

@@ -119,19 +119,14 @@ namespace YAHAC.MVVM.ViewModel
 			foreach (var key in MainViewModel.bazaar.products.Keys)
 			{
 				if (key == null) continue;
-				var item = MainViewModel.itemTextureResolver.GetItemFromID(key);
 				//if (item == null) continue;
 				// In case item does not exist in Hypixel API create an unknown one with id as its name
-				if (item == null)
-				{
-					Converters.BitmapToMemoryStream convbtm = new Converters.BitmapToMemoryStream();
-					item = new Item(
-						  key,
-						  key,
-						  Material.AIR,
-						  true,
-						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
-				}
+				var item = MainViewModel.itemTextureResolver.GetItemFromID(key) ?? new Item(
+					key,
+					key,
+					Material.AIR,
+					true,
+					MainViewModel.NoTextureMarkItem);
 				ItemView itemBox = new(item);
 				Items?.Add(itemBox);
 			}

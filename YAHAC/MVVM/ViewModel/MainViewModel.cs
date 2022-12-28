@@ -11,6 +11,8 @@ using System.Windows;
 using System.ComponentModel;
 using ITR;
 using static YAHAC.Core.HypixelCertificateHandling;
+using System.Globalization;
+using System.IO;
 
 namespace YAHAC.MVVM.ViewModel
 {
@@ -28,6 +30,7 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 		public static JsonStruct jsonStruct { get; set; }
+		public static MemoryStream NoTextureMarkItem { get; private set; }
 
 		static public void settings_Changed()
 		{
@@ -71,6 +74,8 @@ namespace YAHAC.MVVM.ViewModel
 			bazaar = new();
 			auctionHouse = new();
 			if (jsonStruct.Online) betterAH = new();
+			var convbtm = new Converters.BitmapToMemoryStream();
+			NoTextureMarkItem = convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream;
 
 			//betterAH.addRecipe();
 			//betterAH.saveRecipes();

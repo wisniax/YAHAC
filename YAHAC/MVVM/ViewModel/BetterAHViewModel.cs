@@ -105,7 +105,7 @@ namespace YAHAC.MVVM.ViewModel
 			set
 			{
 				_itemsToSearchForVisibility = value;
-				LoadItemsToSearchForCollection();
+				LoadItemsToSearchForInCatalogue();
 				OnPropertyChanged();
 			}
 		}
@@ -128,7 +128,7 @@ namespace YAHAC.MVVM.ViewModel
 				ItemToSearchFor itemek = null;
 				if (Keyboard.IsKeyDown(Key.LeftShift)) itemek = ReadFromCowlectionNbt();
 				itemek ??= new Properties.ItemToSearchFor(null, enabled: false);
-				MainViewModel.betterAH.AddRecipe(itemek);
+				MainViewModel.betterAH.AddRecipe(itemek, catalogue: SelectedCatalogue);
 			});
 			AddCatalogue = new RelayCommand((_) =>
 			{
@@ -173,13 +173,12 @@ namespace YAHAC.MVVM.ViewModel
 				// In case item does not exist in Hypixel API create an unknown one with id as its name
 				if (item == null)
 				{
-					var convbtm = new Converters.BitmapToMemoryStream();
 					item = new ITR.Item(
 						  auction.HyPixel_ID,
 						  auction.HyPixel_ID,
 						  Material.AIR,
 						  true,
-						  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						  MainViewModel.NoTextureMarkItem);
 				}
 				ItemView itemBox = new(item, auction);
 				Items?.Add(itemBox);
@@ -193,14 +192,12 @@ namespace YAHAC.MVVM.ViewModel
 			foreach (var catalogue in MainViewModel.betterAH.ItemsToSearchForCatalogues)
 			{
 				if (catalogue == null) continue;
-				var convbtm = new Converters.BitmapToMemoryStream();
-
 				var mcItem = new Item(
 					catalogue.Name,
 					catalogue.ID,
 					Material.CHEST,
 					false,
-					MainViewModel.itemTextureResolver.GetItemFromID(Material.CHEST.ToString()).Texture);
+					MainViewModel.itemTextureResolver.GetItemFromID(Material.CHEST.ToString())?.Texture);
 				ItemView itemBox = new(mcItem, catalogue, true);
 				itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
 				Catalogues?.Add(itemBox);
@@ -247,54 +244,49 @@ namespace YAHAC.MVVM.ViewModel
 						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
 						if (mcItem == null)
 						{
-							var convbtm = new Converters.BitmapToMemoryStream();
 							mcItem = new Item(
 								itemToSearchFor.item_dictKey,
 								itemToSearchFor.item_dictKey,
 								Material.AIR,
 								true,
-								convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+								MainViewModel.NoTextureMarkItem);
 						}
 						item.item = mcItem;
 					}
 					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 					item.Tag = auction;
 				}
-				else if (ItemsToSearchForCollection.IndexOf(item) != i)
-				{
-					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
-					item.Tag = auction;
-					ItemsToSearchForCollection.Move(ItemsToSearchForCollection.IndexOf(item), i);
-				}
 				else if (ItemsToSearchForCollection.IndexOf(item) == -1 && ItemsToSearchForCollection.Count - 1 > i)
 				{
 					var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-					var convbtm = new Converters.BitmapToMemoryStream();
 					mcItem ??= new Item(
 						itemToSearchFor.item_dictKey,
 						itemToSearchFor.item_dictKey,
 						Material.AIR,
 						true,
-						convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						MainViewModel.NoTextureMarkItem);
 					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
-					ItemView itemBox = ItemsToSearchForCollection[i];
-					itemBox.Reuse(mcItem, auction, true, itemToSearchFor);
-					ItemsToSearchForCollection?.Insert(i, itemBox);
+					ItemsToSearchForCollection[i].Reuse(mcItem, auction, true, itemToSearchFor);
 				}
-				else
+				else if (ItemsToSearchForCollection.IndexOf(item) == -1)
 				{
 					var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-					var convbtm = new Converters.BitmapToMemoryStream();
 					mcItem ??= new Item(
 						itemToSearchFor.item_dictKey,
 						itemToSearchFor.item_dictKey,
 						Material.AIR,
 						true,
-						convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						MainViewModel.NoTextureMarkItem);
 					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 					ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
 					itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
 					ItemsToSearchForCollection?.Insert(i, itemBox);
+				}
+				else
+				{
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					item.Tag = auction;
+					ItemsToSearchForCollection.Move(ItemsToSearchForCollection.IndexOf(item), i);
 				}
 			}
 
@@ -332,13 +324,12 @@ namespace YAHAC.MVVM.ViewModel
 					if (ItemsToSearchForCollection.IndexOf(item) == -1)
 					{
 						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-						var convbtm = new Converters.BitmapToMemoryStream();
 						mcItem ??= new Item(
 							itemToSearchFor.item_dictKey,
 							itemToSearchFor.item_dictKey,
 							Material.AIR,
 							true,
-							convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+							MainViewModel.NoTextureMarkItem);
 						var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
 						ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
 						itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
@@ -357,13 +348,12 @@ namespace YAHAC.MVVM.ViewModel
 						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
 						if (mcItem == null)
 						{
-							var convbtm = new Converters.BitmapToMemoryStream();
 							mcItem = new Item(
 								  itemToSearchFor.item_dictKey,
 								  itemToSearchFor.item_dictKey,
 								  Material.AIR,
 								  true,
-								  convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+								  MainViewModel.NoTextureMarkItem);
 						}
 						item.item = mcItem;
 					}
@@ -407,7 +397,7 @@ namespace YAHAC.MVVM.ViewModel
 				{
 					if (source is not { success: true }) return;
 					LoadBetterAh();
-					LoadItemsToSearchForCollection();
+					LoadItemsToSearchForInCatalogue();
 					LoadCatalogues();
 					return;
 				});
@@ -416,7 +406,7 @@ namespace YAHAC.MVVM.ViewModel
 			{
 				if (source is not { success: true }) return;
 				LoadBetterAh();
-				LoadItemsToSearchForCollection();
+				LoadItemsToSearchForInCatalogue();
 				LoadCatalogues();
 				return;
 			}

@@ -109,6 +109,28 @@
 					Foreground="White">
 				</UserControls:AuctionItemDisplay>
 			</Border>
+			<Grid
+				Panel.ZIndex="11"
+				Visibility="Collapsed"
+				Name="MoveItemCanvas"
+				Margin="0,-18,0,0"
+				RenderOptions.EdgeMode="Aliased"
+				Canvas.Left="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BetterAHView}}, 
+				Path=DataContext.CanvasPoint.X}"
+				Canvas.Top="{
+				Binding RelativeSource={
+				RelativeSource FindAncestor, AncestorType={
+				x:Type local:BetterAHView}}, 
+				Path=DataContext.CanvasPoint.Y}">
+				<TextBlock
+					Foreground="Wheat"
+					Background="DarkBlue">
+					Moving Item
+				</TextBlock>
+			</Grid>
 		</Canvas>
 		<Button
 			Panel.ZIndex="9"
@@ -138,6 +160,8 @@
 		</Button>
 
 		<Border
+			PreviewMouseRightButtonUp="UIElement_OnPreviewMouseRightButtonUp"
+			MouseLeave="UIElement_OnMouseLeave"
 			BorderThickness="4"
 			BorderBrush="#121212"
 			VerticalAlignment="Bottom"
@@ -238,7 +262,8 @@
 					Background="Transparent"
 					ItemsSource="{Binding ItemsToSearchForCollection}"
 					SelectionChanged="ItemsList_SelectionChanged"
-					MouseDoubleClick="UserControl_MouseDoubleClick">
+					MouseDoubleClick="UserControl_MouseDoubleClick"
+					PreviewMouseRightButtonDown="ItemsToSearchForConfigurableList_OnMouseDown">
 					<ListBox.ItemContainerStyle>
 						<Style
 							TargetType="{x:Type ListBoxItem}">
