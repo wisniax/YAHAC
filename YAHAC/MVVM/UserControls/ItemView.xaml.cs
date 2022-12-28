@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ABI.Windows.ApplicationModel.Chat;
 using ITR;
 using SharpNBT;
 using YAHAC.Core;
@@ -85,7 +86,13 @@ namespace YAHAC.MVVM.UserControls
 		public delegate void ItemModifyRequestedHandler(ItemView source);
 		public event ItemModifyRequestedHandler ItemModifyRequestedEvent;
 
-
+		public void Reuse(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null)
+		{
+			this.item = item;
+			this.Tag = Tag;
+			this.visible = visible;
+			this.itemToSearchFor = itemToSearchFor;
+		}
 		public ItemView(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null) : this()
 		{
 			this.item = item;

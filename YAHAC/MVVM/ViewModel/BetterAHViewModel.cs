@@ -1,4 +1,5 @@
-﻿using ITR;
+﻿using System;
+using ITR;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -55,30 +56,18 @@ namespace YAHAC.MVVM.ViewModel
 				AdditionalInfoVisible = true;
 			}
 		}
-		private ItemView _selectedCatalogue;
-		public ItemView SelectedCatalogue
+		private ItemsToSearchForCatalogue _selectedCatalogue;
+		public ItemsToSearchForCatalogue SelectedCatalogue
 		{
 			get => _selectedCatalogue;
 			set
 			{
-				if (value == null) { AdditionalCatalogueInfoVisible = false; return; }
+				if (value == null) { return; }
 				_selectedCatalogue = value;
-				OnPropertyChanged();
-				AdditionalCatalogueInfoVisible = true;
-			}
-		}
-		private bool _additionalCatalogueInfoVisible;
-		public bool AdditionalCatalogueInfoVisible
-		{
-			get => _additionalCatalogueInfoVisible;
-			set
-			{
-				_additionalCatalogueInfoVisible = value;
+				LoadItemsToSearchForInCatalogue();
 				OnPropertyChanged();
 			}
 		}
-
-
 		private Point _canvasPoint;
 		public Point CanvasPoint
 		{
@@ -205,7 +194,7 @@ namespace YAHAC.MVVM.ViewModel
 			{
 				if (catalogue == null) continue;
 				var convbtm = new Converters.BitmapToMemoryStream();
-				
+
 				var mcItem = new Item(
 					catalogue.Name,
 					catalogue.ID,
@@ -235,8 +224,93 @@ namespace YAHAC.MVVM.ViewModel
 			//	var itemBox = new ItemView(mcItem);
 
 			//}
-		}
+			if (!ItemsToSearchForVisibility) return;
+			if (ItemsToSearchForCollection == null) return;
+			if (SelectedCatalogue == null) return;
 
+			//foreach (var item in ItemsToSearchForCollection)
+			//{
+			//	item.PrepareToDie();
+			//}
+
+			//ItemsToSearchForCollection.Clear();
+			for (int i = 0; i < SelectedCatalogue.Items.Count; i++)
+			{
+				var itemToSearchFor = SelectedCatalogue.Items[i];
+				if (itemToSearchFor == null) continue;
+				var item = ItemsToSearchForCollection.FirstOrDefault((a) => a.itemToSearchFor == itemToSearchFor, null);
+
+				if ((ItemsToSearchForCollection.IndexOf(item) == i))
+				{
+					if (item.item.HyPixel_ID != itemToSearchFor.item_dictKey)
+					{
+						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+						if (mcItem == null)
+						{
+							var convbtm = new Converters.BitmapToMemoryStream();
+							mcItem = new Item(
+								itemToSearchFor.item_dictKey,
+								itemToSearchFor.item_dictKey,
+								Material.AIR,
+								true,
+								convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+						}
+						item.item = mcItem;
+					}
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					item.Tag = auction;
+				}
+				else if (ItemsToSearchForCollection.IndexOf(item) != i)
+				{
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					item.Tag = auction;
+					ItemsToSearchForCollection.Move(ItemsToSearchForCollection.IndexOf(item), i);
+				}
+				else if (ItemsToSearchForCollection.IndexOf(item) == -1 && ItemsToSearchForCollection.Count - 1 > i)
+				{
+					var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+					var convbtm = new Converters.BitmapToMemoryStream();
+					mcItem ??= new Item(
+						itemToSearchFor.item_dictKey,
+						itemToSearchFor.item_dictKey,
+						Material.AIR,
+						true,
+						convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					ItemView itemBox = ItemsToSearchForCollection[i];
+					itemBox.Reuse(mcItem, auction, true, itemToSearchFor);
+					ItemsToSearchForCollection?.Insert(i, itemBox);
+				}
+				else
+				{
+					var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
+					var convbtm = new Converters.BitmapToMemoryStream();
+					mcItem ??= new Item(
+						itemToSearchFor.item_dictKey,
+						itemToSearchFor.item_dictKey,
+						Material.AIR,
+						true,
+						convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
+					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
+					ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
+					itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
+					ItemsToSearchForCollection?.Insert(i, itemBox);
+				}
+			}
+
+			for (int i = ItemsToSearchForCollection.Count - 1; i >= SelectedCatalogue.Items.Count; i--)
+			{
+				ItemsToSearchForCollection[i].PrepareToDie();
+				ItemsToSearchForCollection.RemoveAt(i);
+			}
+			//foreach (var item in ItemsToSearchForCollection.ToArray())
+			//{
+			//	if (MainViewModel.betterAH.ItemsToSearchFor.Contains(item.itemToSearchFor)) continue;
+			//	item.PrepareToDie();
+			//	ItemsToSearchForCollection.Remove(item);
+			//}
+		}
+		[Obsolete("Use UpdateItemsToSearchForCollection instead", true)]
 		void LoadItemsToSearchForCollection()
 		{
 			if (!ItemsToSearchForVisibility) return;
@@ -363,8 +437,15 @@ namespace YAHAC.MVVM.ViewModel
 
 		public void MouseDoubleClicked(object sender, MouseButtonEventArgs e)
 		{
-			if (SelectedItemView?.Tag == null) return;
-			CopyToClipboard.Copy("/viewauction " + (SelectedItemView.Tag as Auction).uuid);
+			switch (SelectedItemView?.Tag)
+			{
+				case Auction auction:
+					CopyToClipboard.Copy("/viewauction " + auction.uuid);
+					break;
+				case ItemsToSearchForCatalogue itemToSearchForCat:
+					SelectedCatalogue = itemToSearchForCat;
+					break;
+			}
 		}
 	}
 }

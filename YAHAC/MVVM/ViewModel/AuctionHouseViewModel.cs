@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace YAHAC.MVVM.ViewModel
 		void LoadAuctionHouse()
 		{
 			//await Task.Run(() => (MainViewModel.bazaar.success == true));
-
+			var sw = Stopwatch.StartNew();
 			foreach (var key in MainViewModel.auctionHouse.auctions.Keys)
 			{
 				if (key == null) continue;
@@ -116,6 +117,8 @@ namespace YAHAC.MVVM.ViewModel
 				ItemsInObservableCollection.Add(key);
 				Items?.Add(itemBox);
 			}
+			sw.Stop();
+			Debug.WriteLine($"Loading AH took: {sw.ElapsedMilliseconds} ms");
 			OnSearchQueryChanged();
 		}
 

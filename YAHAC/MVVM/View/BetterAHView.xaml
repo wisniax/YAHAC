@@ -176,6 +176,7 @@
 						BorderThickness="0"
 						Background="Transparent"
 						SelectionChanged="ItemsList_SelectionChanged"
+						MouseDoubleClick="UserControl_MouseDoubleClick"
 						ItemsSource="{Binding Catalogues}">
 						<ListBox.ItemContainerStyle>
 							<Style
