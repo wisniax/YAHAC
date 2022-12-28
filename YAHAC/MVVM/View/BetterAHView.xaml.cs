@@ -50,8 +50,11 @@ namespace YAHAC.MVVM.View
 
 		private void LoadConfig_Btn_Click(object sender, RoutedEventArgs e)
 		{
+			//var lastCat = ((BetterAhViewModel)DataContext).SelectedCatalogue;
 			MainViewModel.betterAH.LoadRecipes();
 			((BetterAhViewModel)DataContext).SelectedItemToRecipeConfig = null;
+			//((BetterAhViewModel)DataContext).SelectedCatalogue =
+				//MainViewModel.betterAH.ItemsToSearchForCatalogues.FirstOrDefault(x => x.ID == lastCat.ID);
 		}
 
 		private void SaveConfig_Btn_Click(object sender, RoutedEventArgs e)

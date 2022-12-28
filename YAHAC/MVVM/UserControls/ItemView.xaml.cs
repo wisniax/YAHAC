@@ -93,12 +93,15 @@ namespace YAHAC.MVVM.UserControls
 			this.visible = visible;
 			this.itemToSearchFor = itemToSearchFor;
 		}
-		public ItemView(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null) : this()
+		public ItemView(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null)
 		{
+			ItemBoxSize = MainViewModel.Settings.Default.MinecraftItemBox_Size;
+			MainViewModel.itemTextureResolver.DownloadedItemEvent += ItemTextureResolver_DownloadedItemEvent;
 			this.item = item;
 			this.Tag = Tag;
 			this.visible = visible;
 			this.itemToSearchFor = itemToSearchFor;
+			InitializeComponent();
 		}
 		public ItemView()
 		{

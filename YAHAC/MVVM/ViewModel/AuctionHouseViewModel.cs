@@ -94,56 +94,53 @@ namespace YAHAC.MVVM.ViewModel
 		// Sound too good to be true lmao https://stackoverflow.com/questions/53549710/async-loading-usercontrols-in-itemcontrol-wpf-c-sharp
 		async void LoadAuctionHouse()
 		{
-			List<DispatcherOperation> operations = new(MainViewModel.auctionHouse.auctions.Count);
+			List<Task> operations = new(MainViewModel.auctionHouse.auctions.Count);
 
 			//await Task.Run(() => (MainViewModel.bazaar.success == true));
-            var sw = Stopwatch.StartNew();
+			var sw = Stopwatch.StartNew();
 			foreach (var key in MainViewModel.auctionHouse.auctions.Keys)
 			{
-
 				if (key == null) continue;
 				if (ItemsInObservableCollection.Contains(key)) continue;
-
 				var item = MainViewModel.itemTextureResolver.GetItemFromID(key);
-                //if (item == null) continue;
-                // In case item does not exist in Hypixel API create an unknown one with id as its name
-                
-                var operation = Application.Current.Dispatcher.BeginInvoke(
-					DispatcherPriority.Background,
-                    () =>
-					{
-                        item ??= new Item(
-                          key,
-                          key,
-                          Material.AIR,
-                          true,
-                          MainViewModel.NoTextureMarkItem);
+				//if (item == null) continue;
+				// In case item does not exist in Hypixel API create an unknown one with id as its name
 
-                        ItemView itemBox = new(item);
+				var operation = Application.Current.Dispatcher.BeginInvoke(
+					DispatcherPriority.Background,
+					() =>
+					{
+						item ??= new Item(
+						  key,
+						  key,
+						  Material.AIR,
+						  true,
+						  MainViewModel.NoTextureMarkItem);
+						
+						ItemView itemBox = new(item);
+
 						ItemsInObservableCollection.Add(key);
+
 						Items?.Add(itemBox);
 					}
 				);
+				operations.Add(operation.Task);
+			}
+			await Task.WhenAll(operations);
 
-				operations.Add(operation);
-            }
-
-			foreach (var op in operations)
-				await op;
-
-            sw.Stop();
-            Debug.WriteLine($"Loading AH took: {sw.ElapsedMilliseconds} ms");
+			sw.Stop();
+			Debug.WriteLine($"Loading AH took: {sw.ElapsedMilliseconds} ms");
 			OnSearchQueryChanged();
 		}
 
 		private void AuctionHouse_Updated(Model.AuctionHouse source)
 		{
-				
+
 			if (source == null) return;
 			if (!source.success) return;
 			LoadAuctionHouse();
 			return;
-				
+
 		}
 
 		/// <summary>

@@ -6,8 +6,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using YAHAC.Core;
 using YAHAC.MVVM.Model;
 using YAHAC.MVVM.UserControls;
@@ -62,7 +64,7 @@ namespace YAHAC.MVVM.ViewModel
 			get => _selectedCatalogue;
 			set
 			{
-				if (value == null) { return; }
+				if (isLoadItemsToSearchForInCatalogueExecuting) return;
 				_selectedCatalogue = value;
 				LoadItemsToSearchForInCatalogue();
 				OnPropertyChanged();
@@ -204,34 +206,21 @@ namespace YAHAC.MVVM.ViewModel
 			}
 		}
 
-		void LoadItemsToSearchForInCatalogue()
+		private bool isLoadItemsToSearchForInCatalogueExecuting = false;
+		async void LoadItemsToSearchForInCatalogue()
 		{
-			//if (SelectedCatalogue == null) return;
-			//Catalogues = new();
-			//foreach (var itemToSearchFor in SelectedCatalogue.Items)
-			//{
-			//	var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-			//	var convbtm = new Converters.BitmapToMemoryStream();
-			//	mcItem ??= new Item(
-			//		itemToSearchFor.item_dictKey,
-			//		itemToSearchFor.item_dictKey,
-			//		Material.AIR,
-			//		true,
-			//		convbtm.Convert(Properties.Resources.NoTextureMark, null, null, CultureInfo.CurrentCulture) as MemoryStream);
-			//	var itemBox = new ItemView(mcItem);
-
-			//}
+			if (isLoadItemsToSearchForInCatalogueExecuting) return;
 			if (!ItemsToSearchForVisibility) return;
 			if (ItemsToSearchForCollection == null) return;
-			if (SelectedCatalogue == null) return;
+			if (SelectedCatalogue != null && !MainViewModel.betterAH.ItemsToSearchForCatalogues.Contains(SelectedCatalogue))
+			{
+				SelectedCatalogue = null;
+				return;
+			}
 
-			//foreach (var item in ItemsToSearchForCollection)
-			//{
-			//	item.PrepareToDie();
-			//}
-
-			//ItemsToSearchForCollection.Clear();
-			for (int i = 0; i < SelectedCatalogue.Items.Count; i++)
+			isLoadItemsToSearchForInCatalogueExecuting = true;
+			List<Task> tasks = new();
+			for (int i = 0; i < SelectedCatalogue?.Items.Count; i++)
 			{
 				var itemToSearchFor = SelectedCatalogue.Items[i];
 				if (itemToSearchFor == null) continue;
@@ -241,16 +230,13 @@ namespace YAHAC.MVVM.ViewModel
 				{
 					if (item.item.HyPixel_ID != itemToSearchFor.item_dictKey)
 					{
-						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey);
-						if (mcItem == null)
-						{
-							mcItem = new Item(
-								itemToSearchFor.item_dictKey,
-								itemToSearchFor.item_dictKey,
-								Material.AIR,
-								true,
-								MainViewModel.NoTextureMarkItem);
-						}
+						var mcItem = MainViewModel.itemTextureResolver.GetItemFromID(itemToSearchFor.item_dictKey) ??
+									 new Item(
+							itemToSearchFor.item_dictKey,
+							itemToSearchFor.item_dictKey,
+							Material.AIR,
+							true,
+							MainViewModel.NoTextureMarkItem);
 						item.item = mcItem;
 					}
 					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
@@ -278,9 +264,16 @@ namespace YAHAC.MVVM.ViewModel
 						true,
 						MainViewModel.NoTextureMarkItem);
 					var auction = MainViewModel.betterAH.FindCheapestMatchingItem(itemToSearchFor);
-					ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
-					itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
-					ItemsToSearchForCollection?.Insert(i, itemBox);
+					int j = i;
+					tasks.Add(Application.Current.Dispatcher.BeginInvoke(
+						DispatcherPriority.Background,
+						() =>
+						{
+							ItemView itemBox = new(mcItem, auction, true, itemToSearchFor);
+							itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
+							ItemsToSearchForCollection?.Insert(j, itemBox);
+						}).Task);
+
 				}
 				else
 				{
@@ -290,11 +283,13 @@ namespace YAHAC.MVVM.ViewModel
 				}
 			}
 
-			for (int i = ItemsToSearchForCollection.Count - 1; i >= SelectedCatalogue.Items.Count; i--)
+			await Task.WhenAll(tasks);
+			for (int i = ItemsToSearchForCollection.Count - 1; i >= (SelectedCatalogue?.Items.Count ?? 0); i--)
 			{
 				ItemsToSearchForCollection[i].PrepareToDie();
 				ItemsToSearchForCollection.RemoveAt(i);
 			}
+			isLoadItemsToSearchForInCatalogueExecuting = false;
 			//foreach (var item in ItemsToSearchForCollection.ToArray())
 			//{
 			//	if (MainViewModel.betterAH.ItemsToSearchFor.Contains(item.itemToSearchFor)) continue;
@@ -397,8 +392,8 @@ namespace YAHAC.MVVM.ViewModel
 				{
 					if (source is not { success: true }) return;
 					LoadBetterAh();
-					LoadItemsToSearchForInCatalogue();
 					LoadCatalogues();
+					LoadItemsToSearchForInCatalogue();
 					return;
 				});
 			}
@@ -406,8 +401,8 @@ namespace YAHAC.MVVM.ViewModel
 			{
 				if (source is not { success: true }) return;
 				LoadBetterAh();
-				LoadItemsToSearchForInCatalogue();
 				LoadCatalogues();
+				LoadItemsToSearchForInCatalogue();
 				return;
 			}
 		}
