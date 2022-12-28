@@ -92,7 +92,7 @@ namespace YAHAC.MVVM.ViewModel
 		}
 
 		// Sound too good to be true lmao https://stackoverflow.com/questions/53549710/async-loading-usercontrols-in-itemcontrol-wpf-c-sharp
-		async void LoadAuctionHouse()
+		async Task LoadAuctionHouse()
 		{
 			List<Task> operations = new(MainViewModel.auctionHouse.auctions.Count);
 
