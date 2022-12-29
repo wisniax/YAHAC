@@ -44,8 +44,7 @@ namespace YAHAC.MVVM.UserControls
 
 		// Using a DependencyProperty as the backing store for item.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty itemProperty =
-			DependencyProperty.Register("item", typeof(Item), typeof(ItemView), new PropertyMetadata(
-				new Item(null, null, Material.AIR, true, MainViewModel.NoTextureMarkItem, false)));
+			DependencyProperty.Register("item", typeof(Item), typeof(ItemView));
 
 
 		public int ItemBoxSize
@@ -56,7 +55,7 @@ namespace YAHAC.MVVM.UserControls
 
 		// Using a DependencyProperty as the backing store for ItemBoxSize.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ItemBoxSizeProperty =
-			DependencyProperty.Register("ItemBoxSize", typeof(int), typeof(ItemView), new PropertyMetadata(34));
+			DependencyProperty.Register("ItemBoxSize", typeof(int), typeof(ItemView));
 
 
 
@@ -68,7 +67,7 @@ namespace YAHAC.MVVM.UserControls
 
 		// Using a DependencyProperty as the backing store for visible.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty visibleProperty =
-			DependencyProperty.Register("visible", typeof(bool), typeof(ItemView), new PropertyMetadata(false));
+			DependencyProperty.Register("visible", typeof(bool), typeof(ItemView));
 
 
 
@@ -80,8 +79,7 @@ namespace YAHAC.MVVM.UserControls
 
 		// Using a DependencyProperty as the backing store for itemToSearchFor.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty itemToSearchForProperty =
-			DependencyProperty.Register("itemToSearchFor", typeof(ItemToSearchFor), typeof(ItemView), new FrameworkPropertyMetadata(
-			null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+			DependencyProperty.Register("itemToSearchFor", typeof(ItemToSearchFor), typeof(ItemView));
 
 		public delegate void ItemModifyRequestedHandler(ItemView source);
 		public event ItemModifyRequestedHandler ItemModifyRequestedEvent;
@@ -95,7 +93,7 @@ namespace YAHAC.MVVM.UserControls
 		}
 		public ItemView(Item item, object Tag = null, bool visible = false, ItemToSearchFor itemToSearchFor = null)
 		{
-			ItemBoxSize = MainViewModel.Settings.Default.MinecraftItemBox_Size;
+			ItemBoxSize = MainViewModel.Settings?.Default?.MinecraftItemBox_Size ?? 34;
 			MainViewModel.itemTextureResolver.DownloadedItemEvent += ItemTextureResolver_DownloadedItemEvent;
 			this.item = item;
 			this.Tag = Tag;
@@ -105,7 +103,9 @@ namespace YAHAC.MVVM.UserControls
 		}
 		public ItemView()
 		{
-			ItemBoxSize = MainViewModel.Settings.Default.MinecraftItemBox_Size;
+			visible = false;
+			this.item = new Item(null, null, Material.AIR, true, MainViewModel.NoTextureMarkItem, false);
+			ItemBoxSize = MainViewModel.Settings?.Default?.MinecraftItemBox_Size ?? 34;
 			MainViewModel.itemTextureResolver.DownloadedItemEvent += ItemTextureResolver_DownloadedItemEvent;
 			InitializeComponent();
 		}

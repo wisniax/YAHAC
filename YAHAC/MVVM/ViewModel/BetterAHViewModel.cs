@@ -273,7 +273,6 @@ namespace YAHAC.MVVM.ViewModel
 							itemBox.ItemModifyRequestedEvent += ItemToSearchForModifyRequested;
 							ItemsToSearchForCollection?.Insert(j, itemBox);
 						}).Task);
-
 				}
 				else
 				{
@@ -282,7 +281,6 @@ namespace YAHAC.MVVM.ViewModel
 					ItemsToSearchForCollection.Move(ItemsToSearchForCollection.IndexOf(item), i);
 				}
 			}
-
 			await Task.WhenAll(tasks);
 			for (int i = ItemsToSearchForCollection.Count - 1; i >= (SelectedCatalogue?.Items.Count ?? 0); i--)
 			{
