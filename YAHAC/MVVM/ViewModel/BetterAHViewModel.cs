@@ -164,6 +164,12 @@ namespace YAHAC.MVVM.ViewModel
 
 		void LoadBetterAh()
 		{
+			while (Items?.Count > 0)
+			{
+				var ite = (ItemView)(Items[0]);
+				ite.PrepareToDie();
+				Items.RemoveAt(0);
+			}
 			Items = new();
 			if (!MainViewModel.betterAH.success) return;
 			foreach (var auction in MainViewModel.betterAH.MatchingItems)
@@ -189,6 +195,13 @@ namespace YAHAC.MVVM.ViewModel
 
 		void LoadCatalogues()
 		{
+			while (Catalogues?.Count > 0)
+			{
+				var ite = Catalogues[0];
+				ite.PrepareToDie();
+				ite.ItemModifyRequestedEvent -= ItemToSearchForModifyRequested;
+				Catalogues.RemoveAt(0);
+			}
 			Catalogues = new();
 			if (!MainViewModel.betterAH.success) return;
 			foreach (var catalogue in MainViewModel.betterAH.ItemsToSearchForCatalogues)
@@ -285,6 +298,7 @@ namespace YAHAC.MVVM.ViewModel
 			for (int i = ItemsToSearchForCollection.Count - 1; i >= (SelectedCatalogue?.Items.Count ?? 0); i--)
 			{
 				ItemsToSearchForCollection[i].PrepareToDie();
+				ItemsToSearchForCollection[i].ItemModifyRequestedEvent -= ItemToSearchForModifyRequested;
 				ItemsToSearchForCollection.RemoveAt(i);
 			}
 			isLoadItemsToSearchForInCatalogueExecuting = false;
