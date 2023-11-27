@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>Hy_ITR</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <ErrorReport>send</ErrorReport>
+    <Version>0.0.1</Version>
+    <Authors>Marcin Walczyk &lt;marcinwal9@gmail.com&gt;</Authors>
+    <Company>Marcin Walczyk &lt;marcinwal9@gmail.com&gt;</Company>
+    <Description>HyPixel Item Texture Resolver CSharp Wrapper</Description>
+    <Copyright>Marcin Walczyk &lt;marcinwal9@gmail.com&gt;</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hy ITR\Hy ITR.vcxproj">
+      <Private></Private>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+  	<Content Include="..\Hy ITR\x64\$(Configuration)\Hy ITR.dll">
+  		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</Content>
+  </ItemGroup>
+
+</Project>
