@@ -1,14 +1,18 @@
 #pragma once
 #include "Version.hpp"
+#include "TestThread.hpp"
 
 #ifndef HYITR_EXPORT
-#define DLLAPI __declspec(dllimport)
+#define HYITR_API __declspec(dllimport)
 #else
-#define DLLAPI __declspec(dllexport)
+#define HYITR_API __declspec(dllexport)
 #endif
 
 extern "C"
 {
-	DLLAPI const char* getVersionInfo();
-	DLLAPI const char* helloworld();
+	HYITR_API const char* getVersionInfo();
+	HYITR_API const char* helloworld();
+	//Test
+	HYITR_API void spawnThread();
+	HYITR_API void stopThread();
 }

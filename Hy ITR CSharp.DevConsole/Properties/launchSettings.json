@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Hy ITR CSharp.DevConsole": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
