@@ -26,7 +26,7 @@ namespace hyitr
 			lastStamp = std::chrono::high_resolution_clock::now();
 			
 			boost::format fmt;
-			fullStr = (boost::format("%s %.2f s") % preStr % (stoper.count() / 1000.f)).str();
+			fullStr = (boost::format("%1% %.2f s") % preStr % (stoper.count() / 1000.f)).str();
 			//fullStr = preStr + std::to_string(stoper.count() / 1000) + "." + std::to_string(stoper.count() % 1000) +  " s";
 			to_erase = (int)fullStr.length();
 

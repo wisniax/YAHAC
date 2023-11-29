@@ -30,6 +30,8 @@ namespace hyitr
 		bool start();
 		void restart();
 		bool isRunning() const;
+		std::string getError(); 
+		bool isThreadGood() const;
 	protected:
 		ThreadManager() = default;
 		virtual void threadFunction(std::stop_token& stoken) = 0;
@@ -39,6 +41,7 @@ namespace hyitr
 
 		std::jthread mThread;
 		std::mutex mThreadLock;
+		std::atomic<bool> mIsThreadGood;
 		std::exception mThreadError;
 	};
 }

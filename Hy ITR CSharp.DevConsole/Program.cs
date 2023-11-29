@@ -11,10 +11,11 @@
 			Console.WriteLine($"DEVCONSOLE>Hello World!");
 			Console.WriteLine($"DEVCONSOLE>{Test.HelloWorld()}");
 			Test.SpawnThread();
-			System.Threading.Thread.Sleep(10000);
+			System.Threading.Thread.Sleep(2000);
 			Console.WriteLine("\nDEVCONSOLE>Stop requested.");
 			Test.StopThread();
 			Console.WriteLine("\nDEVCONSOLE>Thread stop confirmed.");
+			Console.WriteLine($"DEVCONSOLE> errors: \"{Test.GetThreadError()}\"");
 			Console.WriteLine("DEVCONSOLE>Goodbye!");
 		}
 	}
