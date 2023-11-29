@@ -15,6 +15,7 @@ namespace hyitr
 		virtual ~ThreadManager() = default;
 
 		template<class T>
+		requires std::is_base_of_v<ThreadManager,T> && (!std::is_abstract_v<T>)
 		static std::shared_ptr<T> create()
 		{
 			//new is used due to protected ctor, make_shared not usable
