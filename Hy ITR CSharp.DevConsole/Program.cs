@@ -1,4 +1,6 @@
-﻿namespace Hy_ITR.DevConsole
+﻿using System.Runtime.InteropServices;
+
+namespace Hy_ITR.DevConsole
 {
 	internal class Program
 	{
@@ -15,7 +17,13 @@
 			Console.WriteLine("\nDEVCONSOLE>Stop requested.");
 			Test.StopThread();
 			Console.WriteLine("\nDEVCONSOLE>Thread stop confirmed.");
-			Console.WriteLine($"DEVCONSOLE> errors: \"{Test.GetThreadError()}\"");
+
+			var err = Test.GetThreadError();
+			if (err == string.Empty)
+				Console.WriteLine($"DEVCONSOLE>No errors!");
+			else
+				Console.WriteLine($"DEVCONSOLE>There was error:\n{err}");
+
 			Console.WriteLine("DEVCONSOLE>Goodbye!");
 		}
 	}

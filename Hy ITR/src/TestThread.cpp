@@ -6,32 +6,52 @@ namespace hyitr
 {
 	void hyitr::TestThread::threadFunction(std::stop_token& stoken)
 	{
-		auto lastStamp = std::chrono::high_resolution_clock::now();
-		int to_erase = 0;
-		std::chrono::milliseconds stoper(0);
-		std::string preStr = "HYITR>Time Elapsed: ";
-		std::string fullStr;
+		int result = 0;
 
 		cout << "HYITR>Hello World from Hy ITR Thread!" << endl;
 
 		while (!stoken.stop_requested())
 		{
-			while (to_erase > 0)
-			{
-				cout << "\r";
-				to_erase--;
-			}
+			result = SDL_Init(SDL_INIT_VIDEO);
+			if (result != 0)
+				BOOST_THROW_EXCEPTION(std::runtime_error("SDL Init failed"));
 
-			stoper += std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - lastStamp);
-			lastStamp = std::chrono::high_resolution_clock::now();
+			auto sdlWindow = SDL_CreateWindow("Hy ITR Erupted", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_VULKAN);
+
+			VkInstance instance;
+
+			VkApplicationInfo appInfo{};
+			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+			appInfo.pApplicationName = "Hy ITR Erupted";
+			appInfo.applicationVersion = VK_MAKE_VERSION(0, 0, 1);
+			appInfo.pEngineName = "No Engine";
+			appInfo.engineVersion = VK_MAKE_VERSION(0, 0, 1);
+			appInfo.apiVersion = VK_API_VERSION_1_0;
+
+			VkInstanceCreateInfo createInfo{};
+			createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+			createInfo.pApplicationInfo = &appInfo;
 			
-			boost::format fmt;
-			fullStr = (boost::format("%1% %.2f s") % preStr % (stoper.count() / 1000.f)).str();
-			//fullStr = preStr + std::to_string(stoper.count() / 1000) + "." + std::to_string(stoper.count() % 1000) +  " s";
-			to_erase = (int)fullStr.length();
+			uint32_t sdlExtensionCount;
+			const char** sdlExtensions;
+			SDL_Vulkan_GetInstanceExtensions(sdlWindow, &sdlExtensionCount, nullptr);
+			sdlExtensions = new const char*[sdlExtensionCount];
+			SDL_Vulkan_GetInstanceExtensions(sdlWindow, &sdlExtensionCount, sdlExtensions);
 
-			cout << fullStr;
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			createInfo.enabledExtensionCount = sdlExtensionCount;
+			createInfo.ppEnabledExtensionNames = sdlExtensions;
+			createInfo.enabledLayerCount = 0;
+
+			if (auto vkResult = vkCreateInstance(&createInfo, nullptr, &instance) != VkResult::VK_SUCCESS)
+				BOOST_THROW_EXCEPTION(std::runtime_error("vkCreateInstance error:" + std::to_string(vkResult)));
+
+			cout << "HYITR>I will stay in akward silence for 10s ..." << endl;
+			std::this_thread::sleep_for(std::chrono::seconds(10));
+			cout << "HYITR>Well, my job done! I shall die!!!" << endl;
+
+			vkDestroyInstance(instance, nullptr);
+			SDL_DestroyWindow(sdlWindow);
+			break;
 		}
 		cout << "\nHYITR>Stop requested. Goodbye!" << endl;
 	}

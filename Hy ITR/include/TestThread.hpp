@@ -1,7 +1,11 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <boost/format.hpp>
+
+#include <sdl2/SDL.h>
+#include <sdl2/SDL_vulkan.h>
+#include <vulkan/vulkan.hpp>
+
 #include "ThreadManager.hpp"
 
 namespace hyitr

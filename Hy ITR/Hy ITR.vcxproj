@@ -73,6 +73,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>false</NoEntryPoint>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl2/SDL2.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -97,6 +98,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <NoEntryPoint>false</NoEntryPoint>
       <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;$(LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sdl2/SDL2.lib;vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
