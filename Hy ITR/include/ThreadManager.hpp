@@ -3,6 +3,8 @@
 #include <memory>
 #include <mutex>
 #include <type_traits>
+#include <boost/exception/all.hpp>
+#include <boost/format.hpp>
 #include "CommonInterface.hpp"
 
 namespace hyitr
@@ -42,6 +44,6 @@ namespace hyitr
 		std::jthread mThread;
 		std::mutex mThreadLock;
 		std::atomic<bool> mIsThreadGood;
-		std::exception mThreadError;
+		std::string mThreadError;
 	};
 }

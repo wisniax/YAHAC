@@ -22,7 +22,7 @@ namespace hyitr
 		if (mThread.joinable())
 			return false;
 		mIsThreadGood = true;
-		mThreadError = std::exception();
+		mThreadError = "";
 		mThread = std::jthread(threadWrapper, shared_from_this());
 		return true;
 	}
@@ -46,7 +46,7 @@ namespace hyitr
 	std::string ThreadManager::getError()
 	{
 		std::lock_guard lock(mThreadLock);
-		return std::string(mThreadError.what());
+		return mThreadError;
 	}
 
 	void ThreadManager::threadWrapper(std::stop_token stoken, std::shared_ptr<ThreadManager> owner) noexcept
@@ -55,17 +55,25 @@ namespace hyitr
 		{
 			owner->threadFunction(stoken);
 		}
+		catch (const boost::exception& be)
+		{
+			owner->mIsThreadGood = false;
+			std::lock_guard lock(owner->mThreadLock);
+			auto formattedError = boost::format("Critical error: %s") % boost::diagnostic_information(be);
+			owner->mThreadError = formattedError.str();
+		}
 		catch (const std::exception& e)
 		{
 			owner->mIsThreadGood = false;
 			std::lock_guard lock(owner->mThreadLock);
-			owner->mThreadError = e;
+			auto formattedError = boost::format("Critical error: %s") % e.what();
+			owner->mThreadError = formattedError.str();
 		}
 		catch (...)
 		{
 			owner->mIsThreadGood = false;
 			std::lock_guard lock(owner->mThreadLock);
-			owner->mThreadError = std::runtime_error("unknown error");
+			owner->mThreadError = "Unknown critical error";
 		}
 	}
 }

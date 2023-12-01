@@ -11,7 +11,7 @@
 			Console.WriteLine($"DEVCONSOLE>Hello World!");
 			Console.WriteLine($"DEVCONSOLE>{Test.HelloWorld()}");
 			Test.SpawnThread();
-			System.Threading.Thread.Sleep(2000);
+			while (Console.ReadKey().Key != ConsoleKey.Q) ;
 			Console.WriteLine("\nDEVCONSOLE>Stop requested.");
 			Test.StopThread();
 			Console.WriteLine("\nDEVCONSOLE>Thread stop confirmed.");
