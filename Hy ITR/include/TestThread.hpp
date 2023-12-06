@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <optional>
 
 #include <sdl2/SDL.h>
 #include <sdl2/SDL_vulkan.h>
@@ -15,9 +16,19 @@ namespace hyitr
 	{	
 		friend ThreadManager;
 	protected:
-		TestThread() = default;
+		TestThread();
 	private:
 		void threadFunction(std::stop_token& stoken) override;
+
+		void initVulkan();
+		void createVkDevice();
+		void deinitVulkan();
+
+		std::vector<const char*> vkLayers;
+
+		SDL_Window* sdlWindow;
+		VkInstance vkInstance;
+		VkDevice vkDevice;
 	};
 
 	

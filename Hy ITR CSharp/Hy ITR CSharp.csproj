@@ -25,6 +25,9 @@
   	<Content Include="..\Hy ITR\x64\$(Configuration)\Hy ITR.dll">
   		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
   	</Content>
+  	<Content Include="$(BIN)\sdl2\SDL2.dll">
+  	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</Content>
   </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ namespace hyitr
 	{
 		if (!mThread.joinable())
 			return false;
-
+		mIsRunnung = false;
 		mThread.request_stop();
 		mThread.join();
 		return true;
@@ -21,6 +21,7 @@ namespace hyitr
 	{
 		if (mThread.joinable())
 			return false;
+		mIsRunnung = true;
 		mIsThreadGood = true;
 		mThreadError = "";
 		mThread = std::jthread(threadWrapper, shared_from_this());
@@ -35,7 +36,7 @@ namespace hyitr
 
 	bool ThreadManager::isRunning() const
 	{
-		return mThread.joinable();
+		return mIsRunnung;
 	}
 
 	bool ThreadManager::isThreadGood() const
@@ -58,6 +59,7 @@ namespace hyitr
 		catch (const boost::exception& be)
 		{
 			owner->mIsThreadGood = false;
+			owner->mIsRunnung = false;
 			std::lock_guard lock(owner->mThreadLock);
 			auto formattedError = boost::format("Critical error: %s") % boost::diagnostic_information(be);
 			owner->mThreadError = formattedError.str();
@@ -65,6 +67,7 @@ namespace hyitr
 		catch (const std::exception& e)
 		{
 			owner->mIsThreadGood = false;
+			owner->mIsRunnung = false;
 			std::lock_guard lock(owner->mThreadLock);
 			auto formattedError = boost::format("Critical error: %s") % e.what();
 			owner->mThreadError = formattedError.str();
@@ -72,6 +75,7 @@ namespace hyitr
 		catch (...)
 		{
 			owner->mIsThreadGood = false;
+			owner->mIsRunnung = false;
 			std::lock_guard lock(owner->mThreadLock);
 			owner->mThreadError = "Unknown critical error";
 		}

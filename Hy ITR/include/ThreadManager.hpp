@@ -38,6 +38,7 @@ namespace hyitr
 		ThreadManager() = default;
 		virtual void threadFunction(std::stop_token& stoken) = 0;
 
+		bool mIsRunnung;
 	private:
 		static void threadWrapper(std::stop_token stoken, std::shared_ptr<ThreadManager> owner) noexcept;
 

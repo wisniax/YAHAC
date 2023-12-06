@@ -12,11 +12,16 @@ namespace Hy_ITR.DevConsole
 
 			Console.WriteLine($"DEVCONSOLE>Hello World!");
 			Console.WriteLine($"DEVCONSOLE>{Test.HelloWorld()}");
+			Console.WriteLine("\nDEVCONSOLE> PRESS Q TO SEND HALT!\n");
+
 			Test.SpawnThread();
-			while (Console.ReadKey().Key != ConsoleKey.Q) ;
-			Console.WriteLine("\nDEVCONSOLE>Stop requested.");
-			Test.StopThread();
-			Console.WriteLine("\nDEVCONSOLE>Thread stop confirmed.");
+			Task KeyPressTask = Task.Run(() => { while (Console.ReadKey(true).Key != ConsoleKey.Q) ; Console.WriteLine("DEVCONSOLE>Thread stop requested by user!"); });
+			Task DetectStopTask = Task.Run(async () => { while (Hy_ITR.Test.IsThreadRunning()) await Task.Delay(1000); Console.WriteLine("DEVCONSOLE>Thread stop detected!"); });
+
+			if(Task.WaitAny(KeyPressTask, DetectStopTask) == 0) 
+				Test.StopThread();
+			
+			Console.WriteLine("DEVCONSOLE>Thread stop confirmed.");
 
 			var err = Test.GetThreadError();
 			if (err == string.Empty)
